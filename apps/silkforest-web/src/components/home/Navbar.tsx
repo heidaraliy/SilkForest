@@ -41,21 +41,21 @@ const Navbar: React.FC = () => {
               alt="SilkForest Logo"
             />
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/products">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
                 Products
               </p>
             </div>
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/docs">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
                 Documentation
               </p>
             </div>
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/about">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
                 About
