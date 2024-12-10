@@ -11,12 +11,10 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "build:core": "yarn workspace @silkforest/core build",
-    "build:audioengine": "yarn workspace @silkforest/audioengine build",
     "build:web": "yarn workspace silkforest-web build",
-    "build": "yarn build:core && yarn build:audioengine && yarn build:web",
+    "build": "yarn build:web",
     "start": "yarn workspace silkforest-web start",
-    "ultra-clean": "cd /Users/heidaraliy/Documents/programs/backup/SilkForest/ rm -rf node_modules rm -rf rimraf node_modules /*/node_modules rm -rf apps/*/node_modules rm -rf packages/*/dist rm -rf apps/*/dist yarn cache clean",
+    "ultra-clean": "cd /Users/heidaraliy/Documents/programs/SilkForest/ rm -rf node_modules rm -rf rimraf node_modules /*/node_modules rm -rf apps/*/node_modules rm -rf apps/*/dist yarn cache clean",
     "reinstall": "yarn ultra-clean && yarn install && yarn build && bash extraction_writer.sh",
     "extract_repo": "bash extraction_writer.sh"
   }
