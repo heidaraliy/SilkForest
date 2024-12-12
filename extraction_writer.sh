@@ -1,11 +1,14 @@
 output_file="combined_code.txt"
 
-echo "extraction_writer: starting code extraction..."
+echo "extraction_writer: starting code extraction..." > "$output_file"
 
-# remove the output file if it exists
-rm -f "$output_file"
+echo -e "\n---- File Tree ----\n" >> "$output_file"
+echo "extraction_writer: generating file tree..."
+tree -I "node_modules|.git|build|dist" -P "*.ts|*.tsx|*.d.ts|*.json|*.js|*.jsx" >> "$output_file"
 
-find . -type f \( -name "*.ts" -o -name "*.tsx" \) \
+echo -e "\n---- Code Files ----\n" >> "$output_file"
+
+find . -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.d.ts" -o -name "*.json" -o -name "*.js" -o -name "*.jsx" \) \
   ! -path "*/node_modules/*" \
   ! -path "*/.git/*" \
   ! -path "*/build/*" \

@@ -6,7 +6,12 @@ module.exports = {
   ],
   darkMode: false,
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "steel-gradient":
+          "linear-gradient(to top left, #c7d2fe, #9fa8db, #71769d)",
+      },
+    },
     fontFamily: {
       arimo: ["Arimo", "sans-serif"],
       vidaloka: ["Vidaloka", "sans-serif"],

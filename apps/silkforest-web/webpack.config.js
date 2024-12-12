@@ -65,6 +65,10 @@ module.exports = {
           filename: "assets/media/[name][hash][ext]",
         },
       },
+      {
+        test: /\.md$/,
+        type: "asset/source",
+      },
     ],
   },
   plugins: [

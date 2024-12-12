@@ -8,19 +8,25 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div
-      className="rounded-md shadow-xl p-4 max-w-xl m-4"
+      className="rounded-md shadow-[15px_35px_60px_-15px_rgba(0,0,0,0.6)] p-4 max-w-3xl m-4 border-4 border-zinc-700"
       style={{ backgroundColor: product.background }}
     >
       <div className="flex items-center justify-center space-x-2">
-        <img src={product.logo} alt={product.name} className="w-72 h-auto" />
+        <img
+          src={product.logo}
+          alt={product.name}
+          className="h-auto"
+          style={{ width: product.logoWidth }}
+        />
       </div>
       <p className="text-zinc-50 my-4 font-arimo text-center text-lg">
-        <span className="font-vidaloka">SilkGhost</span> {product.description}
+        <span className="font-vidaloka">{product.name}</span>{" "}
+        {product.description}
       </p>
       <div className="flex space-x-4 justify-center my-8">
         <a
           href={product.documentationUrl}
-          className="hover:bg-zinc-200 border-zinc-400 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+          className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -31,14 +37,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </a>
         <a
           href={product.downloadUrl}
-          className="hover:bg-zinc-200 border-zinc-400 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+          className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
           target="_blank"
           rel="noopener noreferrer"
         >
           <span className="material-symbols-outlined text-gray-700">
-            download
+            {product.appType === "webApplication" ? "public" : "download"}
           </span>
-          <span>Download</span>
+          <span>
+            {product.appType === "webApplication"
+              ? "Launch " + product.name
+              : "Download"}
+          </span>
         </a>
       </div>
     </div>

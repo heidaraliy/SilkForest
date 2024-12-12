@@ -1,3 +1,257 @@
+extraction_writer: starting code extraction...
+
+---- File Tree ----
+
+.
+├── apps
+│   └── silkforest-web
+│       ├── package.json
+│       ├── postcss.config.js
+│       ├── public
+│       ├── src
+│       │   ├── App.tsx
+│       │   ├── assets
+│       │   ├── components
+│       │   │   ├── ErrorBoundary.tsx
+│       │   │   ├── docs
+│       │   │   │   ├── Docs.tsx
+│       │   │   │   ├── DocsData.ts
+│       │   │   │   └── DocsSidebar.tsx
+│       │   │   ├── home
+│       │   │   │   ├── Footer.tsx
+│       │   │   │   ├── Intro.tsx
+│       │   │   │   ├── Navbar.tsx
+│       │   │   │   └── RouterDefinitions.tsx
+│       │   │   └── products
+│       │   │       ├── ProductCard.tsx
+│       │   │       ├── ProductData.ts
+│       │   │       ├── ProductList.tsx
+│       │   │       └── Products.tsx
+│       │   ├── index.tsx
+│       │   └── types
+│       │       └── declarations.d.ts
+│       ├── tailwind.config.js
+│       ├── tsconfig.json
+│       └── webpack.config.js
+└── package.json
+
+11 directories, 21 files
+
+---- Code Files ----
+
+
+---- ./package.json ----
+
+{
+  "private": true,
+  "name": "silkforest",
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "build:web": "yarn workspace silkforest-web build",
+    "build": "yarn build:web",
+    "start": "yarn workspace silkforest-web start",
+    "ultra-clean": "cd /Users/heidaraliy/Documents/programs/SilkForest/ rm -rf node_modules rm -rf rimraf node_modules /*/node_modules rm -rf apps/*/node_modules rm -rf apps/*/dist yarn cache clean",
+    "reinstall": "yarn ultra-clean && yarn install && yarn build && bash extraction_writer.sh",
+    "extract_repo": "bash extraction_writer.sh"
+  }
+}
+
+---- ./apps/silkforest-web/tailwind.config.js ----
+
+module.exports = {
+  content: [
+    "./public/index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "../../packages/**/*.{js,jsx,ts,tsx}",
+  ],
+  darkMode: false,
+  theme: {
+    extend: {},
+    fontFamily: {
+      arimo: ["Arimo", "sans-serif"],
+      vidaloka: ["Vidaloka", "sans-serif"],
+    },
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+---- ./apps/silkforest-web/webpack.config.js ----
+
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+
+const isDevelopment = process.env.NODE_ENV !== "production";
+
+module.exports = {
+  entry: "./src/index.tsx",
+  output: {
+    filename: isDevelopment ? "[name].js" : "[name].[contenthash].js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+    clean: true,
+  },
+  mode: isDevelopment ? "development" : "production",
+  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@silkforest/core": path.resolve(__dirname, "../../packages/core/src"),
+      "@silkforest/audioengine": path.resolve(
+        __dirname,
+        "../../packages/audioengine/src"
+      ),
+    },
+    symlinks: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx|js|jsx)$/,
+        include: [
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "../../packages"),
+        ],
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                "@babel/preset-env",
+                "@babel/preset-react",
+                "@babel/preset-typescript",
+              ],
+              plugins: [
+                isDevelopment && require.resolve("react-refresh/babel"),
+              ].filter(Boolean),
+              cacheDirectory: false,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff|woff2)$/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/media/[name][hash][ext]",
+        },
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "public/index.html",
+    }),
+    isDevelopment && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "public"),
+    },
+    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
+    hot: true,
+    open: true,
+    port: 3000,
+    watchFiles: [path.resolve(__dirname, "src/**/*")],
+  },
+};
+
+---- ./apps/silkforest-web/package.json ----
+
+{
+  "name": "silkforest-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --config webpack.config.js --mode development",
+    "build": "webpack --config webpack.config.js --mode production"
+  },
+  "dependencies": {
+    "@types/react": "^18.3.11",
+    "@types/uuid": "^10.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.11.1",
+    "remark-gfm": "^4.0.0",
+    "uuid": "^10.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.4",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.5.0",
+    "postcss": "^8.4.47",
+    "postcss-loader": "^8.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-refresh": "^0.14.0",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.0.4",
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^5.1.0"
+  }
+}
+
+---- ./apps/silkforest-web/tsconfig.json ----
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["node_modules", "build"]
+}
+
+---- ./apps/silkforest-web/postcss.config.js ----
+
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
 
 ---- ./apps/silkforest-web/src/index.tsx ----
 
@@ -42,6 +296,44 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+---- ./apps/silkforest-web/src/types/declarations.d.ts ----
+
+declare module "*.png" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.jpg" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.jpeg" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.gif" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.mp4" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.svg" {
+  import * as React from "react";
+
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & { title?: string }
+  >;
+
+  const src: string;
+  export default src;
+}
 
 ---- ./apps/silkforest-web/src/components/home/Navbar.tsx ----
 
@@ -88,21 +380,21 @@ const Navbar: React.FC = () => {
               alt="SilkForest Logo"
             />
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/products">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
                 Products
               </p>
             </div>
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/docs">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
                 Documentation
               </p>
             </div>
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/about">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
                 About
@@ -183,14 +475,271 @@ export default Footer;
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Intro from "./Intro";
+import Products from "../products/Products";
 
 const RouterDefinitions: React.FC = () => (
   <Routes>
     <Route path="/" element={<Intro />} />
+    <Route path="/products" element={<Products />} />
+    <Route path="/docs" element={<></>} />
+    <Route path="/about" element={<></>} />
   </Routes>
 );
 
 export default RouterDefinitions;
+
+---- ./apps/silkforest-web/src/components/products/ProductList.tsx ----
+
+import React from "react";
+import ProductCard from "./ProductCard";
+import { Product, AppType } from "./ProductData";
+
+interface ProductListProps {
+  products: Product[];
+}
+
+const ProductList: React.FC<ProductListProps> = ({ products }) => {
+  const categorizedProducts: Record<AppType, Product[]> = {
+    plugin: [],
+    webApplication: [],
+  };
+
+  products.forEach((product) => {
+    categorizedProducts[product.appType].push(product);
+  });
+
+  return (
+    <div className="container mx-auto p-4">
+      {/* plugins section */}
+      {categorizedProducts.plugin.length > 0 && (
+        <section className="mb-8">
+          <h2 className="font-bold mb-4">Plugins</h2>
+          <div className="flex flex-wrap justify-center">
+            {categorizedProducts.plugin.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* web applications section */}
+      {categorizedProducts.webApplication.length > 0 && (
+        <section>
+          <h2 className="font-bold mb-4">Web Applications</h2>
+          <div className="flex flex-wrap justify-center">
+            {categorizedProducts.webApplication.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default ProductList;
+
+---- ./apps/silkforest-web/src/components/products/ProductCard.tsx ----
+
+import React from "react";
+import { Product } from "./ProductData";
+
+interface ProductCardProps {
+  product: Product;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  return (
+    <div
+      className="rounded-md shadow-[15px_35px_60px_-15px_rgba(0,0,0,0.6)] p-4 max-w-3xl m-4 border-4 border-zinc-700"
+      style={{ backgroundColor: product.background }}
+    >
+      <div className="flex items-center justify-center space-x-2">
+        <img
+          src={product.logo}
+          alt={product.name}
+          className="h-auto"
+          style={{ width: product.logoWidth }}
+        />
+      </div>
+      <p className="text-zinc-50 my-4 font-arimo text-center text-lg">
+        <span className="font-vidaloka">{product.name}</span>{" "}
+        {product.description}
+      </p>
+      <div className="flex space-x-4 justify-center my-8">
+        <a
+          href={product.documentationUrl}
+          className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="material-symbols-outlined text-gray-700">
+            library_books
+          </span>
+          <span>Documentation</span>
+        </a>
+        <a
+          href={product.downloadUrl}
+          className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="material-symbols-outlined text-gray-700">
+            {product.appType === "webApplication" ? "public" : "download"}
+          </span>
+          <span>
+            {product.appType === "webApplication"
+              ? "Launch " + product.name
+              : "Download"}
+          </span>
+        </a>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;
+
+---- ./apps/silkforest-web/src/components/products/ProductData.ts ----
+
+import SilkGhost from "../../assets/SilkGhost.png";
+import SilkShift from "../../assets/SilkShift.png";
+import SilkAmbience from "../../assets/SilkAmbience.png";
+import SilkVerb from "../../assets/SilkVerb.png";
+
+export type AppType = "plugin" | "webApplication";
+
+export interface Product {
+  id: string;
+  name: string;
+  logo: string;
+  logoWidth: string;
+  description: string;
+  documentationUrl: string;
+  downloadUrl: string;
+  background: string;
+  appType: AppType;
+}
+
+export const PRODUCTS: Product[] = [
+  {
+    id: "silkghost",
+    name: "SilkGhost",
+    logo: SilkGhost,
+    logoWidth: "18rem",
+    description:
+      "is a reverberation engine that creates haunting, ethereal soundscapes that linger like spectral echoes in your mix, gently enveloping each note in a surreal shimmer.",
+    documentationUrl: "https://silkforest.app/documentation/silkghost",
+    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    background: "#71769d",
+    appType: "plugin",
+  },
+  {
+    id: "silkshift",
+    name: "SilkShift",
+    logo: SilkShift,
+    logoWidth: "18rem",
+    description:
+      "isn’t just a pitch shifter — it’s a way to generate complex sounds. Layer your sounds and apply pitch shift and modulation to each layer individually.",
+    documentationUrl: "https://silkforest.app/documentation/silkghost",
+    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    background: "#c14444",
+    appType: "plugin",
+  },
+  {
+    id: "silkambience",
+    name: "SilkAmbience",
+    logo: SilkAmbience,
+    logoWidth: "22rem",
+    description:
+      "isolates pad-like frequencies in your sounds, splicing and transforming them into lush, textured layers of rich, evolving soundscapes that fill your mix beautifully.",
+    documentationUrl: "https://silkforest.app/documentation/silkghost",
+    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    background: "#B447C1",
+    appType: "plugin",
+  },
+  {
+    id: "silkverb",
+    name: "SilkVerb",
+    logo: SilkVerb,
+    logoWidth: "18rem",
+    description:
+      "is a quick and dirty way to create slowed and reverberated tracks. Set a reverb tail, control your dry and wet mix, and shift the track to your desire.",
+    documentationUrl: "https://silkforest.app/documentation/silkghost",
+    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    background: "#3F4DA8",
+    appType: "webApplication",
+  },
+];
+
+---- ./apps/silkforest-web/src/components/products/Products.tsx ----
+
+import React from "react";
+import { PRODUCTS, AppType } from "./ProductData";
+import ProductCard from "./ProductCard";
+
+const Products: React.FC = () => {
+  const categories: {
+    type: AppType;
+    title: string;
+    description: string;
+  }[] = [
+    {
+      type: "plugin",
+      title: "Plugins",
+      description: "Explore our suite of transformative audio plugins.",
+    },
+    {
+      type: "webApplication",
+      title: "Web Applications",
+      description:
+        "Built directly on the web, our web applications are intuitive and easy to use.",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col items-center p-8 font-arimo tracking-tight">
+      {categories.map((category) => {
+        // filter products based on the current category type.
+        const filteredProducts = PRODUCTS.filter(
+          (product) => product.appType === category.type
+        );
+
+        // if no products exist for the category, skip rendering.
+        if (filteredProducts.length === 0) return null;
+
+        return (
+          <section key={category.type} className="w-full mb-12">
+            <div className="w-full text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-700">
+                {category.title}
+              </h2>
+              <p className="text-gray-700 my-2 text-xl">
+                {category.description}
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Products;
+
+---- ./apps/silkforest-web/src/components/docs/DocsData.ts ----
+
+
+---- ./apps/silkforest-web/src/components/docs/DocsSidebar.tsx ----
+
+
+---- ./apps/silkforest-web/src/components/docs/Docs.tsx ----
+
 
 ---- ./apps/silkforest-web/src/components/ErrorBoundary.tsx ----
 
@@ -236,15 +785,3 @@ class ErrorBoundary extends React.Component<
 }
 
 export default ErrorBoundary;
-
----- ./apps/silkforest-web/src/declarations.d.ts ----
-
-declare module "*.png" {
-  const value: string;
-  export default value;
-}
-
-declare module "*.mp4" {
-  const value: string;
-  export default value;
-}

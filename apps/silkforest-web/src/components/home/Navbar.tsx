@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`space-x-2 text-[1.1rem] tracking-tight font-bold font-arimo flex h-16 ${
+      className={`fixed top-0 left-0 right-0 z-50 space-x-2 text-xl tracking-tight font-bold font-arimo flex h-20 items-center ${
         isMobile ? "flex-col" : "flex-row"
       } shadow-2xl border-b-2 border-zinc-400`}
       style={{
@@ -35,9 +35,9 @@ const Navbar: React.FC = () => {
           <NavLink to="/">
             <img
               src={SilkForest}
-              className={`${
+              className={`pointer-events-auto hover:scale-110 transition-all cursor-pointer duration-300${
                 isMobile ? "w-[8rem]" : "w-[12rem]"
-              } w-[12rem] mx-4 my-2`}
+              } w-[12rem] m-2`}
               alt="SilkForest Logo"
             />
           </NavLink>
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
           <NavLink to="/docs">
             <div className="hover:bg-[#555975] hover:rounded-md">
               <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
-                Documentation
+                Docs
               </p>
             </div>
           </NavLink>
