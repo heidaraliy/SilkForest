@@ -3,7 +3,7 @@ import IntroVideo from "../../assets/intro.mp4";
 
 const Intro: React.FC = () => {
   return (
-    <div className="flex justify-center p-8 mt-8">
+    <div className="flex justify-center p-8 mt-12">
       <div className="font-arimo tracking-tight text-xl max-w-5xl text-gray-700">
         <div className="my-8 text-3xl text-center shadow-2xl">
           <video src={IntroVideo} className="rounded-md" autoPlay muted />

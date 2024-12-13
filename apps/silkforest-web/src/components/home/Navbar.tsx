@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import SilkForestBackground from "../../assets/SilkForestBackground.png";
+import SilkForestBackground from "../../assets/SilkForestNavbarBG.png";
 import SilkForest from "../../assets/SilkForest.png";
 
 const Navbar: React.FC = () => {
@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 space-x-2 text-xl tracking-tight font-bold font-arimo flex h-20 items-center ${
+      className={`fixed top-0 left-0 right-0 z-50 space-x-2 text-xl tracking-tight font-bold font-arimo flex h-[5.5rem] items-center ${
         isMobile ? "flex-col" : "flex-row"
       } shadow-2xl border-b-2 border-zinc-400`}
       style={{

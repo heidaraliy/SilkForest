@@ -22,7 +22,7 @@ const Products: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center p-8 font-arimo tracking-tight mt-16">
+    <div className="flex flex-col items-center p-8 font-arimo tracking-tight mt-20">
       {categories.map((category) => {
         // filter products based on the current category type.
         const filteredProducts = PRODUCTS.filter(

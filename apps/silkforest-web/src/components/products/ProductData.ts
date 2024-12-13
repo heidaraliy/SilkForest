@@ -25,7 +25,7 @@ export const PRODUCTS: Product[] = [
     logoWidth: "18rem",
     description:
       "is a reverberation engine that creates haunting, ethereal soundscapes that linger like spectral echoes in your mix, gently enveloping each note in a surreal shimmer.",
-    documentationUrl: "https://silkforest.app/documentation/silkghost",
+    documentationUrl: "https://silkforest.app/docs#silkghost-introduction",
     downloadUrl: "https://silkforest.app/downloads/silkghost",
     background: "#71769d",
     appType: "plugin",

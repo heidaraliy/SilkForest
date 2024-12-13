@@ -4,7 +4,7 @@ import DocsContent from "./DocsContent";
 
 const Docs: React.FC = () => {
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden mt-16">
+    <div className="flex h-[calc(100vh-4rem)] overflow-hidden mt-20">
       <DocsSidebar />
       <DocsContent />
     </div>

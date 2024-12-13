@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { DOCS_SECTIONS } from "./DocsData";
 import SilkDocs from "../../assets/SilkDocs.png";
-import SilkForestSidebarBackground from "../../assets/SilkForestSidebarBackground.png";
+import SilkForestSidebarBackground from "../../assets/SilkForestSidebarBG.png";
 
 const DocsSidebar: React.FC = () => {
+  const [activeId, setActiveId] = useState<string>("");
   const location = useLocation();
-  const currentPath = location.hash.slice(1);
+
+  useEffect(() => {
+    // Create an Intersection Observer to detect which section is in view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+            // Update URL hash without triggering full navigation
+            const newUrl = `${window.location.pathname}#${entry.target.id}`;
+            window.history.replaceState(null, "", newUrl);
+          }
+        });
+      },
+      {
+        rootMargin: "-20% 0px -80% 0px",
+      }
+    );
+
+    // Observe all section headings
+    document.querySelectorAll("h1[id], h2[id], h3[id]").forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Update activeId when hash changes (e.g., on direct navigation)
+  useEffect(() => {
+    const hash = location.hash.slice(1);
+    if (hash) {
+      setActiveId(hash);
+    }
+  }, [location]);
 
   return (
     <div
@@ -31,9 +65,9 @@ const DocsSidebar: React.FC = () => {
                 {section.children?.map((entry) => (
                   <li key={entry.id}>
                     <Link
-                      to={`#${entry.id}`}
+                      to={`/docs#${entry.id}`} // IMPORTANT: full route + hash
                       className={`block text-base transition-all duration-300 rounded-md p-1.5 font-arimo tracking-tight ${
-                        currentPath === entry.id
+                        activeId === entry.id
                           ? "text-zinc-50 font-semibold bg-zinc-300/20 scale-110 border-zinc-300/70 border-2"
                           : "text-zinc-100 font-extralight hover:bg-zinc-300/20 hover:text-zinc-50 hover:scale-105 transition-all duration-300 cursor-pointer"
                       }`}

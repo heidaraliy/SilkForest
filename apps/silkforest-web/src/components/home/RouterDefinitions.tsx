@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Intro from "./Intro";
 import Products from "../products/Products";
 import Docs from "../docs/Docs";
@@ -13,14 +8,22 @@ const ScrollToHashElement = () => {
   const location = useLocation();
 
   React.useEffect(() => {
-    const hash = location.hash;
-    if (hash) {
-      setTimeout(() => {
-        const element = document.querySelector(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
+    if (location.pathname === "/docs" && location.hash) {
+      const targetId = location.hash.slice(1);
+      const element = document.getElementById(targetId);
+      if (element) {
+        setTimeout(() => {
+          const docsContent = document.querySelector(".docs-content");
+          if (docsContent && docsContent instanceof HTMLElement) {
+            // Calculate the offset relative to the container
+            const topOffset = element.offsetTop - docsContent.offsetTop;
+            docsContent.scrollTo({
+              top: topOffset - 100, // Adjust if needed
+              behavior: "smooth",
+            });
+          }
+        }, 200); // A short delay to ensure content is rendered
+      }
     }
   }, [location]);
 

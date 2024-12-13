@@ -1,13 +1,4 @@
-import GeneralIntroduction from "../../docs/general/Introduction.md";
-import SilkGhostIntroduction from "../../docs/silkghost/SilkGhostIntroduction.md";
-import SilkGhostKeyFeatures from "../../docs/silkghost/SilkGhostKeyFeatures.md";
-import GettingStarted from "../../docs/silkghost/GettingStarted.md";
-import InterfaceOverview from "../../docs/silkghost/InterfaceOverview.md";
-import ParameterReference from "../../docs/silkghost/ParameterReference.md";
-import WorkingWithPresets from "../../docs/silkghost/WorkingWithPresets.md";
-import CreativeApplications from "../../docs/silkghost/CreativeApplications.md";
-import TipsAndTechniques from "../../docs/silkghost/TipsAndTechniques.md";
-import AdditionalResources from "../../docs/silkghost/AdditionalResources.md";
+import SilkGhostDocumentation from "../../docs/silkghost/SilkGhostDocumentation.md";
 
 export interface DocSection {
   title: string;
@@ -15,9 +6,9 @@ export interface DocSection {
 }
 
 export interface DocEntry {
-  id: string; // route param or unique key.
+  id: string;
   title: string;
-  file: string; // path to the markdown file.
+  file: string;
 }
 
 export const DOCS_SECTIONS: DocSection[] = [
@@ -27,7 +18,7 @@ export const DOCS_SECTIONS: DocSection[] = [
       {
         id: "general-introduction",
         title: "Introduction",
-        file: GeneralIntroduction,
+        file: SilkGhostDocumentation,
       },
     ],
   },
@@ -35,49 +26,49 @@ export const DOCS_SECTIONS: DocSection[] = [
     title: "SilkGhost",
     children: [
       {
-        id: "silkghost-introduction",
+        id: "silk-ghost-introduction",
         title: "Introduction",
-        file: SilkGhostIntroduction,
+        file: SilkGhostDocumentation,
       },
       {
-        id: "silkghost-key-features",
+        id: "silk-ghost-key-features",
         title: "Key Features",
-        file: SilkGhostKeyFeatures,
+        file: SilkGhostDocumentation,
       },
       {
         id: "getting-started",
         title: "Getting Started",
-        file: GettingStarted,
+        file: SilkGhostDocumentation,
       },
       {
         id: "interface-overview",
         title: "Interface Overview",
-        file: InterfaceOverview,
+        file: SilkGhostDocumentation,
       },
       {
         id: "parameter-reference",
         title: "Parameter Reference",
-        file: ParameterReference,
+        file: SilkGhostDocumentation,
       },
       {
         id: "working-with-presets",
         title: "Working with Presets",
-        file: WorkingWithPresets,
+        file: SilkGhostDocumentation,
       },
       {
         id: "creative-applications",
         title: "Creative Applications",
-        file: CreativeApplications,
+        file: SilkGhostDocumentation,
       },
       {
         id: "tips-techniques",
         title: "Tips & Techniques",
-        file: TipsAndTechniques,
+        file: SilkGhostDocumentation,
       },
       {
         id: "additional-resources",
         title: "Additional Resources",
-        file: AdditionalResources,
+        file: SilkGhostDocumentation,
       },
     ],
   },
