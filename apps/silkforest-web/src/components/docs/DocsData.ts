@@ -51,16 +51,6 @@ export const DOCS_SECTIONS: DocSection[] = [
         title: "Creative Applications",
         file: SilkGhostDocumentation,
       },
-      {
-        id: "tips-techniques",
-        title: "Tips & Techniques",
-        file: SilkGhostDocumentation,
-      },
-      {
-        id: "additional-resources",
-        title: "Additional Resources",
-        file: SilkGhostDocumentation,
-      },
     ],
   },
 ];

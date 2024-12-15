@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import SilkForest from "../../assets/SilkForest.png";
@@ -49,7 +49,7 @@ const DocsContent: React.FC = () => {
         const imageSrc = IMAGE_MAP[imageName];
         if (!imageSrc) {
           console.warn(`Image not found: ${imageName}`);
-          return '';
+          return "";
         }
         return `<img 
           src="${imageSrc}" 

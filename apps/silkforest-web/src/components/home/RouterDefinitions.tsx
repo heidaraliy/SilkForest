@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Intro from "./Intro";
 import Products from "../products/Products";
 import Docs from "../docs/Docs";
+import About from "../about/About";
 
 const ScrollToHashElement = () => {
   const location = useLocation();
@@ -37,7 +38,7 @@ const RouterDefinitions: React.FC = () => (
       <Route path="/" element={<Intro />} />
       <Route path="/products" element={<Products />} />
       <Route path="/docs" element={<Docs />} />
-      <Route path="/about" element={<></>} />
+      <Route path="/about" element={<About />} />
     </Routes>
   </>
 );
