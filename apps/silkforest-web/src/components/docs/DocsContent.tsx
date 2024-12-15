@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw"; // Import this to parse raw HTML
+import rehypeRaw from "rehype-raw";
 import SilkForest from "../../assets/SilkForest.png";
 import SilkGhost from "../../assets/SilkGhost.png";
+import SilkGhostPluginWindow from "../../assets/SilkGhostPluginWindow.png";
+import { DOCS_SECTIONS } from "./DocsData";
 import { PRODUCTS } from "../products/ProductData";
-import SilkGhostDocumentation from "../../docs/silkghost/SilkGhostDocumentation.md";
 
 const LOGO_MAP: Record<string, string> = {
   SilkForest,
   SilkGhost,
+};
+
+const IMAGE_MAP: Record<string, string> = {
+  SilkGhostPluginWindow,
 };
 
 const BACKGROUND_MAP: Record<string, string> = PRODUCTS.reduce(
@@ -21,14 +26,47 @@ const BACKGROUND_MAP: Record<string, string> = PRODUCTS.reduce(
 );
 
 const DocsContent: React.FC = () => {
-  const markdownContent = SilkGhostDocumentation;
+  const [combinedMarkdown, setCombinedMarkdown] = useState<string>("");
+
+  useEffect(() => {
+    // Get unique markdown files
+    const uniqueFiles = new Set<string>();
+    DOCS_SECTIONS.forEach((section) => {
+      section.children?.forEach((entry) => {
+        uniqueFiles.add(entry.file);
+      });
+    });
+
+    // Combine unique markdown files
+    const content = Array.from(uniqueFiles).join("\n\n---\n\n");
+    setCombinedMarkdown(content);
+  }, []);
+
+  const processMarkdown = (content: string) => {
+    return content.replace(
+      /\[IMAGE:(.*?):(.*?)\]/g,
+      (match, imageName, imageType) => {
+        const imageSrc = IMAGE_MAP[imageName];
+        if (!imageSrc) {
+          console.warn(`Image not found: ${imageName}`);
+          return '';
+        }
+        return `<img 
+          src="${imageSrc}" 
+          alt="${imageName}" 
+          class="doc-image doc-image-${imageType}"
+          style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"
+        />`;
+      }
+    );
+  };
 
   return (
     <div className="docs-content flex-1 overflow-y-auto h-full bg-zinc-50 font-arimo tracking-tight">
       <div className="max-w-4xl mx-auto p-8 md:p-12">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]} // Allow raw HTML
+          rehypePlugins={[rehypeRaw]}
           components={{
             h1: (props) => {
               const text = String(props.children);
@@ -37,12 +75,6 @@ const DocsContent: React.FC = () => {
                 const logoKey = logoMatch[1];
                 const logoSrc = LOGO_MAP[logoKey];
                 const bgColor = BACKGROUND_MAP[logoKey] || "#71769d";
-
-                // The h1 tag and id are defined in the markdown file directly.
-                // To preserve that id, we rely on the raw HTML in the MD file.
-                // Since we're using rehypeRaw, the id set in MD is retained.
-                // So we don't need to assign an id here again.
-                // Just render children and the logo block.
 
                 return (
                   <h1
@@ -59,8 +91,6 @@ const DocsContent: React.FC = () => {
                 );
               }
 
-              // If there's a normal heading (without a logo),
-              // the id comes from the raw HTML in the file (if provided)
               return (
                 <h1
                   className="text-4xl font-bold mb-8 text-zinc-800"
@@ -70,9 +100,28 @@ const DocsContent: React.FC = () => {
                 </h1>
               );
             },
-            // For subsequent headings (h2, h3),
-            // if you need IDs, add them directly in the markdown as well.
-            // Otherwise, they will just be rendered as-is.
+            // Add custom styling for h2, h3, etc.
+            h2: (props) => (
+              <h2
+                className="text-3xl font-semibold mb-6 text-zinc-800"
+                {...props}
+              >
+                {props.children}
+              </h2>
+            ),
+            h3: (props) => (
+              <h3
+                className="text-2xl font-semibold mb-4 text-zinc-800"
+                {...props}
+              >
+                {props.children}
+              </h3>
+            ),
+            h4: (props) => (
+              <h4 className="text-xl font-medium mb-3 text-zinc-800" {...props}>
+                {props.children}
+              </h4>
+            ),
             p: (props) => (
               <p
                 className="mb-6 text-zinc-700 leading-relaxed text-lg"
@@ -106,7 +155,7 @@ const DocsContent: React.FC = () => {
             hr: () => <hr className="my-12 border-zinc-200" />,
           }}
         >
-          {markdownContent}
+          {processMarkdown(combinedMarkdown)}
         </ReactMarkdown>
       </div>
     </div>

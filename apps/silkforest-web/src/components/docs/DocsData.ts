@@ -1,4 +1,5 @@
 import SilkGhostDocumentation from "../../docs/silkghost/SilkGhostDocumentation.md";
+import Introduction from "../../docs/general/Introduction.md";
 
 export interface DocSection {
   title: string;
@@ -13,12 +14,12 @@ export interface DocEntry {
 
 export const DOCS_SECTIONS: DocSection[] = [
   {
-    title: "Getting Started",
+    title: "SilkForest",
     children: [
       {
         id: "general-introduction",
         title: "Introduction",
-        file: SilkGhostDocumentation,
+        file: Introduction,
       },
     ],
   },
@@ -41,18 +42,8 @@ export const DOCS_SECTIONS: DocSection[] = [
         file: SilkGhostDocumentation,
       },
       {
-        id: "interface-overview",
-        title: "Interface Overview",
-        file: SilkGhostDocumentation,
-      },
-      {
         id: "parameter-reference",
         title: "Parameter Reference",
-        file: SilkGhostDocumentation,
-      },
-      {
-        id: "working-with-presets",
-        title: "Working with Presets",
         file: SilkGhostDocumentation,
       },
       {

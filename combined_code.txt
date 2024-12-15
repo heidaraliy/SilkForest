@@ -208,6 +208,7 @@ module.exports = {
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.11.1",
+    "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
     "uuid": "^10.0.0"
   },
@@ -782,16 +783,8 @@ export default Products;
 
 ---- ./apps/silkforest-web/src/components/docs/DocsData.ts ----
 
-import GeneralIntroduction from "../../docs/general/Introduction.md";
-import SilkGhostIntroduction from "../../docs/silkghost/SilkGhostIntroduction.md";
-import SilkGhostKeyFeatures from "../../docs/silkghost/SilkGhostKeyFeatures.md";
-import GettingStarted from "../../docs/silkghost/GettingStarted.md";
-import InterfaceOverview from "../../docs/silkghost/InterfaceOverview.md";
-import ParameterReference from "../../docs/silkghost/ParameterReference.md";
-import WorkingWithPresets from "../../docs/silkghost/WorkingWithPresets.md";
-import CreativeApplications from "../../docs/silkghost/CreativeApplications.md";
-import TipsAndTechniques from "../../docs/silkghost/TipsAndTechniques.md";
-import AdditionalResources from "../../docs/silkghost/AdditionalResources.md";
+import SilkGhostDocumentation from "../../docs/silkghost/SilkGhostDocumentation.md";
+import Introduction from "../../docs/general/Introduction.md";
 
 export interface DocSection {
   title: string;
@@ -799,19 +792,19 @@ export interface DocSection {
 }
 
 export interface DocEntry {
-  id: string; // route param or unique key.
+  id: string;
   title: string;
-  file: string; // path to the markdown file.
+  file: string;
 }
 
 export const DOCS_SECTIONS: DocSection[] = [
   {
-    title: "Getting Started",
+    title: "SilkForest",
     children: [
       {
         id: "general-introduction",
         title: "Introduction",
-        file: GeneralIntroduction,
+        file: Introduction,
       },
     ],
   },
@@ -819,49 +812,49 @@ export const DOCS_SECTIONS: DocSection[] = [
     title: "SilkGhost",
     children: [
       {
-        id: "silkghost-introduction",
+        id: "silk-ghost-introduction",
         title: "Introduction",
-        file: SilkGhostIntroduction,
+        file: SilkGhostDocumentation,
       },
       {
-        id: "silkghost-key-features",
+        id: "silk-ghost-key-features",
         title: "Key Features",
-        file: SilkGhostKeyFeatures,
+        file: SilkGhostDocumentation,
       },
       {
         id: "getting-started",
         title: "Getting Started",
-        file: GettingStarted,
+        file: SilkGhostDocumentation,
       },
       {
         id: "interface-overview",
         title: "Interface Overview",
-        file: InterfaceOverview,
+        file: SilkGhostDocumentation,
       },
       {
         id: "parameter-reference",
         title: "Parameter Reference",
-        file: ParameterReference,
+        file: SilkGhostDocumentation,
       },
       {
         id: "working-with-presets",
         title: "Working with Presets",
-        file: WorkingWithPresets,
+        file: SilkGhostDocumentation,
       },
       {
         id: "creative-applications",
         title: "Creative Applications",
-        file: CreativeApplications,
+        file: SilkGhostDocumentation,
       },
       {
         id: "tips-techniques",
         title: "Tips & Techniques",
-        file: TipsAndTechniques,
+        file: SilkGhostDocumentation,
       },
       {
         id: "additional-resources",
         title: "Additional Resources",
-        file: AdditionalResources,
+        file: SilkGhostDocumentation,
       },
     ],
   },
@@ -980,9 +973,10 @@ export default Docs;
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { DOCS_SECTIONS } from "./DocsData";
+import rehypeRaw from "rehype-raw";
 import SilkForest from "../../assets/SilkForest.png";
 import SilkGhost from "../../assets/SilkGhost.png";
+import { DOCS_SECTIONS } from "./DocsData";
 import { PRODUCTS } from "../products/ProductData";
 
 const LOGO_MAP: Record<string, string> = {
@@ -998,167 +992,133 @@ const BACKGROUND_MAP: Record<string, string> = PRODUCTS.reduce(
   {}
 );
 
-interface LoadedDoc {
-  id: string;
-  markdown: string;
-}
-
 const DocsContent: React.FC = () => {
-  const [docs, setDocs] = useState<LoadedDoc[]>([]);
+  const [combinedMarkdown, setCombinedMarkdown] = useState<string>("");
 
   useEffect(() => {
-    // No fetching needed; `file` is already a markdown string due to webpack config
-    const allDocs: LoadedDoc[] = [];
+    // Get unique markdown files
+    const uniqueFiles = new Set<string>();
     DOCS_SECTIONS.forEach((section) => {
       section.children?.forEach((entry) => {
-        allDocs.push({ id: entry.id, markdown: entry.file });
+        uniqueFiles.add(entry.file);
       });
     });
-    setDocs(allDocs);
+
+    // Combine unique markdown files
+    const content = Array.from(uniqueFiles).join("\n\n---\n\n");
+    setCombinedMarkdown(content);
   }, []);
+
+  const processMarkdown = (content: string) => {
+    return content.replace(
+      /\[IMAGE:(.*?):(.*?)\]/g,
+      (match, imageName, imageType) => {
+        return `<img  
+          src="../../assets/${imageName}.png"
+          alt="${imageName}" 
+          class="doc-image doc-image-${imageType}"
+          style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"
+        />`;
+      }
+    );
+  };
 
   return (
     <div className="docs-content flex-1 overflow-y-auto h-full bg-zinc-50 font-arimo tracking-tight">
       <div className="max-w-4xl mx-auto p-8 md:p-12">
-        {docs.map((doc) => {
-          let firstH1Encountered = false;
-          return (
-            <ReactMarkdown
-              key={doc.id}
-              remarkPlugins={[remarkGfm]}
-              components={{
-                h1: (props) => {
-                  // Convert props.children to a string
-                  const childrenArray = React.Children.toArray(props.children);
-                  const text = childrenArray
-                    .map((child) => (typeof child === "string" ? child : ""))
-                    .join("");
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            h1: (props) => {
+              const text = String(props.children);
+              const logoMatch = text.match(/\[LOGO:(.*?)\]/);
+              if (logoMatch) {
+                const logoKey = logoMatch[1];
+                const logoSrc = LOGO_MAP[logoKey];
+                const bgColor = BACKGROUND_MAP[logoKey] || "#71769d";
 
-                  const logoMatch = text.match(/\[LOGO:(.*?)\]/);
-
-                  if (!firstH1Encountered) {
-                    firstH1Encountered = true;
-
-                    // If we found a logo tag, show the logo block
-                    if (logoMatch) {
-                      const logoKey = logoMatch[1];
-                      const logoSrc = LOGO_MAP[logoKey];
-                      const bgColor = BACKGROUND_MAP[logoKey] || "#71769d";
-
-                      return (
-                        <div
-                          id={doc.id}
-                          className="flex justify-center mb-12 rounded-lg p-4 shadow-2xl border-zinc-700 border-[3px]"
-                          style={{ backgroundColor: bgColor }}
-                        >
-                          <img
-                            src={logoSrc}
-                            alt={logoKey}
-                            className="w-[24rem]"
-                          />
-                        </div>
-                      );
-                    } else {
-                      // No logo, just a normal h1 with the doc id
-                      return (
-                        <h1
-                          id={doc.id}
-                          className="text-4xl font-bold mb-8 text-zinc-800"
-                        >
-                          {text}
-                        </h1>
-                      );
-                    }
-                  } else {
-                    // Subsequent h1s get text-based IDs
-                    const headingId = text
-                      .toLowerCase()
-                      .replace(/[^\w]+/g, "-")
-                      .replace(/^-+|-+$/g, "");
-
-                    return (
-                      <h1
-                        id={headingId}
-                        className="text-4xl font-bold mb-8 text-zinc-800"
-                      >
-                        {text}
-                      </h1>
-                    );
-                  }
-                },
-                h2: (props) => {
-                  const childrenArray = React.Children.toArray(props.children);
-                  const text = childrenArray
-                    .map((child) => (typeof child === "string" ? child : ""))
-                    .join("");
-                  const headingId = text
-                    .toLowerCase()
-                    .replace(/[^\w]+/g, "-")
-                    .replace(/^-+|-+$/g, "");
-                  return (
-                    <h2
-                      id={headingId}
-                      className="text-3xl font-bold mb-6 mt-12 text-zinc-800"
+                return (
+                  <h1
+                    className="text-4xl font-bold mb-8 text-zinc-800 flex justify-center"
+                    {...props}
+                  >
+                    <div
+                      className="rounded-lg p-4 shadow-2xl border-zinc-700 border-[3px]"
+                      style={{ backgroundColor: bgColor }}
                     >
-                      {props.children}
-                    </h2>
-                  );
-                },
-                h3: (props) => {
-                  const childrenArray = React.Children.toArray(props.children);
-                  const text = childrenArray
-                    .map((child) => (typeof child === "string" ? child : ""))
-                    .join("");
-                  const headingId = text
-                    .toLowerCase()
-                    .replace(/[^\w]+/g, "-")
-                    .replace(/^-+|-+$/g, "");
-                  return (
-                    <h3
-                      id={headingId}
-                      className="text-2xl font-bold mb-4 mt-8 text-zinc-800"
-                    >
-                      {props.children}
-                    </h3>
-                  );
-                },
-                p: (props) => (
-                  <p
-                    className="mb-6 text-zinc-700 leading-relaxed text-lg"
-                    {...props}
-                  />
-                ),
-                ul: (props) => (
-                  <ul
-                    className="list-disc pl-8 mb-6 text-zinc-700 space-y-2"
-                    {...props}
-                  />
-                ),
-                ol: (props) => (
-                  <ol
-                    className="list-decimal pl-8 mb-6 text-zinc-700 space-y-2"
-                    {...props}
-                  />
-                ),
-                code: (props) => (
-                  <code
-                    className="bg-zinc-100 rounded px-2 py-1 text-sm text-zinc-800"
-                    {...props}
-                  />
-                ),
-                pre: (props) => (
-                  <pre
-                    className="bg-zinc-100 rounded-lg p-6 mb-6 overflow-x-auto text-zinc-800"
-                    {...props}
-                  />
-                ),
-                hr: () => <hr className="my-12 border-zinc-200" />,
-              }}
-            >
-              {doc.markdown}
-            </ReactMarkdown>
-          );
-        })}
+                      <img src={logoSrc} alt={logoKey} className="w-[24rem]" />
+                    </div>
+                  </h1>
+                );
+              }
+
+              return (
+                <h1
+                  className="text-4xl font-bold mb-8 text-zinc-800"
+                  {...props}
+                >
+                  {props.children}
+                </h1>
+              );
+            },
+            // Add custom styling for h2, h3, etc.
+            h2: (props) => (
+              <h2
+                className="text-3xl font-semibold mb-6 text-zinc-800"
+                {...props}
+              >
+                {props.children}
+              </h2>
+            ),
+            h3: (props) => (
+              <h3
+                className="text-2xl font-semibold mb-4 text-zinc-800"
+                {...props}
+              >
+                {props.children}
+              </h3>
+            ),
+            h4: (props) => (
+              <h4 className="text-xl font-medium mb-3 text-zinc-800" {...props}>
+                {props.children}
+              </h4>
+            ),
+            p: (props) => (
+              <p
+                className="mb-6 text-zinc-700 leading-relaxed text-lg"
+                {...props}
+              />
+            ),
+            ul: (props) => (
+              <ul
+                className="list-disc pl-8 mb-6 text-zinc-700 space-y-2"
+                {...props}
+              />
+            ),
+            ol: (props) => (
+              <ol
+                className="list-decimal pl-8 mb-6 text-zinc-700 space-y-2"
+                {...props}
+              />
+            ),
+            code: (props) => (
+              <code
+                className="bg-zinc-100 rounded px-2 py-1 text-sm text-zinc-800"
+                {...props}
+              />
+            ),
+            pre: (props) => (
+              <pre
+                className="bg-zinc-100 rounded-lg p-6 mb-6 overflow-x-auto text-zinc-800"
+                {...props}
+              />
+            ),
+            hr: () => <hr className="my-12 border-zinc-200" />,
+          }}
+        >
+          {processMarkdown(combinedMarkdown)}
+        </ReactMarkdown>
       </div>
     </div>
   );
