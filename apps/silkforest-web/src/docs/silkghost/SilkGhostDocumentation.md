@@ -37,7 +37,7 @@ You've also got plenty of presets to get you started, with subtle, supportive ro
 ---
 
 <!-- Getting Started (SilkGhost) -->
-<h1 id="getting-started">Getting Started</h1>
+<h2 id="silk-ghost-getting-started">Getting Started</h2>
 
 ### System Requirements
 
@@ -62,8 +62,8 @@ You've also got plenty of presets to get you started, with subtle, supportive ro
 
 ---
 
-<!-- Interface Overview -->
-<h1 id="parameter-reference">Parameter Reference</h1>
+<!-- Parameter Reference -->
+<h2 id="silk-ghost-parameter-reference">Parameter Reference</h2>
 
 SilkGhost’s interface is designed to provide quick, intuitive access to all crucial parameters:
 
@@ -293,7 +293,7 @@ SilkGhost's signal path is designed to provide maximum control while maintaining
 ---
 
 <!-- Creative Applications -->
-<h1 id="creative-applications">Creative Applications</h1>
+<h2 id="silk-ghost-creative-applications">Creative Applications</h2>
 
 ### Vocal Production & Sound Design
 

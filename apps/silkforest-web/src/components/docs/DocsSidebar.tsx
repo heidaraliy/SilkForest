@@ -58,10 +58,10 @@ const DocsSidebar: React.FC = () => {
         <nav className="space-y-6 bg-[#4d516e]/75 rounded-md p-4 border-zinc-400 border-2">
           {DOCS_SECTIONS.map((section) => (
             <div key={section.title} className="mb-6">
-              <div className="text-xl font-semibold text-zinc-50 mb-3 p-2 font-arimo tracking-tight">
+              <div className="text-2xl text-zinc-50 mb-3 p-2 font-vidaloka">
                 {section.title}
               </div>
-              <ul className="space-y-3 pl-2">
+              <ul className="space-y-3 pl-2 text-xl">
                 {section.children?.map((entry) => (
                   <li key={entry.id}>
                     <Link

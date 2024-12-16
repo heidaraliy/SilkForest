@@ -35,33 +35,33 @@ const Navbar: React.FC = () => {
           <NavLink to="/">
             <img
               src={SilkForest}
-              className={`pointer-events-auto hover:scale-110 transition-all cursor-pointer duration-300${
+              className={`pointer-events-auto hover:scale-105 transition-all cursor-pointer duration-300 ${
                 isMobile ? "w-[8rem]" : "w-[12rem]"
               } w-[12rem] m-2`}
               alt="SilkForest Logo"
             />
           </NavLink>
           <NavLink to="/products">
-            <div className="hover:bg-[#555975] hover:rounded-md">
-              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
                 Products
               </p>
             </div>
           </NavLink>
           <NavLink to="/docs">
-            <div className="hover:bg-[#555975] hover:rounded-md">
-              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
                 Docs
               </p>
             </div>
           </NavLink>
-          <NavLink to="/about">
-            <div className="hover:bg-[#555975] hover:rounded-md">
-              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
+          {/* <NavLink to="/about">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
                 About
               </p>
             </div>
-          </NavLink>
+          </NavLink> */}
         </div>
       </div>
     </nav>

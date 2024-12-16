@@ -37,17 +37,17 @@ export const DOCS_SECTIONS: DocSection[] = [
         file: SilkGhostDocumentation,
       },
       {
-        id: "getting-started",
+        id: "silk-ghost-getting-started",
         title: "Getting Started",
         file: SilkGhostDocumentation,
       },
       {
-        id: "parameter-reference",
+        id: "silk-ghost-parameter-reference",
         title: "Parameter Reference",
         file: SilkGhostDocumentation,
       },
       {
-        id: "creative-applications",
+        id: "silk-ghost-creative-applications",
         title: "Creative Applications",
         file: SilkGhostDocumentation,
       },
