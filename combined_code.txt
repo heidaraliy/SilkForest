@@ -13,6 +13,8 @@ extraction_writer: starting code extraction...
 │       │   ├── assets
 │       │   ├── components
 │       │   │   ├── ErrorBoundary.tsx
+│       │   │   ├── about
+│       │   │   │   └── About.tsx
 │       │   │   ├── docs
 │       │   │   │   ├── Docs.tsx
 │       │   │   │   ├── DocsContent.tsx
@@ -28,6 +30,8 @@ extraction_writer: starting code extraction...
 │       │   │       ├── ProductData.ts
 │       │   │       ├── ProductList.tsx
 │       │   │       └── Products.tsx
+│       │   ├── config
+│       │   │   └── urls.ts
 │       │   ├── docs
 │       │   │   ├── general
 │       │   │   └── silkghost
@@ -39,7 +43,7 @@ extraction_writer: starting code extraction...
 │       └── webpack.config.js
 └── package.json
 
-14 directories, 22 files
+16 directories, 24 files
 
 ---- Code Files ----
 
@@ -354,6 +358,19 @@ declare module "*.md" {
   export default value;
 }
 
+---- ./apps/silkforest-web/src/config/urls.ts ----
+
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+const BASE_URL = isDevelopment 
+  ? 'http://localhost:3000' 
+  : 'https://silkforest.app';
+
+export const URLS = {
+  docs: (section: string) => `${BASE_URL}/docs#${section}`,
+  downloads: (product: string) => `${BASE_URL}/downloads/${product}`,
+  home: () => BASE_URL,
+}; 
 ---- ./apps/silkforest-web/src/components/home/Navbar.tsx ----
 
 import React, { useEffect, useState } from "react";
@@ -393,33 +410,33 @@ const Navbar: React.FC = () => {
           <NavLink to="/">
             <img
               src={SilkForest}
-              className={`pointer-events-auto hover:scale-110 transition-all cursor-pointer duration-300${
+              className={`pointer-events-auto hover:scale-105 transition-all cursor-pointer duration-300 ${
                 isMobile ? "w-[8rem]" : "w-[12rem]"
               } w-[12rem] m-2`}
               alt="SilkForest Logo"
             />
           </NavLink>
           <NavLink to="/products">
-            <div className="hover:bg-[#555975] hover:rounded-md">
-              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
                 Products
               </p>
             </div>
           </NavLink>
           <NavLink to="/docs">
-            <div className="hover:bg-[#555975] hover:rounded-md">
-              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
                 Docs
               </p>
             </div>
           </NavLink>
-          <NavLink to="/about">
-            <div className="hover:bg-[#555975] hover:rounded-md">
-              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-4">
+          {/* <NavLink to="/about">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
                 About
               </p>
             </div>
-          </NavLink>
+          </NavLink> */}
         </div>
       </div>
     </nav>
@@ -440,6 +457,7 @@ const Intro: React.FC = () => {
         <div className="my-8 text-3xl text-center shadow-2xl">
           <video src={IntroVideo} className="rounded-md" autoPlay muted />
         </div>
+
         <div className="text-2xl font-bold">
           Shape your sound, effortlessly.
         </div>
@@ -457,6 +475,7 @@ const Intro: React.FC = () => {
         <br />
         <hr />
         <br />
+
         <div className="text-2xl font-bold">
           Designed for clarity and control.
         </div>
@@ -467,6 +486,21 @@ const Intro: React.FC = () => {
           intuitive sound shaping. Elegant, focused interfaces combined with
           advanced audio processing make it easy to edit, test, and refine
           sounds with precision.
+        </div>
+        <br />
+        <hr />
+        <br />
+
+        <div className="text-2xl font-bold">Built for everyone.</div>
+        <br />
+        <div className="text-lg max-w-4xl">
+          <span className="font-vidaloka">SilkForest</span> is a passion project
+          born from years of music production and sound design experience. As
+          someone who's benefited from the incredible tools created by the audio
+          community, I want to give back by making these plugins completely
+          free. I think that powerful creative tools should be accessible to
+          everyone, enabling artists at any level to explore and expand their
+          sonic horizons without barriers.
         </div>
       </div>
     </div>
@@ -496,6 +530,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Intro from "./Intro";
 import Products from "../products/Products";
 import Docs from "../docs/Docs";
+import About from "../about/About";
 
 const ScrollToHashElement = () => {
   const location = useLocation();
@@ -530,7 +565,7 @@ const RouterDefinitions: React.FC = () => (
       <Route path="/" element={<Intro />} />
       <Route path="/products" element={<Products />} />
       <Route path="/docs" element={<Docs />} />
-      <Route path="/about" element={<></>} />
+      <Route path="/about" element={<About />} />
     </Routes>
   </>
 );
@@ -598,6 +633,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const comingSoon = false;
+
   return (
     <div
       className="rounded-md shadow-[15px_35px_60px_-15px_rgba(0,0,0,0.6)] p-4 max-w-3xl m-4 border-4 border-zinc-700"
@@ -616,32 +653,44 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {product.description}
       </p>
       <div className="flex space-x-4 justify-center my-8">
-        <a
-          href={product.documentationUrl}
-          className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="material-symbols-outlined text-gray-700">
-            library_books
-          </span>
-          <span>Documentation</span>
-        </a>
-        <a
-          href={product.downloadUrl}
-          className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="material-symbols-outlined text-gray-700">
-            {product.appType === "webApplication" ? "public" : "download"}
-          </span>
-          <span>
-            {product.appType === "webApplication"
-              ? "Launch " + product.name
-              : "Download"}
-          </span>
-        </a>
+        {product.status === "available" ? (
+          <>
+            {product.appType !== "webApplication" ? (
+              <a
+                href={product.documentationUrl}
+                className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+                target="_self"
+                rel="noopener noreferrer"
+              >
+                <span className="material-symbols-outlined text-gray-700">
+                  library_books
+                </span>
+                <span>Documentation</span>
+              </a>
+            ) : (
+              <></>
+            )}
+            <a
+              href={product.downloadUrl}
+              className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+              target="_self"
+              rel="noopener noreferrer"
+            >
+              <span className="material-symbols-outlined text-gray-700">
+                {product.appType === "webApplication" ? "public" : "download"}
+              </span>
+              <span>
+                {product.appType === "webApplication"
+                  ? "Launch " + product.name
+                  : "Download"}
+              </span>
+            </a>
+          </>
+        ) : (
+          <div className="hover:bg-zinc-200 hover:cursor-not-allowed border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1 opacity-70">
+            Coming soon!
+          </div>
+        )}
       </div>
     </div>
   );
@@ -655,6 +704,7 @@ import SilkGhost from "../../assets/SilkGhost.png";
 import SilkShift from "../../assets/SilkShift.png";
 import SilkAmbience from "../../assets/SilkAmbience.png";
 import SilkVerb from "../../assets/SilkVerb.png";
+import { URLS } from "../../config/urls";
 
 export type AppType = "plugin" | "webApplication";
 
@@ -664,10 +714,11 @@ export interface Product {
   logo: string;
   logoWidth: string;
   description: string;
-  documentationUrl: string;
-  downloadUrl: string;
+  documentationUrl?: string;
+  downloadUrl?: string;
   background: string;
   appType: AppType;
+  status: "available" | "coming-soon";
 }
 
 export const PRODUCTS: Product[] = [
@@ -678,10 +729,11 @@ export const PRODUCTS: Product[] = [
     logoWidth: "18rem",
     description:
       "is a reverberation engine that creates haunting, ethereal soundscapes that linger like spectral echoes in your mix, gently enveloping each note in a surreal shimmer.",
-    documentationUrl: "https://silkforest.app/docs#silkghost-introduction",
-    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    documentationUrl: URLS.docs("silk-ghost-introduction"),
+    downloadUrl: URLS.downloads("silkghost"),
     background: "#71769d",
     appType: "plugin",
+    status: "available",
   },
   {
     id: "silkshift",
@@ -690,10 +742,11 @@ export const PRODUCTS: Product[] = [
     logoWidth: "18rem",
     description:
       "isn’t just a pitch shifter — it’s a way to generate complex sounds. Layer your sounds and apply pitch shift and modulation to each layer individually.",
-    documentationUrl: "https://silkforest.app/documentation/silkghost",
-    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    documentationUrl: URLS.docs("silkghost-introduction"),
+    downloadUrl: URLS.downloads("silkghost"),
     background: "#c14444",
     appType: "plugin",
+    status: "coming-soon",
   },
   {
     id: "silkambience",
@@ -702,10 +755,11 @@ export const PRODUCTS: Product[] = [
     logoWidth: "22rem",
     description:
       "isolates pad-like frequencies in your sounds, splicing and transforming them into lush, textured layers of rich, evolving soundscapes that fill your mix beautifully.",
-    documentationUrl: "https://silkforest.app/documentation/silkghost",
-    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    documentationUrl: "",
+    downloadUrl: "",
     background: "#B447C1",
     appType: "plugin",
+    status: "coming-soon",
   },
   {
     id: "silkverb",
@@ -714,10 +768,11 @@ export const PRODUCTS: Product[] = [
     logoWidth: "18rem",
     description:
       "is a quick and dirty way to create slowed and reverberated tracks. Set a reverb tail, control your dry and wet mix, and shift the track to your desire.",
-    documentationUrl: "https://silkforest.app/documentation/silkghost",
-    downloadUrl: "https://silkforest.app/downloads/silkghost",
+    documentationUrl: "",
+    downloadUrl: "https://silkmodulate.vercel.app",
     background: "#3F4DA8",
     appType: "webApplication",
+    status: "available",
   },
 ];
 
@@ -781,6 +836,34 @@ const Products: React.FC = () => {
 
 export default Products;
 
+---- ./apps/silkforest-web/src/components/about/About.tsx ----
+
+import React from "react";
+
+const Docs: React.FC = () => {
+  return (
+    <div className="flex h-[calc(100vh-4rem)] overflow-hidden p-20 justify-center items-center">
+      <span
+        className="text-center text-lg font-arimo tracking-tight"
+        style={{ maxWidth: "800px" }}
+      >
+        hey, it's me.
+        <br />
+        <br />
+        there's nothing <i>that</i> important that i can really add here...
+        <br />
+        <br />
+        <i className="text-sm">(at least, not yet.)</i>
+        <br />
+        <br />
+        <b>i'm building some pretty cool stuff though, so stay a while.</b>
+      </span>
+    </div>
+  );
+};
+
+export default Docs;
+
 ---- ./apps/silkforest-web/src/components/docs/DocsData.ts ----
 
 import SilkGhostDocumentation from "../../docs/silkghost/SilkGhostDocumentation.md";
@@ -822,38 +905,18 @@ export const DOCS_SECTIONS: DocSection[] = [
         file: SilkGhostDocumentation,
       },
       {
-        id: "getting-started",
+        id: "silk-ghost-getting-started",
         title: "Getting Started",
         file: SilkGhostDocumentation,
       },
       {
-        id: "interface-overview",
-        title: "Interface Overview",
-        file: SilkGhostDocumentation,
-      },
-      {
-        id: "parameter-reference",
+        id: "silk-ghost-parameter-reference",
         title: "Parameter Reference",
         file: SilkGhostDocumentation,
       },
       {
-        id: "working-with-presets",
-        title: "Working with Presets",
-        file: SilkGhostDocumentation,
-      },
-      {
-        id: "creative-applications",
+        id: "silk-ghost-creative-applications",
         title: "Creative Applications",
-        file: SilkGhostDocumentation,
-      },
-      {
-        id: "tips-techniques",
-        title: "Tips & Techniques",
-        file: SilkGhostDocumentation,
-      },
-      {
-        id: "additional-resources",
-        title: "Additional Resources",
         file: SilkGhostDocumentation,
       },
     ],
@@ -922,10 +985,10 @@ const DocsSidebar: React.FC = () => {
         <nav className="space-y-6 bg-[#4d516e]/75 rounded-md p-4 border-zinc-400 border-2">
           {DOCS_SECTIONS.map((section) => (
             <div key={section.title} className="mb-6">
-              <div className="text-xl font-semibold text-zinc-50 mb-3 p-2 font-arimo tracking-tight">
+              <div className="text-2xl text-zinc-50 mb-3 p-2 font-vidaloka">
                 {section.title}
               </div>
-              <ul className="space-y-3 pl-2">
+              <ul className="space-y-3 pl-2 text-xl">
                 {section.children?.map((entry) => (
                   <li key={entry.id}>
                     <Link
@@ -971,17 +1034,22 @@ export default Docs;
 ---- ./apps/silkforest-web/src/components/docs/DocsContent.tsx ----
 
 import React, { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import SilkForest from "../../assets/SilkForest.png";
 import SilkGhost from "../../assets/SilkGhost.png";
+import SilkGhostPluginWindow from "../../assets/SilkGhostPluginWindow.png";
 import { DOCS_SECTIONS } from "./DocsData";
 import { PRODUCTS } from "../products/ProductData";
 
 const LOGO_MAP: Record<string, string> = {
   SilkForest,
   SilkGhost,
+};
+
+const IMAGE_MAP: Record<string, string> = {
+  SilkGhostPluginWindow,
 };
 
 const BACKGROUND_MAP: Record<string, string> = PRODUCTS.reduce(
@@ -1013,8 +1081,13 @@ const DocsContent: React.FC = () => {
     return content.replace(
       /\[IMAGE:(.*?):(.*?)\]/g,
       (match, imageName, imageType) => {
-        return `<img  
-          src="../../assets/${imageName}.png"
+        const imageSrc = IMAGE_MAP[imageName];
+        if (!imageSrc) {
+          console.warn(`Image not found: ${imageName}`);
+          return "";
+        }
+        return `<img 
+          src="${imageSrc}" 
           alt="${imageName}" 
           class="doc-image doc-image-${imageType}"
           style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"

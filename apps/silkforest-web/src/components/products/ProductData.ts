@@ -67,8 +67,8 @@ export const PRODUCTS: Product[] = [
     description:
       "is a quick and dirty way to create slowed and reverberated tracks. Set a reverb tail, control your dry and wet mix, and shift the track to your desire.",
     documentationUrl: "",
-    downloadUrl: "https://silkmodulate.vercel.app",
-    background: "#3F4DA8",
+    downloadUrl: "https://silkverb.vercel.app",
+    background: "#2a3475",
     appType: "webApplication",
     status: "available",
   },
