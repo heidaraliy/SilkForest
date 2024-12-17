@@ -11,7 +11,7 @@ module.exports = {
   output: {
     filename: isDevelopment ? "[name].js" : "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: isDevelopment ? "/" : "./",
+    publicPath: "/",
     clean: true,
   },
   mode: isDevelopment ? "development" : "production",

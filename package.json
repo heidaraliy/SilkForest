@@ -17,6 +17,7 @@
     "start": "yarn start:silkforest-web",
     "ultra-clean": "cd /Users/heidaraliy/Documents/programs/SilkForest/ rm -rf node_modules rm -rf rimraf node_modules /*/node_modules rm -rf apps/*/node_modules rm -rf apps/*/dist yarn cache clean",
     "reinstall": "yarn ultra-clean && yarn install && yarn build && cd utils && set -x && bash extraction_writer.sh",
-    "extract_repo": "cd utils && set -x && bash extraction_writer.sh"
+    "extract_repo": "cd utils && set -x && bash extraction_writer.sh",
+    "vercel-build": "yarn install && yarn workspace silkforest-web build"
   }
 }
