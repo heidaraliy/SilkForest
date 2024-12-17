@@ -1,4 +1,4 @@
-import { createReverbImpulseResponse } from './audioUtils';
+import { createReverbImpulseResponse } from "../createReverbImpulseResponse";
 
 export const exportProcessedAudioBuffer = async (
   audioBuffer: AudioBuffer,
@@ -32,11 +32,11 @@ export const exportProcessedAudioBuffer = async (
   wetGain.gain.value = wetGainValue;
 
   const wetHighPassFilter = offlineContext.createBiquadFilter();
-  wetHighPassFilter.type = 'highpass';
+  wetHighPassFilter.type = "highpass";
   wetHighPassFilter.frequency.value = highPassFrequency;
 
   const wetLowPassFilter = offlineContext.createBiquadFilter();
-  wetLowPassFilter.type = 'lowpass';
+  wetLowPassFilter.type = "lowpass";
   wetLowPassFilter.frequency.value = lowPassFrequency;
 
   // connect the dry signal nodes

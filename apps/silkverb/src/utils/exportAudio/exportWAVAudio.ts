@@ -1,4 +1,4 @@
-import { createReverbImpulseResponse } from "../audioUtils";
+import { createReverbImpulseResponse } from "../createReverbImpulseResponse";
 import toWav from "audiobuffer-to-wav";
 
 export const exportWAVAudio = async (

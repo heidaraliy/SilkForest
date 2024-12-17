@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { exportProcessedAudioBuffer } from "../utils/exportProcessedAudioBuffer";
+import { exportProcessedAudioBuffer } from "../utils/exportAudio/exportProcessedAudioBuffer";
 import { exportMP3Audio } from "../utils/exportAudio/exportMP3Audio";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

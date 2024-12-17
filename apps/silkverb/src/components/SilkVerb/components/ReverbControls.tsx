@@ -43,7 +43,6 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
         Reverberation
       </h1>
       <div className="grid grid-cols-1 gap-4">
-        {/* References lines 234-264 for basic reverb controls */}
         <div>
           <div className="flex">
             <span
@@ -92,11 +91,92 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
 
         {/* Advanced Controls Section */}
         {showAdvanced && (
-          <div className="">
-            {/* References lines 281-456 for advanced controls */}
-            {/* ... Gain Controls ... */}
-            {/* ... Filter Controls ... */}
-            {/* ... Frequency Response Chart ... */}
+          <div>
+            {/* Dry Gain Control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                Dry Gain: {dryGainValue}
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={dryGainValue}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setDryGainValue,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* Wet Gain Control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                Wet Gain: {wetGainValue}
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={wetGainValue}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setWetGainValue,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* High Pass Frequency Control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                High Pass Frequency: {highPassFrequency} Hz
+              </label>
+              <input
+                type="range"
+                min="20"
+                max="20000"
+                step="1"
+                value={highPassFrequency}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setHighPassFrequency,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* Low Pass Frequency Control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                Low Pass Frequency: {lowPassFrequency} Hz
+              </label>
+              <input
+                type="range"
+                min="20"
+                max="20000"
+                step="1"
+                value={lowPassFrequency}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setLowPassFrequency,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* Frequency Response Chart */}
             <FrequencyResponseChart data={frequencyData} />
           </div>
         )}
