@@ -1,0 +1,2562 @@
+extraction_writer: starting code extraction...
+
+---- File Tree ----
+
+.
+
+0 directories, 0 files
+
+---- Code Files ----
+
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//vercel.json ----
+
+{
+  "builds": [
+    {
+      "src": "apps/silkforest-web/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/apps/silkforest-web/dist/$1"
+    }
+  ]
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//package.json ----
+
+{
+  "private": true,
+  "name": "silkforest",
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "build:silkforest-web": "yarn workspace silkforest-web build",
+    "build:silkverb": "yarn workspace silkverb build",
+    "build": "yarn build:silkforest-web && yarn build:silkverb",
+    "start:silkforest-web": "yarn workspace silkforest-web start",
+    "start": "yarn start:silkforest-web",
+    "ultra-clean": "cd /Users/heidaraliy/Documents/programs/SilkForest/ rm -rf node_modules rm -rf rimraf node_modules /*/node_modules rm -rf apps/*/node_modules rm -rf apps/*/dist yarn cache clean",
+    "reinstall": "yarn ultra-clean && yarn install && yarn build && cd utils && set -x && bash extraction_writer.sh",
+    "extract_repo": "cd utils && set -x && bash extraction_writer.sh"
+  }
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/tailwind.config.js ----
+
+module.exports = {
+  content: [
+    "./public/index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "../silkverb/src/**/*.{js,jsx,ts,tsx}",
+  ],
+  darkMode: false,
+  theme: {
+    extend: {},
+    fontFamily: {
+      arimo: ["Arimo", "sans-serif"],
+      vidaloka: ["Vidaloka", "sans-serif"],
+    },
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/webpack.config.js ----
+
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+
+const isDevelopment = process.env.NODE_ENV !== "production";
+
+module.exports = {
+  entry: "./src/index.tsx",
+  output: {
+    filename: isDevelopment ? "[name].js" : "[name].[contenthash].js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+    clean: true,
+  },
+  mode: isDevelopment ? "development" : "production",
+  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@silkverb": path.resolve(__dirname, "../silkverb/src"),
+      "@silkforest": path.resolve(__dirname, "./src"),
+    },
+    symlinks: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx|js|jsx)$/,
+        include: [
+          path.resolve(__dirname, "src"),
+          path.resolve(__dirname, "../silkverb/src"),
+        ],
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                "@babel/preset-env",
+                "@babel/preset-react",
+                "@babel/preset-typescript",
+              ],
+              plugins: [
+                isDevelopment && require.resolve("react-refresh/babel"),
+              ].filter(Boolean),
+              cacheDirectory: false,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff|woff2)$/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/media/[name][hash][ext]",
+        },
+      },
+      {
+        test: /\.md$/,
+        type: "asset/source",
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "public/index.html",
+    }),
+    isDevelopment && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "public"),
+    },
+    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
+    hot: true,
+    open: true,
+    port: 3000,
+    watchFiles: [path.resolve(__dirname, "src/**/*")],
+  },
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/package.json ----
+
+{
+  "name": "silkforest-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --config webpack.config.js --mode development",
+    "build": "webpack --config webpack.config.js --mode production"
+  },
+  "dependencies": {
+    "@types/react": "^18.3.11",
+    "@types/uuid": "^10.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.11.1",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
+    "uuid": "^10.0.0",
+    "react-tooltip": "^5.28.0",
+    "recharts": "^2.13.0",
+    "lamejs": "github:zhuker/lamejs",
+    "audiobuffer-to-wav": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.4",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.5.0",
+    "postcss": "^8.4.47",
+    "postcss-loader": "^8.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-refresh": "^0.14.0",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.0.4",
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^5.1.0"
+  }
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/tsconfig.json ----
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "types/**/*", "../silkverb/src/**/*"],
+  "exclude": ["node_modules", "build"]
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/postcss.config.js ----
+
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/index.tsx ----
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { BrowserRouter } from "react-router-dom";
+
+const container = document.getElementById("root");
+if (!container) {
+  throw new Error("Failed to find the root element.");
+}
+
+const root = ReactDOM.createRoot(container);
+root.render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ErrorBoundary>
+  </React.StrictMode>
+);
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/App.tsx ----
+
+import React from "react";
+import Navbar from "./components/home/Navbar";
+import Footer from "./components/home/Footer";
+import RouterDefinitions from "./RouterDefinitions";
+
+const App: React.FC = () => {
+  return (
+    <div>
+      <Navbar />
+      <RouterDefinitions />
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/types/declarations.d.ts ----
+
+declare module "*.png" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.jpg" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.jpeg" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.gif" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.mp4" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.svg" {
+  import * as React from "react";
+
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & { title?: string }
+  >;
+
+  const src: string;
+  export default src;
+}
+
+declare module "*.md" {
+  const value: string;
+  export default value;
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/config/urls.ts ----
+
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+const BASE_URL = isDevelopment 
+  ? 'http://localhost:3000' 
+  : 'https://silkforest.app';
+
+export const URLS = {
+  docs: (section: string) => `${BASE_URL}/docs#${section}`,
+  downloads: (product: string) => `${BASE_URL}/downloads/${product}`,
+  home: () => BASE_URL,
+}; 
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/home/Navbar.tsx ----
+
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import SilkForestBackground from "../../assets/SilkForestNavbarBG.png";
+import SilkForest from "../../assets/SilkForest.png";
+
+const Navbar: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Handle responsiveness
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 space-x-2 text-xl tracking-tight font-bold font-arimo flex h-[5.5rem] items-center ${
+        isMobile ? "flex-col" : "flex-row"
+      } shadow-2xl border-b-2 border-zinc-400`}
+      style={{
+        backgroundImage: `url(${SilkForestBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="flex w-full justify-between">
+        <div className="flex">
+          <NavLink to="/">
+            <img
+              src={SilkForest}
+              className={`pointer-events-auto hover:scale-105 transition-all cursor-pointer duration-300 ${
+                isMobile ? "w-[8rem]" : "w-[12rem]"
+              } w-[12rem] m-2`}
+              alt="SilkForest Logo"
+            />
+          </NavLink>
+          <NavLink to="/products">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
+                Products
+              </p>
+            </div>
+          </NavLink>
+          <NavLink to="/docs">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
+                Docs
+              </p>
+            </div>
+          </NavLink>
+          {/* <NavLink to="/about">
+            <div className="hover:bg-[#555975]/50 hover:rounded-md">
+              <p className="drop-shadow-2xl text-zinc-50 mt-5 flex mx-6">
+                About
+              </p>
+            </div>
+          </NavLink> */}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/home/Intro.tsx ----
+
+import React from "react";
+import IntroVideo from "../../assets/intro.mp4";
+
+const Intro: React.FC = () => {
+  return (
+    <div className="flex justify-center p-8 mt-12">
+      <div className="font-arimo tracking-tight text-xl max-w-5xl text-gray-700">
+        <div className="my-8 text-3xl text-center shadow-2xl">
+          <video src={IntroVideo} className="rounded-md" autoPlay muted />
+        </div>
+
+        <div className="text-2xl font-bold">
+          Shape your sound, effortlessly.
+        </div>
+        <br />
+        <div className="text-lg max-w-4xl">
+          <span className="font-vidaloka">SilkForest</span> is a suite of
+          plugins crafted to transform your sound into{" "}
+          <b>rich, ambient expressions</b>. With tools designed to{" "}
+          <b>weave ethereal soundscapes</b>, sculpt warm, resonant pads and
+          synths, and push vocal production into uncharted territories,{" "}
+          <span className="font-vidaloka">SilkForest</span> enables you to
+          create music that <b>transcends conventional boundaries</b> and
+          embodies a sense of <b>otherworldly depth and artistry</b>.
+        </div>
+        <br />
+        <hr />
+        <br />
+
+        <div className="text-2xl font-bold">
+          Designed for clarity and control.
+        </div>
+        <br />
+        <div className="text-lg max-w-4xl">
+          By removing unnecessary noise and focusing on the most impactful
+          parameters, <span className="font-vidaloka">SilkForest</span> empowers
+          intuitive sound shaping. Elegant, focused interfaces combined with
+          advanced audio processing make it easy to edit, test, and refine
+          sounds with precision.
+        </div>
+        <br />
+        <hr />
+        <br />
+
+        <div className="text-2xl font-bold">Built for everyone.</div>
+        <br />
+        <div className="text-lg max-w-4xl">
+          <span className="font-vidaloka">SilkForest</span> is a passion project
+          born from years of music production and sound design experience. As
+          someone who's benefited from the incredible tools created by the audio
+          community, I want to give back by making these plugins completely
+          free. I think that powerful creative tools should be accessible to
+          everyone, enabling artists at any level to explore and expand their
+          sonic horizons without barriers.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Intro;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/home/Footer.tsx ----
+
+import React from "react";
+
+const Footer: React.FC = () => {
+  return (
+    <footer className="p-4 text-center text-gray-700 font-arimo border-t-2 border-zinc-400 shadow-2xl">
+      &copy; {new Date().getFullYear()} SilkForest. All rights reserved.
+    </footer>
+  );
+};
+
+export default Footer;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/products/ProductList.tsx ----
+
+import React from "react";
+import ProductCard from "./ProductCard";
+import { Product, AppType } from "./ProductData";
+
+interface ProductListProps {
+  products: Product[];
+}
+
+const ProductList: React.FC<ProductListProps> = ({ products }) => {
+  const categorizedProducts: Record<AppType, Product[]> = {
+    plugin: [],
+    webApplication: [],
+  };
+
+  products.forEach((product) => {
+    categorizedProducts[product.appType].push(product);
+  });
+
+  return (
+    <div className="container mx-auto p-4">
+      {/* plugins section */}
+      {categorizedProducts.plugin.length > 0 && (
+        <section className="mb-8">
+          <h2 className="font-bold mb-4">Plugins</h2>
+          <div className="flex flex-wrap justify-center">
+            {categorizedProducts.plugin.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* web applications section */}
+      {categorizedProducts.webApplication.length > 0 && (
+        <section>
+          <h2 className="font-bold mb-4">Web Applications</h2>
+          <div className="flex flex-wrap justify-center">
+            {categorizedProducts.webApplication.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default ProductList;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/products/ProductCard.tsx ----
+
+import React from "react";
+import { Product } from "./ProductData";
+
+interface ProductCardProps {
+  product: Product;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const comingSoon = false;
+
+  return (
+    <div
+      className="rounded-md shadow-[15px_35px_60px_-15px_rgba(0,0,0,0.6)] p-4 max-w-3xl m-4 border-4 border-zinc-700"
+      style={{ backgroundColor: product.background }}
+    >
+      <div className="flex items-center justify-center space-x-2">
+        <img
+          src={product.logo}
+          alt={product.name}
+          className="h-auto"
+          style={{ width: product.logoWidth }}
+        />
+      </div>
+      <p className="text-zinc-50 my-4 font-arimo text-center text-lg">
+        <span className="font-vidaloka">{product.name}</span>{" "}
+        {product.description}
+      </p>
+      <div className="flex space-x-4 justify-center my-8">
+        {product.status === "available" ? (
+          <>
+            {product.appType !== "webApplication" ? (
+              <a
+                href={product.documentationUrl}
+                className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+                target="_self"
+                rel="noopener noreferrer"
+              >
+                <span className="material-symbols-outlined text-gray-700">
+                  library_books
+                </span>
+                <span>Documentation</span>
+              </a>
+            ) : (
+              <></>
+            )}
+            <a
+              href={product.downloadUrl}
+              className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
+              target="_self"
+              rel="noopener noreferrer"
+            >
+              <span className="material-symbols-outlined text-gray-700">
+                {product.appType === "webApplication" ? "public" : "download"}
+              </span>
+              <span>
+                {product.appType === "webApplication"
+                  ? "Launch " + product.name
+                  : "Download"}
+              </span>
+            </a>
+          </>
+        ) : (
+          <div className="hover:bg-zinc-200 hover:cursor-not-allowed border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1 opacity-70">
+            Coming soon!
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/products/ProductData.ts ----
+
+import SilkGhost from "../../assets/SilkGhost.png";
+import SilkShift from "../../assets/SilkShift.png";
+import SilkAmbience from "../../assets/SilkAmbience.png";
+import SilkVerb from "../../assets/SilkVerb.png";
+import { URLS } from "../../config/urls";
+
+export type AppType = "plugin" | "webApplication";
+
+export interface Product {
+  id: string;
+  name: string;
+  logo: string;
+  logoWidth: string;
+  description: string;
+  documentationUrl?: string;
+  downloadUrl?: string;
+  background: string;
+  appType: AppType;
+  status: "available" | "coming-soon";
+}
+
+export const PRODUCTS: Product[] = [
+  {
+    id: "silkghost",
+    name: "SilkGhost",
+    logo: SilkGhost,
+    logoWidth: "18rem",
+    description:
+      "is a reverberation engine that creates haunting, ethereal soundscapes that linger like spectral echoes in your mix, gently enveloping each note in a surreal shimmer.",
+    documentationUrl: URLS.docs("silk-ghost-introduction"),
+    downloadUrl: URLS.downloads("silkghost"),
+    background: "#71769d",
+    appType: "plugin",
+    status: "available",
+  },
+  {
+    id: "silkshift",
+    name: "SilkShift",
+    logo: SilkShift,
+    logoWidth: "18rem",
+    description:
+      "isn’t just a pitch shifter — it’s a way to generate complex sounds. Layer your sounds and apply pitch shift and modulation to each layer individually.",
+    documentationUrl: URLS.docs("silkghost-introduction"),
+    downloadUrl: URLS.downloads("silkghost"),
+    background: "#c14444",
+    appType: "plugin",
+    status: "coming-soon",
+  },
+  {
+    id: "silkambience",
+    name: "SilkAmbience",
+    logo: SilkAmbience,
+    logoWidth: "22rem",
+    description:
+      "isolates pad-like frequencies in your sounds, splicing and transforming them into lush, textured layers of rich, evolving soundscapes that fill your mix beautifully.",
+    documentationUrl: "",
+    downloadUrl: "",
+    background: "#B447C1",
+    appType: "plugin",
+    status: "coming-soon",
+  },
+  {
+    id: "silkverb",
+    name: "SilkVerb",
+    logo: SilkVerb,
+    logoWidth: "18rem",
+    description:
+      "is a quick and dirty way to create slowed and reverberated tracks. Set a reverb tail, control your dry and wet mix, and shift the track to your desire.",
+    documentationUrl: "",
+    downloadUrl: "/apps/silkverb",
+    background: "#2a3475",
+    appType: "webApplication",
+    status: "available",
+  },
+];
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/products/Products.tsx ----
+
+import React from "react";
+import { PRODUCTS, AppType } from "./ProductData";
+import ProductCard from "./ProductCard";
+
+const Products: React.FC = () => {
+  const categories: {
+    type: AppType;
+    title: string;
+    description: string;
+  }[] = [
+    {
+      type: "plugin",
+      title: "Plugins",
+      description: "Explore a wide range of transformative audio plugins.",
+    },
+    {
+      type: "webApplication",
+      title: "Web Applications",
+      description:
+        "Built directly on the web, these web applications are intuitive and easy to use.",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col items-center p-8 font-arimo tracking-tight mt-20">
+      {categories.map((category) => {
+        // filter products based on the current category type.
+        const filteredProducts = PRODUCTS.filter(
+          (product) => product.appType === category.type
+        );
+
+        // if no products exist for the category, skip rendering.
+        if (filteredProducts.length === 0) return null;
+
+        return (
+          <section key={category.type} className="w-full mb-12">
+            <div className="w-full text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-700">
+                {category.title}
+              </h2>
+              <p className="text-gray-700 my-2 text-xl">
+                {category.description}
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Products;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/about/About.tsx ----
+
+import React from "react";
+
+const Docs: React.FC = () => {
+  return (
+    <div className="flex h-[calc(100vh-4rem)] overflow-hidden p-20 justify-center items-center">
+      <span
+        className="text-center text-lg font-arimo tracking-tight"
+        style={{ maxWidth: "800px" }}
+      >
+        hey, it's me.
+        <br />
+        <br />
+        there's nothing <i>that</i> important that i can really add here...
+        <br />
+        <br />
+        <i className="text-sm">(at least, not yet.)</i>
+        <br />
+        <br />
+        <b>i'm building some pretty cool stuff though, so stay a while.</b>
+      </span>
+    </div>
+  );
+};
+
+export default Docs;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/docs/DocsData.ts ----
+
+import SilkGhostDocumentation from "../../docs/silkghost/SilkGhostDocumentation.md";
+import Introduction from "../../docs/general/Introduction.md";
+
+export interface DocSection {
+  title: string;
+  children?: DocEntry[];
+}
+
+export interface DocEntry {
+  id: string;
+  title: string;
+  file: string;
+}
+
+export const DOCS_SECTIONS: DocSection[] = [
+  {
+    title: "SilkForest",
+    children: [
+      {
+        id: "general-introduction",
+        title: "Introduction",
+        file: Introduction,
+      },
+    ],
+  },
+  {
+    title: "SilkGhost",
+    children: [
+      {
+        id: "silk-ghost-introduction",
+        title: "Introduction",
+        file: SilkGhostDocumentation,
+      },
+      {
+        id: "silk-ghost-key-features",
+        title: "Key Features",
+        file: SilkGhostDocumentation,
+      },
+      {
+        id: "silk-ghost-getting-started",
+        title: "Getting Started",
+        file: SilkGhostDocumentation,
+      },
+      {
+        id: "silk-ghost-parameter-reference",
+        title: "Parameter Reference",
+        file: SilkGhostDocumentation,
+      },
+      {
+        id: "silk-ghost-creative-applications",
+        title: "Creative Applications",
+        file: SilkGhostDocumentation,
+      },
+    ],
+  },
+];
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/docs/DocsSidebar.tsx ----
+
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { DOCS_SECTIONS } from "./DocsData";
+import SilkDocs from "../../assets/SilkDocs.png";
+import SilkForestSidebarBackground from "../../assets/SilkForestSidebarBG.png";
+
+const DocsSidebar: React.FC = () => {
+  const [activeId, setActiveId] = useState<string>("");
+  const location = useLocation();
+
+  useEffect(() => {
+    // Create an Intersection Observer to detect which section is in view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+            // Update URL hash without triggering full navigation
+            const newUrl = `${window.location.pathname}#${entry.target.id}`;
+            window.history.replaceState(null, "", newUrl);
+          }
+        });
+      },
+      {
+        rootMargin: "-20% 0px -80% 0px",
+      }
+    );
+
+    // Observe all section headings
+    document.querySelectorAll("h1[id], h2[id], h3[id]").forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Update activeId when hash changes (e.g., on direct navigation)
+  useEffect(() => {
+    const hash = location.hash.slice(1);
+    if (hash) {
+      setActiveId(hash);
+    }
+  }, [location]);
+
+  return (
+    <div
+      className="w-72 border-r-2 border-zinc-400 overflow-y-auto h-full"
+      style={{
+        backgroundImage: `url(${SilkForestSidebarBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center bottom",
+      }}
+    >
+      <div className="sticky top-0 p-6">
+        <div className="text-center m-4">
+          <img src={SilkDocs} alt="SilkDocs" className="mx-auto w-48" />
+        </div>
+        <nav className="space-y-6 bg-[#4d516e]/75 rounded-md p-4 border-zinc-400 border-2">
+          {DOCS_SECTIONS.map((section) => (
+            <div key={section.title} className="mb-6">
+              <div className="text-2xl text-zinc-50 mb-3 p-2 font-vidaloka">
+                {section.title}
+              </div>
+              <ul className="space-y-3 pl-2 text-xl">
+                {section.children?.map((entry) => (
+                  <li key={entry.id}>
+                    <Link
+                      to={`/docs#${entry.id}`} // IMPORTANT: full route + hash
+                      className={`block text-base transition-all duration-300 rounded-md p-1.5 font-arimo tracking-tight ${
+                        activeId === entry.id
+                          ? "text-zinc-50 font-semibold bg-zinc-300/20 scale-110 border-zinc-300/70 border-2"
+                          : "text-zinc-100 font-extralight hover:bg-zinc-300/20 hover:text-zinc-50 hover:scale-105 transition-all duration-300 cursor-pointer"
+                      }`}
+                    >
+                      {entry.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+};
+
+export default DocsSidebar;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/docs/Docs.tsx ----
+
+import React from "react";
+import DocsSidebar from "./DocsSidebar";
+import DocsContent from "./DocsContent";
+
+const Docs: React.FC = () => {
+  return (
+    <div className="flex h-[calc(100vh-4rem)] overflow-hidden mt-20">
+      <DocsSidebar />
+      <DocsContent />
+    </div>
+  );
+};
+
+export default Docs;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/docs/DocsContent.tsx ----
+
+import React, { useEffect, useState } from "react";
+import ReactMarkdown, { Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import SilkForest from "../../assets/SilkForest.png";
+import SilkGhost from "../../assets/SilkGhost.png";
+import SilkGhostPluginWindow from "../../assets/SilkGhostPluginWindow.png";
+import { DOCS_SECTIONS } from "./DocsData";
+import { PRODUCTS } from "../products/ProductData";
+
+const LOGO_MAP: Record<string, string> = {
+  SilkForest,
+  SilkGhost,
+};
+
+const IMAGE_MAP: Record<string, string> = {
+  SilkGhostPluginWindow,
+};
+
+const BACKGROUND_MAP: Record<string, string> = PRODUCTS.reduce(
+  (acc, product) => ({
+    ...acc,
+    [product.name]: product.background,
+  }),
+  {}
+);
+
+const DocsContent: React.FC = () => {
+  const [combinedMarkdown, setCombinedMarkdown] = useState<string>("");
+
+  useEffect(() => {
+    // Get unique markdown files
+    const uniqueFiles = new Set<string>();
+    DOCS_SECTIONS.forEach((section) => {
+      section.children?.forEach((entry) => {
+        uniqueFiles.add(entry.file);
+      });
+    });
+
+    // Combine unique markdown files
+    const content = Array.from(uniqueFiles).join("\n\n---\n\n");
+    setCombinedMarkdown(content);
+  }, []);
+
+  const processMarkdown = (content: string) => {
+    return content.replace(
+      /\[IMAGE:(.*?):(.*?)\]/g,
+      (match, imageName, imageType) => {
+        const imageSrc = IMAGE_MAP[imageName];
+        if (!imageSrc) {
+          console.warn(`Image not found: ${imageName}`);
+          return "";
+        }
+        return `<img 
+          src="${imageSrc}" 
+          alt="${imageName}" 
+          class="doc-image doc-image-${imageType}"
+          style="border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"
+        />`;
+      }
+    );
+  };
+
+  return (
+    <div className="docs-content flex-1 overflow-y-auto h-full bg-zinc-50 font-arimo tracking-tight">
+      <div className="max-w-4xl mx-auto p-8 md:p-12">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            h1: (props) => {
+              const text = String(props.children);
+              const logoMatch = text.match(/\[LOGO:(.*?)\]/);
+              if (logoMatch) {
+                const logoKey = logoMatch[1];
+                const logoSrc = LOGO_MAP[logoKey];
+                const bgColor = BACKGROUND_MAP[logoKey] || "#71769d";
+
+                return (
+                  <h1
+                    className="text-4xl font-bold mb-8 text-zinc-800 flex justify-center"
+                    {...props}
+                  >
+                    <div
+                      className="rounded-lg p-4 shadow-2xl border-zinc-700 border-[3px]"
+                      style={{ backgroundColor: bgColor }}
+                    >
+                      <img src={logoSrc} alt={logoKey} className="w-[24rem]" />
+                    </div>
+                  </h1>
+                );
+              }
+
+              return (
+                <h1
+                  className="text-4xl font-bold mb-8 text-zinc-800"
+                  {...props}
+                >
+                  {props.children}
+                </h1>
+              );
+            },
+            // Add custom styling for h2, h3, etc.
+            h2: (props) => (
+              <h2
+                className="text-3xl font-semibold mb-6 text-zinc-800"
+                {...props}
+              >
+                {props.children}
+              </h2>
+            ),
+            h3: (props) => (
+              <h3
+                className="text-2xl font-semibold mb-4 text-zinc-800"
+                {...props}
+              >
+                {props.children}
+              </h3>
+            ),
+            h4: (props) => (
+              <h4 className="text-xl font-medium mb-3 text-zinc-800" {...props}>
+                {props.children}
+              </h4>
+            ),
+            p: (props) => (
+              <p
+                className="mb-6 text-zinc-700 leading-relaxed text-lg"
+                {...props}
+              />
+            ),
+            ul: (props) => (
+              <ul
+                className="list-disc pl-8 mb-6 text-zinc-700 space-y-2"
+                {...props}
+              />
+            ),
+            ol: (props) => (
+              <ol
+                className="list-decimal pl-8 mb-6 text-zinc-700 space-y-2"
+                {...props}
+              />
+            ),
+            code: (props) => (
+              <code
+                className="bg-zinc-100 rounded px-2 py-1 text-sm text-zinc-800"
+                {...props}
+              />
+            ),
+            pre: (props) => (
+              <pre
+                className="bg-zinc-100 rounded-lg p-6 mb-6 overflow-x-auto text-zinc-800"
+                {...props}
+              />
+            ),
+            hr: () => <hr className="my-12 border-zinc-200" />,
+          }}
+        >
+          {processMarkdown(combinedMarkdown)}
+        </ReactMarkdown>
+      </div>
+    </div>
+  );
+};
+
+export default DocsContent;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/components/ErrorBoundary.tsx ----
+
+import React, { ErrorInfo } from 'react';
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Uncaught error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="text-center mt-20">
+          <h1 className="text-3xl font-bold">Something went wrong.</h1>
+          <p>Please try refreshing the page.</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkforest/src/RouterDefinitions.tsx ----
+
+import React from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Intro from "./components/home/Intro";
+import Products from "./components/products/Products";
+import Docs from "./components/docs/Docs";
+import About from "./components/about/About";
+import SilkVerb from "@silkverb";
+
+const ScrollToHashElement = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location.pathname === "/docs" && location.hash) {
+      const targetId = location.hash.slice(1);
+      const element = document.getElementById(targetId);
+      if (element) {
+        setTimeout(() => {
+          const docsContent = document.querySelector(".docs-content");
+          if (docsContent && docsContent instanceof HTMLElement) {
+            // Calculate the offset relative to the container
+            const topOffset = element.offsetTop - docsContent.offsetTop;
+            docsContent.scrollTo({
+              top: topOffset - 100, // Adjust if needed
+              behavior: "smooth",
+            });
+          }
+        }, 200); // A short delay to ensure content is rendered
+      }
+    }
+  }, [location]);
+
+  return null;
+};
+
+const RouterDefinitions: React.FC = () => (
+  <>
+    <ScrollToHashElement />
+    <Routes>
+      <Route path="/" element={<Intro />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/docs" element={<Docs />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/apps/silkverb" element={<SilkVerb />} />
+    </Routes>
+  </>
+);
+
+export default RouterDefinitions;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/webpack.config.js ----
+
+const path = require("path");
+
+module.exports = {
+  entry: "./src/index.tsx",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+    libraryTarget: "umd",
+    library: "SilkVerb",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        use: "babel-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        type: "asset/resource",
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@silkforest": path.resolve(__dirname, "../silkforest/src"),
+    },
+  },
+  externals: {
+    react: "react",
+    "react-dom": "react-dom",
+  },
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/package.json ----
+
+{
+  "name": "silkverb",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --config webpack.config.js --mode development",
+    "build": "webpack --config webpack.config.js --mode production"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-tooltip": "^5.28.0",
+    "recharts": "^2.13.0",
+    "lamejs": "github:zhuker/lamejs",
+    "audiobuffer-to-wav": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.4",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.0.4",
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^5.1.0",
+    "babel-loader": "^9.1.2"
+  }
+}
+
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/tsconfig.json ----
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src"]
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/index.tsx ----
+
+import App from "./App";
+export default App;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/App.tsx ----
+
+import React from "react";
+import SilkVerb from "./components/SilkVerb/SilkVerb";
+
+function App() {
+  return <SilkVerb />;
+}
+
+export default App;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/types/lamejs.d.ts ----
+
+declare module 'lamejs' {
+  export class Mp3Encoder {
+    constructor(channels: number, sampleRate: number, kbps: number);
+    encodeBuffer(left: Int16Array, right?: Int16Array): Uint8Array;
+    flush(): Uint8Array;
+  }
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/types/global.d.ts ----
+
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}
+
+export {};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/types/declarations.d.ts ----
+
+declare module "*.png" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.jpg" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.jpeg" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.gif" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.mp4" {
+  const value: string;
+  export default value;
+}
+
+declare module "*.svg" {
+  import * as React from "react";
+
+  export const ReactComponent: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & { title?: string }
+  >;
+
+  const src: string;
+  export default src;
+}
+
+declare module "*.md" {
+  const value: string;
+  export default value;
+}
+
+declare module "audiobuffer-to-wav" {
+  function toWav(buffer: AudioBuffer): ArrayBuffer;
+  export default toWav;
+}
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/types/react-app-env.d.ts ----
+
+/// <reference types="react-scripts" />
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/utils/calculateFrequencyResponse.ts ----
+
+export const calculateFrequencyResponse = (
+  highPassFrequency: number,
+  lowPassFrequency: number
+): { frequency: number; gain: number }[] => {
+  const data = [];
+
+  // set a frequency range from 20 Hz to 20 kHz
+  const minFrequency = 20;
+  const maxFrequency = 22000;
+  const numPoints = 12; // set a static number of data points
+
+  // logarithmically spaced frequencies -- no need to clump them statically
+  for (let i = 0; i < numPoints; i++) {
+    const frequency =
+      minFrequency * Math.pow(maxFrequency / minFrequency, i / (numPoints - 1));
+
+    // calculate gain for high pass filter
+    const hpGain = calculateHighPassGain(frequency, highPassFrequency);
+
+    // calculate gain for low pass filter
+    const lpGain = calculateLowPassGain(frequency, lowPassFrequency);
+
+    // total gain is the combination of both filters
+    const totalGain = hpGain + lpGain;
+
+    // round frequency and gain to whole numbers
+    const roundedFrequency = Math.round(frequency);
+    const roundedGain = Math.round(totalGain);
+
+    data.push({ frequency: roundedFrequency, gain: roundedGain });
+  }
+
+  return data;
+};
+
+const calculateHighPassGain = (
+  frequency: number,
+  cutoffFrequency: number
+): number => {
+  if (frequency <= 0) return -Infinity;
+
+  const omega = (2 * Math.PI * frequency) / 44100;
+  const omegaC = (2 * Math.PI * cutoffFrequency) / 44100;
+
+  const gain = 20 * Math.log10(Math.sqrt(1 + Math.pow(omegaC / omega, 2)));
+
+  return -gain; // negative gain below cutoff
+};
+
+const calculateLowPassGain = (
+  frequency: number,
+  cutoffFrequency: number
+): number => {
+  if (frequency <= 0) return -Infinity;
+
+  const omega = (2 * Math.PI * frequency) / 44100;
+  const omegaC = (2 * Math.PI * cutoffFrequency) / 44100;
+
+  const gain = 20 * Math.log10(Math.sqrt(1 + Math.pow(omega / omegaC, 2)));
+
+  return -gain; // negative gain above cutoff
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/utils/exportAudio/exportProcessedAudioBuffer.ts ----
+
+import { createReverbImpulseResponse } from "../createReverbImpulseResponse";
+
+export const exportProcessedAudioBuffer = async (
+  audioBuffer: AudioBuffer,
+  decayTime: number,
+  pitchShift: number,
+  dryGainValue: number,
+  wetGainValue: number,
+  highPassFrequency: number,
+  lowPassFrequency: number
+): Promise<AudioBuffer> => {
+  const playbackRate = Math.pow(2, pitchShift / 12);
+  const outputLength = audioBuffer.length / playbackRate;
+
+  const offlineContext = new OfflineAudioContext(
+    audioBuffer.numberOfChannels,
+    outputLength,
+    audioBuffer.sampleRate
+  );
+
+  const source = offlineContext.createBufferSource();
+  source.buffer = audioBuffer;
+  source.playbackRate.value = playbackRate;
+
+  const convolver = offlineContext.createConvolver();
+  convolver.buffer = createReverbImpulseResponse(offlineContext, decayTime);
+
+  const dryGain = offlineContext.createGain();
+  const wetGain = offlineContext.createGain();
+
+  dryGain.gain.value = dryGainValue;
+  wetGain.gain.value = wetGainValue;
+
+  const wetHighPassFilter = offlineContext.createBiquadFilter();
+  wetHighPassFilter.type = "highpass";
+  wetHighPassFilter.frequency.value = highPassFrequency;
+
+  const wetLowPassFilter = offlineContext.createBiquadFilter();
+  wetLowPassFilter.type = "lowpass";
+  wetLowPassFilter.frequency.value = lowPassFrequency;
+
+  // connect the dry signal nodes
+  source.connect(dryGain);
+  dryGain.connect(offlineContext.destination);
+
+  // connect the wet signal nodes
+  source.connect(convolver);
+  convolver.connect(wetHighPassFilter);
+  wetHighPassFilter.connect(wetLowPassFilter);
+  wetLowPassFilter.connect(wetGain);
+  wetGain.connect(offlineContext.destination);
+
+  source.start(0);
+
+  const renderedBuffer = await offlineContext.startRendering();
+  return renderedBuffer;
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/utils/exportAudio/exportWAVAudio.ts ----
+
+import { createReverbImpulseResponse } from "../createReverbImpulseResponse";
+import toWav from "audiobuffer-to-wav";
+
+export const exportWAVAudio = async (
+  audioBuffer: AudioBuffer,
+  decayTime: number,
+  pitchShift: number,
+  dryGainValue: number,
+  wetGainValue: number,
+  highPassFrequency: number,
+  lowPassFrequency: number
+): Promise<Blob> => {
+  const playbackRate = Math.pow(2, pitchShift / 12);
+  const outputLength = audioBuffer.length / playbackRate;
+
+  const offlineContext = new OfflineAudioContext(
+    audioBuffer.numberOfChannels,
+    outputLength,
+    audioBuffer.sampleRate
+  );
+
+  const source = offlineContext.createBufferSource();
+  source.buffer = audioBuffer;
+  source.playbackRate.value = playbackRate;
+
+  const convolver = offlineContext.createConvolver();
+  convolver.buffer = createReverbImpulseResponse(offlineContext, decayTime);
+
+  // same concept of reverb balancing used here
+  const dryGain = offlineContext.createGain();
+  const wetGain = offlineContext.createGain();
+
+  // set the thresholds for dry and wet gain based on user input
+  dryGain.gain.value = dryGainValue;
+  wetGain.gain.value = wetGainValue;
+
+  // frequency filters for the exported audio
+  const wetHighPassFilter = offlineContext.createBiquadFilter();
+  wetHighPassFilter.type = "highpass";
+  wetHighPassFilter.frequency.value = highPassFrequency;
+
+  const wetLowPassFilter = offlineContext.createBiquadFilter();
+  wetLowPassFilter.type = "lowpass";
+  wetLowPassFilter.frequency.value = lowPassFrequency;
+
+  // connect the dry signal nodes
+  source.connect(dryGain);
+  dryGain.connect(offlineContext.destination);
+
+  // connect the wet signal nodes
+  source.connect(convolver);
+  convolver.connect(wetHighPassFilter);
+  wetHighPassFilter.connect(wetLowPassFilter);
+  wetLowPassFilter.connect(wetGain);
+  wetGain.connect(offlineContext.destination);
+
+  source.start(0);
+
+  const renderedBuffer = await offlineContext.startRendering();
+  console.log("Rendered buffer duration:", renderedBuffer.duration);
+
+  const wavArrayBuffer = toWav(renderedBuffer);
+  console.log("WAV array buffer length:", wavArrayBuffer.byteLength);
+
+  const wavBlob = new Blob([wavArrayBuffer], { type: "audio/wav" });
+  console.log("Created WAV blob:", wavBlob);
+
+  return wavBlob;
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/utils/exportAudio/exportMP3Audio.ts ----
+
+import lamejs from 'lamejs';
+
+export const exportMP3Audio = async (
+  audioBuffer: AudioBuffer
+): Promise<Blob> => {
+  const numChannels = audioBuffer.numberOfChannels;
+  const sampleRate = audioBuffer.sampleRate;
+  const kbps = 128;
+
+  const mp3Encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, kbps);
+
+  const samples = [];
+  for (let channel = 0; channel < numChannels; channel++) {
+    samples.push(audioBuffer.getChannelData(channel));
+  }
+
+  const maxSamples = 1152;
+  const mp3Data: Uint8Array[] = [];
+
+  let mp3buf: Uint8Array;
+
+  const leftChannelData = samples[0];
+  const rightChannelData = numChannels > 1 ? samples[1] : samples[0];
+  const totalSamples = leftChannelData.length;
+
+  for (let i = 0; i < totalSamples; i += maxSamples) {
+    const leftChunk = leftChannelData.subarray(i, i + maxSamples);
+    const rightChunk = rightChannelData.subarray(i, i + maxSamples);
+
+    const left = convertFloat32ToInt16(leftChunk);
+    const right = numChannels > 1 ? convertFloat32ToInt16(rightChunk) : left;
+
+    mp3buf = mp3Encoder.encodeBuffer(left, right);
+
+    if (mp3buf.length > 0) {
+      mp3Data.push(mp3buf);
+    }
+  }
+
+  // finish encoding
+  mp3buf = mp3Encoder.flush();
+  if (mp3buf.length > 0) {
+    mp3Data.push(mp3buf);
+  }
+
+  const blob = new Blob(mp3Data, { type: 'audio/mp3' });
+  return blob;
+};
+
+const convertFloat32ToInt16 = (buffer: Float32Array): Int16Array => {
+  const l = buffer.length;
+  const buf = new Int16Array(l);
+
+  for (let i = 0; i < l; i++) {
+    const s = Math.max(-1, Math.min(1, buffer[i]));
+    buf[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+  }
+  return buf;
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/utils/createReverbImpulseResponse.ts ----
+
+// this function creates an impulse response for the reverb, which is
+// used to create the reverb effect. it's a simple impulse response,
+// and achieves a pretty powerful reverb effect, but expanding it
+// to a more complex impulse response is a good idea for future work,
+// and gives the user more malleability over the reverb effect.
+export const createReverbImpulseResponse = (
+  audioContext: BaseAudioContext,
+  duration: number
+): AudioBuffer => {
+  const sampleRate = audioContext.sampleRate;
+  const length = sampleRate * duration;
+  const impulse = audioContext.createBuffer(2, length, sampleRate);
+  const left = impulse.getChannelData(0);
+  const right = impulse.getChannelData(1);
+
+  for (let i = 0; i < length; i++) {
+    const decay = Math.exp((-3 * i) / length);
+    left[i] = (Math.random() * 2 - 1) * decay;
+    right[i] = (Math.random() * 2 - 1) * decay;
+  }
+
+  return impulse;
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/SilkVerb.tsx ----
+
+import React, { useRef, useState, useEffect } from "react";
+import { useAudioProcessor } from "../../hooks/useAudioProcessor";
+import { calculateFrequencyResponse } from "../../utils/calculateFrequencyResponse";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+
+import Header from "./components/Header";
+import FileUpload from "./components/FileUpload";
+import ReverbControls from "./components/ReverbControls";
+import PitchControls from "./components/PitchControls";
+import AudioPreview from "./components/AudioPreview";
+import ExportControls from "./components/ExportControls";
+import { ProcessingParameters } from "./types";
+
+const SilkVerb: React.FC = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioElementRef = useRef<HTMLAudioElement>(null);
+
+  // most of the state management logic lives here, and is passed
+  // down to the components as props. easier and more modular, to
+  // handle that way.
+  const [decayTime, setDecayTime] = useState(2);
+  const [pitchShift, setPitchShift] = useState(0);
+  const [dryGainValue, setDryGainValue] = useState(0.7);
+  const [wetGainValue, setWetGainValue] = useState(0.3);
+  const [highPassFrequency, setHighPassFrequency] = useState(100);
+  const [lowPassFrequency, setLowPassFrequency] = useState(4000);
+  const [needsProcessing, setNeedsProcessing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [frequencyData, setFrequencyData] = useState<
+    Array<{ frequency: number; gain: number }>
+  >([]);
+
+  const {
+    audioBuffer,
+    processedBuffer,
+    audioSrc,
+    isProcessing,
+    processAudioFile,
+    processAudio,
+  } = useAudioProcessor();
+
+  const handleParameterChange = (
+    setter: (value: number) => void,
+    value: number
+  ) => {
+    setter(value);
+    setNeedsProcessing(true);
+  };
+
+  const handleApplyChanges = () => {
+    const processingParameters: ProcessingParameters = {
+      decayTime,
+      pitchShift,
+      dryGainValue,
+      wetGainValue,
+      highPassFrequency,
+      lowPassFrequency,
+    };
+    processAudio(processingParameters);
+    setNeedsProcessing(false);
+  };
+
+  // audio playback effects
+  useEffect(() => {
+    const audioElement = audioElementRef.current;
+    if (!audioElement) return;
+
+    if (audioSrc) {
+      audioElement.src = audioSrc;
+      audioElement.load();
+    }
+
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onEnded = () => setIsPlaying(false);
+
+    audioElement.addEventListener("play", onPlay);
+    audioElement.addEventListener("pause", onPause);
+    audioElement.addEventListener("ended", onEnded);
+
+    return () => {
+      audioElement.removeEventListener("play", onPlay);
+      audioElement.removeEventListener("pause", onPause);
+      audioElement.removeEventListener("ended", onEnded);
+    };
+  }, [audioSrc]);
+
+  // frequency response calculation effect
+  useEffect(() => {
+    const data = calculateFrequencyResponse(
+      highPassFrequency,
+      lowPassFrequency
+    );
+    setFrequencyData(data);
+  }, [highPassFrequency, lowPassFrequency]);
+
+  return (
+    <div className="bg-[#4b56a0] h-screen-max p-4 mt-20 sm:p-8 lg:p-12">
+      <div className="bg-[#2a3475] border-2 border-zinc-400 font-arimo tracking-tighter max-w-3xl max-h-xl m-auto p-4 shadow-xl rounded-lg">
+        <Header />
+
+        <div className="space-y-4">
+          <FileUpload
+            fileInputRef={fileInputRef}
+            handleFileUpload={async () => {
+              if (fileInputRef.current?.files?.[0]) {
+                const file = fileInputRef.current.files[0];
+                setFileName(file.name.split(".")[0]);
+                await processAudioFile(file);
+                setNeedsProcessing(true);
+              }
+            }}
+          />
+
+          <ReverbControls
+            decayTime={decayTime}
+            dryGainValue={dryGainValue}
+            wetGainValue={wetGainValue}
+            highPassFrequency={highPassFrequency}
+            lowPassFrequency={lowPassFrequency}
+            showAdvanced={showAdvanced}
+            frequencyData={frequencyData}
+            handleParameterChange={handleParameterChange}
+            setDecayTime={setDecayTime}
+            setDryGainValue={setDryGainValue}
+            setWetGainValue={setWetGainValue}
+            setHighPassFrequency={setHighPassFrequency}
+            setLowPassFrequency={setLowPassFrequency}
+            setShowAdvanced={setShowAdvanced}
+          />
+
+          <PitchControls
+            pitchShift={pitchShift}
+            handleParameterChange={handleParameterChange}
+            setPitchShift={setPitchShift}
+          />
+
+          <AudioPreview
+            audioElementRef={audioElementRef}
+            isPlaying={isPlaying}
+            needsProcessing={needsProcessing}
+            isProcessing={isProcessing}
+            handlePlayPause={() => {
+              const audioElement = audioElementRef.current;
+              if (audioElement) {
+                if (isPlaying) {
+                  audioElement.pause();
+                } else {
+                  audioElement.currentTime = 30;
+                  audioElement.play().catch(console.error);
+                }
+              }
+            }}
+            handleApplyChanges={handleApplyChanges}
+          />
+
+          <ExportControls
+            processedBuffer={processedBuffer}
+            audioBuffer={audioBuffer}
+            fileName={fileName}
+            isExporting={isExporting}
+            setIsExporting={setIsExporting}
+            processingParameters={{
+              decayTime,
+              pitchShift,
+              dryGainValue,
+              wetGainValue,
+              highPassFrequency,
+              lowPassFrequency,
+            }}
+          />
+        </div>
+
+        <ReactTooltip id="reverb-tooltip" className="max-w-md" />
+        <ReactTooltip id="dry-gain-tooltip" className="max-w-md" />
+        <ReactTooltip id="wet-gain-tooltip" className="max-w-md" />
+        <ReactTooltip id="high-pass-tooltip" className="max-w-md" />
+        <ReactTooltip id="low-pass-tooltip" className="max-w-md" />
+        <ReactTooltip id="freq-response-tooltip" className="max-w-md" />
+        <ReactTooltip id="pitch-shift-tooltip" className="max-w-md" />
+        <ReactTooltip id="show-advanced-tooltip" className="max-w-md" />
+      </div>
+    </div>
+  );
+};
+
+export default SilkVerb;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/types.ts ----
+
+export interface ProcessingParameters {
+  decayTime: number;
+  pitchShift: number;
+  dryGainValue: number;
+  wetGainValue: number;
+  highPassFrequency: number;
+  lowPassFrequency: number;
+}
+
+export interface AudioProcessorHook {
+  audioBuffer: AudioBuffer | null;
+  processedBuffer: AudioBuffer | null;
+  audioSrc: string | null;
+  isProcessing: boolean;
+  processAudioFile: (file: File) => Promise<void>;
+  processAudio: (parameters: ProcessingParameters) => void;
+} 
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/ReverbControls.tsx ----
+
+import React from "react";
+import FrequencyResponseChart from "./FrequencyResponseChart";
+
+interface ReverbControlsProps {
+  decayTime: number;
+  dryGainValue: number;
+  wetGainValue: number;
+  highPassFrequency: number;
+  lowPassFrequency: number;
+  showAdvanced: boolean;
+  frequencyData: { frequency: number; gain: number }[];
+  handleParameterChange: (
+    setter: (value: number) => void,
+    value: number
+  ) => void;
+  setDecayTime: (value: number) => void;
+  setDryGainValue: (value: number) => void;
+  setWetGainValue: (value: number) => void;
+  setHighPassFrequency: (value: number) => void;
+  setLowPassFrequency: (value: number) => void;
+  setShowAdvanced: (value: boolean) => void;
+}
+
+const ReverbControls: React.FC<ReverbControlsProps> = ({
+  decayTime,
+  dryGainValue,
+  wetGainValue,
+  highPassFrequency,
+  lowPassFrequency,
+  showAdvanced,
+  frequencyData,
+  handleParameterChange,
+  setDecayTime,
+  setDryGainValue,
+  setWetGainValue,
+  setHighPassFrequency,
+  setLowPassFrequency,
+  setShowAdvanced,
+}) => {
+  return (
+    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
+      <h1 className="text-2xl font-bold my-2 mb-4 text-left text-zinc-800 font-vidaloka">
+        Reverberation
+      </h1>
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <div className="flex">
+            <span
+              data-tooltip-id="reverb-tooltip"
+              data-tooltip-html={`Reverb Decay Time controls the length of the reverb effect. <br><br> Higher values apply a longer reverb tail, resulting in a spacier, ethereal sound. <br><br> Lower values tend to be tighter and more confined.`}
+              data-tooltip-place="right"
+              data-tooltip-delay-show={500}
+              data-tooltip-delay-hide={300}
+              className="mr-2 text-zinc-800 cursor-help"
+            >
+              ⓘ
+            </span>
+            <label className="block text-zinc-700 font-medium mb-1">
+              Reverb Decay Time (s): {decayTime}s
+            </label>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="0.1"
+            value={decayTime}
+            onChange={(e) =>
+              handleParameterChange(setDecayTime, parseFloat(e.target.value))
+            }
+            className="w-full"
+          />
+        </div>
+
+        {/* advanced controls button */}
+        <div className="flex justify-center">
+          <button
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="font-vidaloka m-4 py-3 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
+            data-tooltip-id="show-advanced-tooltip"
+            data-tooltip-html={`Set advanced parameters like Dry Gain, Wet Gain, High Pass and Low Pass Frequency Filters. <br><br> Mouse over the  ⓘ  to learn more about each parameter.`}
+            data-tooltip-place="right"
+            data-tooltip-delay-show={500}
+            data-tooltip-delay-hide={300}
+          >
+            {showAdvanced
+              ? "Hide Advanced Reverb Settings"
+              : "Show Advanced Reverb Settings"}
+          </button>
+        </div>
+
+        {/* advanced controls section */}
+        {showAdvanced && (
+          <div>
+            {/* dry gain control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                Dry Gain: {dryGainValue}
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={dryGainValue}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setDryGainValue,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* wet gain control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                Wet Gain: {wetGainValue}
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={wetGainValue}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setWetGainValue,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* high pass frequency control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                High Pass Frequency: {highPassFrequency} Hz
+              </label>
+              <input
+                type="range"
+                min="20"
+                max="20000"
+                step="1"
+                value={highPassFrequency}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setHighPassFrequency,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* low pass frequency control */}
+            <div>
+              <label className="block text-zinc-700 font-medium mb-1">
+                Low Pass Frequency: {lowPassFrequency} Hz
+              </label>
+              <input
+                type="range"
+                min="20"
+                max="20000"
+                step="1"
+                value={lowPassFrequency}
+                onChange={(e) =>
+                  handleParameterChange(
+                    setLowPassFrequency,
+                    parseFloat(e.target.value)
+                  )
+                }
+                className="w-full"
+              />
+            </div>
+
+            {/* frequency response chart */}
+            <FrequencyResponseChart data={frequencyData} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ReverbControls;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/PitchControls.tsx ----
+
+import React from "react";
+
+interface PitchControlsProps {
+  pitchShift: number;
+  handleParameterChange: (
+    setter: (value: number) => void,
+    value: number
+  ) => void;
+  setPitchShift: (value: number) => void;
+}
+
+const PitchControls: React.FC<PitchControlsProps> = ({
+  pitchShift,
+  handleParameterChange,
+  setPitchShift,
+}) => {
+  return (
+    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-slate-200">
+      <h1 className="text-2xl font-bold mb-4 text-left text-zinc-800 font-vidaloka">
+        Pitch & Tempo Shift
+      </h1>
+      <div>
+        <div className="flex">
+          <span
+            data-tooltip-id="pitch-shift-tooltip"
+            data-tooltip-content="Pitch shift controls both the tempo and key of the audio signal. For example, if your file is in the key of 'C' and has a BPM (beats per minute) of 120, a -1 semitone adjustment will reduce the tempo to 110 and shift the key to 'B'."
+            data-tooltip-place="right"
+            data-tooltip-delay-show={500}
+            data-tooltip-delay-hide={300}
+            className="mr-2 text-zinc-800 cursor-help"
+          >
+            ⓘ
+          </span>
+          <label className="block text-zinc-700 font-medium mb-1">
+            Pitch Shift (Semitones): {pitchShift}
+          </label>
+        </div>
+        <input
+          type="range"
+          min="-12"
+          max="12"
+          step="1"
+          value={pitchShift}
+          onChange={(e) =>
+            handleParameterChange(setPitchShift, parseFloat(e.target.value))
+          }
+          className="w-full"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default PitchControls;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/FileUpload.tsx ----
+
+import React from 'react';
+
+interface FileUploadProps {
+  fileInputRef: React.RefObject<HTMLInputElement>;
+  handleFileUpload: () => Promise<void>;
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({ fileInputRef, handleFileUpload }) => {
+  return (
+    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
+      <h1 className="text-2xl font-bold my-2 mb-4 text-left text-zinc-800 font-vidaloka">
+        Upload File
+      </h1>
+      <input
+        type="file"
+        accept="audio/*"
+        ref={fileInputRef}
+        onChange={handleFileUpload}
+        className="mr-2 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 
+          file:tracking-tighter file:font-vidaloka file:text-md
+          file:bg-blue-500 file:text-white
+          hover:file:bg-blue-700 hover:file:cursor-pointer font-vidaloka"
+      />
+    </div>
+  );
+};
+
+export default FileUpload; 
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/AudioPreview.tsx ----
+
+import React from "react";
+
+interface AudioPreviewProps {
+  audioElementRef: React.RefObject<HTMLAudioElement>;
+  isPlaying: boolean;
+  needsProcessing: boolean;
+  isProcessing: boolean;
+  handlePlayPause: () => void;
+  handleApplyChanges: () => void;
+}
+
+const AudioPreview: React.FC<AudioPreviewProps> = ({
+  audioElementRef,
+  isPlaying,
+  needsProcessing,
+  isProcessing,
+  handlePlayPause,
+  handleApplyChanges,
+}) => {
+  return (
+    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-slate-200">
+      <h1 className="text-2xl font-bold mb-4 text-left text-zinc-800 font-vidaloka">
+        Apply & Preview Changes
+      </h1>
+      <div className="grid grid-cols-2 grid-rows-1">
+        <audio ref={audioElementRef} />
+        <button
+          onClick={handleApplyChanges}
+          disabled={!needsProcessing || isProcessing}
+          className="font-vidaloka m-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+        >
+          Apply Changes
+        </button>
+        <button
+          onClick={handlePlayPause}
+          disabled={isProcessing}
+          className="font-vidaloka m-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isPlaying ? "Pause" : "Preview"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AudioPreview;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/ExportControls.tsx ----
+
+import React from "react";
+import { exportMP3Audio } from "../../../utils/exportAudio/exportMP3Audio";
+import { exportWAVAudio } from "../../../utils/exportAudio/exportWAVAudio";
+
+interface ExportControlsProps {
+  processedBuffer: AudioBuffer | null;
+  audioBuffer: AudioBuffer | null;
+  fileName: string | null;
+  isExporting: boolean;
+  setIsExporting: (value: boolean) => void;
+  processingParameters: {
+    decayTime: number;
+    pitchShift: number;
+    dryGainValue: number;
+    wetGainValue: number;
+    highPassFrequency: number;
+    lowPassFrequency: number;
+  };
+}
+
+const ExportControls: React.FC<ExportControlsProps> = ({
+  processedBuffer,
+  audioBuffer,
+  fileName,
+  isExporting,
+  setIsExporting,
+  processingParameters,
+}) => {
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  const handleMp3Export = async () => {
+    if (processedBuffer) {
+      setIsExporting(true);
+      await delay(1000);
+      try {
+        const mp3Blob = await exportMP3Audio(processedBuffer);
+        const url = URL.createObjectURL(mp3Blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${
+          fileName + " (made with SilkVerb)" || "your song (made with SilkVerb)"
+        }.mp3`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Export failed:", error);
+        alert("Export failed. Please try again.");
+      } finally {
+        setIsExporting(false);
+      }
+    }
+  };
+
+  const handleWavExport = async () => {
+    if (audioBuffer) {
+      setIsExporting(true);
+      await delay(1000);
+      try {
+        const wavBlob = await exportWAVAudio(
+          audioBuffer,
+          processingParameters.decayTime,
+          processingParameters.pitchShift,
+          processingParameters.dryGainValue,
+          processingParameters.wetGainValue,
+          processingParameters.highPassFrequency,
+          processingParameters.lowPassFrequency
+        );
+        const url = URL.createObjectURL(wavBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${
+          fileName + " (made with SilkVerb)" || "made with SilkVerb"
+        }.wav`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Export failed:", error);
+        alert("Export failed. Please try again.");
+      } finally {
+        setIsExporting(false);
+      }
+    }
+  };
+
+  return (
+    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-slate-200">
+      <h1 className="text-2xl font-bold mb-4 text-left text-zinc-800 font-vidaloka">
+        Export
+      </h1>
+      <div className="grid grid-cols-2 gap-4">
+        <button
+          onClick={handleMp3Export}
+          disabled={!processedBuffer || isExporting}
+          className="font-vidaloka px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+        >
+          Export MP3
+        </button>
+        <button
+          onClick={handleWavExport}
+          disabled={!audioBuffer || isExporting}
+          className="font-vidaloka px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+        >
+          Export WAV
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ExportControls;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/Header.tsx ----
+
+import React from "react";
+import logo from "@silkforest/assets/SilkVerb.png";
+
+const Header: React.FC = () => {
+  return (
+    <>
+      <img src={logo} alt="title-logo" className="w-[24rem] m-auto" />
+      <div className="text-md text-center mx-auto text-zinc-50 tracking-tight max-w-xl font-vidaloka -mt-2">
+        built by SilkForest.
+      </div>
+      <h1 className="text-md mb-8 mt-8 text-center mx-auto text-zinc-50 tracking-tight max-w-xl">
+        Slow, speed up, and pitch shift audio files with ease. Upload a file,
+        adjust the reverb decay time and pitch shift, then apply and preview
+        your changes. Export to .mp3 and .wav to save your changes.
+      </h1>
+    </>
+  );
+};
+
+export default Header;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/components/SilkVerb/components/FrequencyResponseChart.tsx ----
+
+import React from 'react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Label,
+} from 'recharts';
+
+type FrequencyResponseChartProps = {
+  data: { frequency: number; gain: number }[];
+};
+
+const FrequencyResponseChart: React.FC<FrequencyResponseChartProps> = ({
+  data,
+}) => {
+  // format the tick labels to show frequencies in Hz or kHz
+  const formatFrequency = (value: number) => {
+    return value >= 1000 ? `${(value / 1000).toFixed(1)}k` : `${value}`;
+  };
+
+  return (
+    <div className="w-full h-64">
+      <ResponsiveContainer>
+        <LineChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
+          <XAxis
+            dataKey="frequency"
+            scale="log"
+            domain={['dataMin', 'dataMax']}
+            type="number"
+            tickFormatter={formatFrequency}
+          >
+            <Label
+              value="Frequency (Hz)"
+              offset={-10}
+              position="insideBottom"
+            />
+          </XAxis>
+          <YAxis
+            domain={[-60, 0]}
+            ticks={[-60, -50, -40, -30, -20, -10, 0]}
+            label={{ value: 'Gain (dB)', angle: -90, position: 'insideLeft' }}
+          />
+          <Tooltip
+            formatter={(value: number) => value.toFixed(1) + ' dB'}
+            labelFormatter={(label: number) => formatFrequency(label) + ' Hz'}
+          />
+          <Line
+            type="monotone"
+            dataKey="gain"
+            stroke="#3F4DA8"
+            dot={false}
+            strokeWidth={3}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default FrequencyResponseChart;
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/hooks/useAudioProcessor.ts ----
+
+import { useState, useEffect, useRef } from "react";
+import { exportProcessedAudioBuffer } from "../utils/exportAudio/exportProcessedAudioBuffer";
+import { exportMP3Audio } from "../utils/exportAudio/exportMP3Audio";
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface AudioProcessingParameters {
+  decayTime: number;
+  pitchShift: number;
+  dryGainValue: number;
+  wetGainValue: number;
+  highPassFrequency: number;
+  lowPassFrequency: number;
+}
+
+export const useAudioProcessor = () => {
+  const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
+  const [processedBuffer, setProcessedBuffer] = useState<AudioBuffer | null>(
+    null
+  );
+  const [audioSrc, setAudioSrc] = useState<string>("");
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
+  const currentBlobUrl = useRef<string | null>(null);
+
+  const processAudioFile = async (file: File) => {
+    const arrayBuffer = await file.arrayBuffer();
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const decodedAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    setAudioBuffer(decodedAudioBuffer);
+    audioContext.close();
+  };
+
+  const processAudio = async (
+    processingParameters: AudioProcessingParameters
+  ) => {
+    if (!audioBuffer) {
+      alert("Please upload an audio file first.");
+      return;
+    }
+
+    setIsProcessing(true);
+    const isCancelled = false;
+
+    try {
+      const processedBuffer = await exportProcessedAudioBuffer(
+        audioBuffer,
+        processingParameters.decayTime,
+        processingParameters.pitchShift,
+        processingParameters.dryGainValue,
+        processingParameters.wetGainValue,
+        processingParameters.highPassFrequency,
+        processingParameters.lowPassFrequency
+      );
+
+      if (!isCancelled) {
+        setProcessedBuffer(processedBuffer);
+        // encode to MP3 -- lightweight, browser-based playback works better vs. WAV
+        const mp3Blob = await exportMP3Audio(processedBuffer);
+
+        const blobUrl = URL.createObjectURL(mp3Blob);
+        setAudioSrc(blobUrl);
+
+        //revoke previous Blob URL if necessary
+        if (currentBlobUrl.current) {
+          URL.revokeObjectURL(currentBlobUrl.current);
+        }
+        currentBlobUrl.current = blobUrl;
+      }
+    } catch (error) {
+      if (!isCancelled) {
+        console.error("Audio processing failed:", error);
+        alert("Audio processing failed. Please try again.");
+      }
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      // revoke Blob URL when component unmounts
+      if (currentBlobUrl.current) {
+        URL.revokeObjectURL(currentBlobUrl.current);
+      }
+    };
+  }, []);
+
+  return {
+    audioBuffer,
+    processedBuffer,
+    audioSrc,
+    isProcessing,
+    processAudioFile,
+    processAudio,
+  };
+};
+
+---- /Users/heidaraliy/documents/programs/silkforest/utils/..//apps/silkverb/src/hooks/useDebouncedValue.ts ----
+
+import { useState, useEffect } from "react";
+
+// while this isn't currently used, it's a good idea to have
+// a debounce function in case we need it in the future.
+export function useDebouncedValue<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
