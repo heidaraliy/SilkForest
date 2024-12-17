@@ -9,9 +9,10 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: isDevelopment ? "[name].js" : "[name].[contenthash].js",
+    filename: 'static/js/[name].[contenthash].js',
+    chunkFilename: 'static/js/[name].[contenthash].chunk.js',
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
+    publicPath: '/',
     clean: true,
   },
   mode: isDevelopment ? "development" : "production",
