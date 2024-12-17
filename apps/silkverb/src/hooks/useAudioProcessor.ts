@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { exportProcessedAudioBuffer } from "../utils/exportAudio/exportProcessedAudioBuffer";
 import { exportMP3Audio } from "../utils/exportAudio/exportMP3Audio";
+import { useNotification } from "../components/Notifications/context/NotificationContext";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface AudioProcessingParameters {
@@ -21,6 +22,7 @@ export const useAudioProcessor = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const currentBlobUrl = useRef<string | null>(null);
+  const { addNotification, removeNotification } = useNotification();
 
   const processAudioFile = async (file: File) => {
     const arrayBuffer = await file.arrayBuffer();
@@ -35,11 +37,13 @@ export const useAudioProcessor = () => {
     processingParameters: AudioProcessingParameters
   ) => {
     if (!audioBuffer) {
-      alert("Please upload an audio file first.");
+      addNotification("Please upload an audio file first.", "error");
       return;
     }
 
     setIsProcessing(true);
+    const notificationId = addNotification("Processing audio...", "info", true);
+
     const isCancelled = false;
 
     try {
@@ -66,11 +70,15 @@ export const useAudioProcessor = () => {
           URL.revokeObjectURL(currentBlobUrl.current);
         }
         currentBlobUrl.current = blobUrl;
+
+        removeNotification(notificationId);
+        addNotification("Changes applied successfully!", "success");
       }
     } catch (error) {
       if (!isCancelled) {
         console.error("Audio processing failed:", error);
-        alert("Audio processing failed. Please try again.");
+        removeNotification(notificationId);
+        addNotification("Audio processing failed. Please try again.", "error");
       }
     } finally {
       setIsProcessing(false);

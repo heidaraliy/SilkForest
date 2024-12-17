@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 interface AudioPreviewProps {
   audioElementRef: React.RefObject<HTMLAudioElement>;
@@ -7,6 +8,8 @@ interface AudioPreviewProps {
   isProcessing: boolean;
   handlePlayPause: () => void;
   handleApplyChanges: () => void;
+  audioSrc: string;
+  parametersChanged: boolean;
 }
 
 const AudioPreview: React.FC<AudioPreviewProps> = ({
@@ -16,28 +19,47 @@ const AudioPreview: React.FC<AudioPreviewProps> = ({
   isProcessing,
   handlePlayPause,
   handleApplyChanges,
+  audioSrc,
+  parametersChanged,
 }) => {
   return (
-    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-slate-200">
-      <h1 className="text-2xl font-bold mb-4 text-left text-zinc-800 font-vidaloka">
+    <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
+      <h1 className="text-xl font-bold mb-4 text-left text-zinc-700 font-arimo">
         Apply & Preview Changes
       </h1>
-      <div className="grid grid-cols-2 grid-rows-1">
-        <audio ref={audioElementRef} />
-        <button
+      <div className="grid grid-cols-2 grid-rows-1 justify-center">
+        <audio ref={audioElementRef} src={audioSrc} />
+        <Button
           onClick={handleApplyChanges}
-          disabled={!needsProcessing || isProcessing}
-          className="font-vidaloka m-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          disabled={
+            !needsProcessing ||
+            isProcessing ||
+            (!parametersChanged && !audioSrc)
+          }
+          className="flex justify-center items-center mx-2 min-w-40"
         >
-          Apply Changes
-        </button>
-        <button
+          <div className="flex justify-center items-center">
+            <span className="material-symbols-outlined">sync</span>
+            <span>Apply Changes</span>
+          </div>
+        </Button>
+        <Button
           onClick={handlePlayPause}
-          disabled={isProcessing}
-          className="font-vidaloka m-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          disabled={isProcessing || !audioSrc}
+          className="flex justify-center items-center mx-2 min-w-40"
         >
-          {isPlaying ? "Pause" : "Preview"}
-        </button>
+          {isPlaying ? (
+            <div className="flex justify-center items-center">
+              <span className="material-symbols-outlined">stop</span>
+              <span>Stop Audio</span>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center">
+              <span className="material-symbols-outlined">play_arrow</span>
+              <span>Preview Audio</span>
+            </div>
+          )}
+        </Button>
       </div>
     </div>
   );

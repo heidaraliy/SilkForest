@@ -10,10 +10,13 @@ import PitchControls from "./components/PitchControls";
 import AudioPreview from "./components/AudioPreview";
 import ExportControls from "./components/ExportControls";
 import { ProcessingParameters } from "./types";
+import { useNotification } from "../Notifications/context/NotificationContext";
+import NotificationContainer from "../Notifications/NotificationContainer";
 
 const SilkVerb: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const audioElementRef = useRef<HTMLAudioElement>(null);
+  const { addNotification } = useNotification();
 
   // most of the state management logic lives here, and is passed
   // down to the components as props. easier and more modular, to
@@ -42,6 +45,23 @@ const SilkVerb: React.FC = () => {
     processAudio,
   } = useAudioProcessor();
 
+  const initialParameters = useRef({
+    decayTime,
+    pitchShift,
+    dryGainValue,
+    wetGainValue,
+    highPassFrequency,
+    lowPassFrequency,
+  });
+
+  const parametersChanged =
+    decayTime !== initialParameters.current.decayTime ||
+    pitchShift !== initialParameters.current.pitchShift ||
+    dryGainValue !== initialParameters.current.dryGainValue ||
+    wetGainValue !== initialParameters.current.wetGainValue ||
+    highPassFrequency !== initialParameters.current.highPassFrequency ||
+    lowPassFrequency !== initialParameters.current.lowPassFrequency;
+
   const handleParameterChange = (
     setter: (value: number) => void,
     value: number
@@ -63,7 +83,18 @@ const SilkVerb: React.FC = () => {
     setNeedsProcessing(false);
   };
 
-  // audio playback effects
+  const handlePlayPause = () => {
+    const audioElement = audioElementRef.current;
+    if (!audioElement) return;
+
+    if (isPlaying) {
+      audioElement.pause();
+    } else {
+      audioElement.play();
+    }
+  };
+
+  // audio playback effects.
   useEffect(() => {
     const audioElement = audioElementRef.current;
     if (!audioElement) return;
@@ -88,7 +119,7 @@ const SilkVerb: React.FC = () => {
     };
   }, [audioSrc]);
 
-  // frequency response calculation effect
+  // frequency response calculation effect.
   useEffect(() => {
     const data = calculateFrequencyResponse(
       highPassFrequency,
@@ -97,92 +128,88 @@ const SilkVerb: React.FC = () => {
     setFrequencyData(data);
   }, [highPassFrequency, lowPassFrequency]);
 
+  // handle file upload.
+  const handleFileUpload = async (fileName: string) => {
+    if (fileInputRef.current?.files?.[0]) {
+      const file = fileInputRef.current.files[0];
+      setFileName(fileName);
+      await processAudioFile(file);
+      setNeedsProcessing(true);
+      addNotification("File uploaded successfully", "success");
+    }
+  };
+
   return (
-    <div className="bg-[#4b56a0] h-screen-max p-4 mt-20 sm:p-8 lg:p-12">
-      <div className="bg-[#2a3475] border-2 border-zinc-400 font-arimo tracking-tighter max-w-3xl max-h-xl m-auto p-4 shadow-xl rounded-lg">
-        <Header />
+    <div className="bg-[#2a3475] h-screen-max p-4 mt-20 sm:p-8 lg:p-12 font-arimo tracking-tighter">
+      <NotificationContainer />
+      <Header />
+      <div className="space-y-4">
+        <FileUpload
+          fileInputRef={fileInputRef}
+          handleFileUpload={handleFileUpload}
+        />
 
-        <div className="space-y-4">
-          <FileUpload
-            fileInputRef={fileInputRef}
-            handleFileUpload={async () => {
-              if (fileInputRef.current?.files?.[0]) {
-                const file = fileInputRef.current.files[0];
-                setFileName(file.name.split(".")[0]);
-                await processAudioFile(file);
-                setNeedsProcessing(true);
-              }
-            }}
-          />
+        <ReverbControls
+          decayTime={decayTime}
+          dryGainValue={dryGainValue}
+          wetGainValue={wetGainValue}
+          highPassFrequency={highPassFrequency}
+          lowPassFrequency={lowPassFrequency}
+          showAdvanced={showAdvanced}
+          frequencyData={frequencyData}
+          handleParameterChange={handleParameterChange}
+          setDecayTime={setDecayTime}
+          setDryGainValue={setDryGainValue}
+          setWetGainValue={setWetGainValue}
+          setHighPassFrequency={setHighPassFrequency}
+          setLowPassFrequency={setLowPassFrequency}
+          setShowAdvanced={setShowAdvanced}
+        />
 
-          <ReverbControls
-            decayTime={decayTime}
-            dryGainValue={dryGainValue}
-            wetGainValue={wetGainValue}
-            highPassFrequency={highPassFrequency}
-            lowPassFrequency={lowPassFrequency}
-            showAdvanced={showAdvanced}
-            frequencyData={frequencyData}
-            handleParameterChange={handleParameterChange}
-            setDecayTime={setDecayTime}
-            setDryGainValue={setDryGainValue}
-            setWetGainValue={setWetGainValue}
-            setHighPassFrequency={setHighPassFrequency}
-            setLowPassFrequency={setLowPassFrequency}
-            setShowAdvanced={setShowAdvanced}
-          />
+        <PitchControls
+          pitchShift={pitchShift}
+          handleParameterChange={handleParameterChange}
+          setPitchShift={setPitchShift}
+        />
 
-          <PitchControls
-            pitchShift={pitchShift}
-            handleParameterChange={handleParameterChange}
-            setPitchShift={setPitchShift}
-          />
+        <AudioPreview
+          audioElementRef={audioElementRef}
+          isPlaying={isPlaying}
+          needsProcessing={needsProcessing || audioSrc !== ""}
+          isProcessing={isProcessing}
+          audioSrc={audioSrc}
+          handlePlayPause={handlePlayPause}
+          handleApplyChanges={handleApplyChanges}
+          parametersChanged={parametersChanged}
+        />
 
-          <AudioPreview
-            audioElementRef={audioElementRef}
-            isPlaying={isPlaying}
-            needsProcessing={needsProcessing}
-            isProcessing={isProcessing}
-            handlePlayPause={() => {
-              const audioElement = audioElementRef.current;
-              if (audioElement) {
-                if (isPlaying) {
-                  audioElement.pause();
-                } else {
-                  audioElement.currentTime = 30;
-                  audioElement.play().catch(console.error);
-                }
-              }
-            }}
-            handleApplyChanges={handleApplyChanges}
-          />
-
-          <ExportControls
-            processedBuffer={processedBuffer}
-            audioBuffer={audioBuffer}
-            fileName={fileName}
-            isExporting={isExporting}
-            setIsExporting={setIsExporting}
-            processingParameters={{
-              decayTime,
-              pitchShift,
-              dryGainValue,
-              wetGainValue,
-              highPassFrequency,
-              lowPassFrequency,
-            }}
-          />
-        </div>
-
-        <ReactTooltip id="reverb-tooltip" className="max-w-md" />
-        <ReactTooltip id="dry-gain-tooltip" className="max-w-md" />
-        <ReactTooltip id="wet-gain-tooltip" className="max-w-md" />
-        <ReactTooltip id="high-pass-tooltip" className="max-w-md" />
-        <ReactTooltip id="low-pass-tooltip" className="max-w-md" />
-        <ReactTooltip id="freq-response-tooltip" className="max-w-md" />
-        <ReactTooltip id="pitch-shift-tooltip" className="max-w-md" />
-        <ReactTooltip id="show-advanced-tooltip" className="max-w-md" />
+        <ExportControls
+          processedBuffer={processedBuffer}
+          audioBuffer={audioBuffer}
+          fileName={fileName}
+          isExporting={isExporting}
+          setIsExporting={setIsExporting}
+          needsProcessing={needsProcessing}
+          processingParameters={{
+            decayTime,
+            pitchShift,
+            dryGainValue,
+            wetGainValue,
+            highPassFrequency,
+            lowPassFrequency,
+          }}
+          isProcessing={isProcessing}
+        />
       </div>
+
+      <ReactTooltip id="reverb-tooltip" className="max-w-md" />
+      <ReactTooltip id="dry-gain-tooltip" className="max-w-md" />
+      <ReactTooltip id="wet-gain-tooltip" className="max-w-md" />
+      <ReactTooltip id="high-pass-tooltip" className="max-w-md" />
+      <ReactTooltip id="low-pass-tooltip" className="max-w-md" />
+      <ReactTooltip id="freq-response-tooltip" className="max-w-md" />
+      <ReactTooltip id="pitch-shift-tooltip" className="max-w-md" />
+      <ReactTooltip id="show-advanced-tooltip" className="max-w-md" />
     </div>
   );
 };

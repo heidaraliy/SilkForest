@@ -1,5 +1,7 @@
 import React from "react";
 import FrequencyResponseChart from "./FrequencyResponseChart";
+import GainWarning from "./GainWarning";
+import Button from "./Button";
 
 interface ReverbControlsProps {
   decayTime: number;
@@ -38,8 +40,8 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
   setShowAdvanced,
 }) => {
   return (
-    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
-      <h1 className="text-2xl font-bold my-2 mb-4 text-left text-zinc-800 font-vidaloka">
+    <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200 font-arimo">
+      <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
         Reverberation
       </h1>
       <div className="grid grid-cols-1 gap-4">
@@ -51,7 +53,7 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               data-tooltip-place="right"
               data-tooltip-delay-show={500}
               data-tooltip-delay-hide={300}
-              className="mr-2 text-zinc-800 cursor-help"
+              className="mr-2 text-zinc-700 cursor-help"
             >
               ⓘ
             </span>
@@ -74,9 +76,8 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
 
         {/* advanced controls button */}
         <div className="flex justify-center">
-          <button
+          <Button
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className="font-vidaloka m-4 py-3 px-4 bg-blue-500 text-white rounded hover:bg-blue-700"
             data-tooltip-id="show-advanced-tooltip"
             data-tooltip-html={`Set advanced parameters like Dry Gain, Wet Gain, High Pass and Low Pass Frequency Filters. <br><br> Mouse over the  ⓘ  to learn more about each parameter.`}
             data-tooltip-place="right"
@@ -86,17 +87,33 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
             {showAdvanced
               ? "Hide Advanced Reverb Settings"
               : "Show Advanced Reverb Settings"}
-          </button>
+          </Button>
         </div>
 
         {/* advanced controls section */}
         {showAdvanced && (
           <div>
+            <hr className="my-4 border-zinc-400 border-1" />
             {/* dry gain control */}
+            <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
+              Gain Staging
+            </h1>
             <div>
-              <label className="block text-zinc-700 font-medium mb-1">
-                Dry Gain: {dryGainValue}
-              </label>
+              <div className="flex">
+                <span
+                  data-tooltip-id="dry-gain-tooltip"
+                  data-tooltip-html={`Dry Gain handles the volume of the raw, unprocessed audio signal. <br><br> Higher values make the unprocessed audio stronger, while lower values reduce it, opening up more space for additional effects and reverberation.`}
+                  data-tooltip-place="right"
+                  data-tooltip-delay-show={500}
+                  data-tooltip-delay-hide={300}
+                  className="mr-2 text-zinc-700 cursor-help"
+                >
+                  ⓘ
+                </span>
+                <label className="block text-zinc-700 font-medium mb-1">
+                  Dry Gain: {dryGainValue.toFixed(2)}
+                </label>
+              </div>
               <input
                 type="range"
                 min="0"
@@ -112,12 +129,23 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
                 className="w-full"
               />
             </div>
-
             {/* wet gain control */}
             <div>
-              <label className="block text-zinc-700 font-medium mb-1">
-                Wet Gain: {wetGainValue}
-              </label>
+              <div className="flex">
+                <span
+                  data-tooltip-id="wet-gain-tooltip"
+                  data-tooltip-html={`Wet Gain handles the volume of the processed, reverberated audio signal. <br><br> Higher values make the reverberated audio stronger, while lower values reduce it, giving the dry signal more space in the overall mix.`}
+                  data-tooltip-place="right"
+                  data-tooltip-delay-show={500}
+                  data-tooltip-delay-hide={300}
+                  className="mr-2 text-zinc-700 cursor-help"
+                >
+                  ⓘ
+                </span>
+                <label className="block text-zinc-700 font-medium mb-1">
+                  Wet Gain: {wetGainValue.toFixed(2)}
+                </label>
+              </div>
               <input
                 type="range"
                 min="0"
@@ -133,12 +161,26 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
                 className="w-full"
               />
             </div>
-
             {/* high pass frequency control */}
+            <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
+              Frequency Filters
+            </h1>
             <div>
-              <label className="block text-zinc-700 font-medium mb-1">
-                High Pass Frequency: {highPassFrequency} Hz
-              </label>
+              <div className="flex">
+                <span
+                  data-tooltip-id="high-pass-tooltip"
+                  data-tooltip-html={`The High Pass Frequency Filter controls the dynamics of the lower frequencies in the processed audio signal. <br><br> A higher value will cut out the bass and kick elements within the wet, reverberated signal, while a lower value will allow them to filter in. <br><br> Typically, a lower value may sound 'muddier' because the bass and kick reverb overpowers the raw signal within the lower frequency ranges.`}
+                  data-tooltip-place="right"
+                  data-tooltip-delay-show={500}
+                  data-tooltip-delay-hide={300}
+                  className="mr-2 text-zinc-700 cursor-help"
+                >
+                  ⓘ
+                </span>
+                <label className="block text-zinc-700 font-medium mb-1">
+                  High Pass Filter Frequency (Hz): {highPassFrequency} Hz
+                </label>
+              </div>
               <input
                 type="range"
                 min="20"
@@ -154,12 +196,23 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
                 className="w-full"
               />
             </div>
-
             {/* low pass frequency control */}
             <div>
-              <label className="block text-zinc-700 font-medium mb-1">
-                Low Pass Frequency: {lowPassFrequency} Hz
-              </label>
+              <div className="flex">
+                <span
+                  data-tooltip-id="low-pass-tooltip"
+                  data-tooltip-html={`The Low Pass Frequency Filter controls the dynamics of the higher frequencies in the processed audio signal. <br><br> A higher value will cut out the high hats and snares, in addition to other 'airy' sounds within the reverberated signal, while a lower value will allow them to filter in. <br><br> A higher value may overpower the entire mix, mostly because the high hat and snare reverb creates extremely powerful air on top of the track.`}
+                  data-tooltip-place="right"
+                  data-tooltip-delay-show={500}
+                  data-tooltip-delay-hide={300}
+                  className="mr-2 text-zinc-700 cursor-help"
+                >
+                  ⓘ
+                </span>
+                <label className="block text-zinc-700 font-medium mb-1">
+                  Low Pass Filter Frequency (Hz): {lowPassFrequency} Hz
+                </label>
+              </div>
               <input
                 type="range"
                 min="20"
@@ -175,9 +228,14 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
                 className="w-full"
               />
             </div>
-
             {/* frequency response chart */}
             <FrequencyResponseChart data={frequencyData} />
+            {dryGainValue + wetGainValue > 1 && (
+              <GainWarning
+                dryGainValue={dryGainValue}
+                wetGainValue={wetGainValue}
+              />
+            )}
           </div>
         )}
       </div>

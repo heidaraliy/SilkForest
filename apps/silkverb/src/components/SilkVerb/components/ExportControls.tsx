@@ -1,6 +1,9 @@
 import React from "react";
 import { exportMP3Audio } from "../../../utils/exportAudio/exportMP3Audio";
 import { exportWAVAudio } from "../../../utils/exportAudio/exportWAVAudio";
+import { useNotification } from "../../Notifications/context/NotificationContext";
+import Spinner from "./Spinner";
+import Button from "./Button";
 
 interface ExportControlsProps {
   processedBuffer: AudioBuffer | null;
@@ -16,6 +19,8 @@ interface ExportControlsProps {
     highPassFrequency: number;
     lowPassFrequency: number;
   };
+  needsProcessing: boolean;
+  isProcessing: boolean;
 }
 
 const ExportControls: React.FC<ExportControlsProps> = ({
@@ -25,13 +30,18 @@ const ExportControls: React.FC<ExportControlsProps> = ({
   isExporting,
   setIsExporting,
   processingParameters,
+  needsProcessing,
+  isProcessing,
 }) => {
+  const { addNotification } = useNotification();
+
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleMp3Export = async () => {
     if (processedBuffer) {
       setIsExporting(true);
+      addNotification("Exporting MP3...", "info");
       await delay(1000);
       try {
         const mp3Blob = await exportMP3Audio(processedBuffer);
@@ -45,9 +55,9 @@ const ExportControls: React.FC<ExportControlsProps> = ({
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        addNotification("MP3 export successful!", "success");
       } catch (error) {
-        console.error("Export failed:", error);
-        alert("Export failed. Please try again.");
+        addNotification("Export failed. Please try again.", "error");
       } finally {
         setIsExporting(false);
       }
@@ -57,6 +67,7 @@ const ExportControls: React.FC<ExportControlsProps> = ({
   const handleWavExport = async () => {
     if (audioBuffer) {
       setIsExporting(true);
+      addNotification("Exporting WAV...", "info");
       await delay(1000);
       try {
         const wavBlob = await exportWAVAudio(
@@ -78,9 +89,9 @@ const ExportControls: React.FC<ExportControlsProps> = ({
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        addNotification("WAV export successful!", "success");
       } catch (error) {
-        console.error("Export failed:", error);
-        alert("Export failed. Please try again.");
+        addNotification("Export failed. Please try again.", "error");
       } finally {
         setIsExporting(false);
       }
@@ -88,25 +99,35 @@ const ExportControls: React.FC<ExportControlsProps> = ({
   };
 
   return (
-    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-slate-200">
-      <h1 className="text-2xl font-bold mb-4 text-left text-zinc-800 font-vidaloka">
-        Export
+    <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
+      <h1 className="text-xl font-bold mb-4 text-left text-zinc-700 font-arimo">
+        Export Audio
       </h1>
-      <div className="grid grid-cols-2 gap-4">
-        <button
+      <div className="grid grid-cols-2 grid-rows-1 justify-center">
+        <Button
           onClick={handleMp3Export}
-          disabled={!processedBuffer || isExporting}
-          className="font-vidaloka px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          disabled={
+            !processedBuffer || isExporting || needsProcessing || isProcessing
+          }
+          className="flex justify-center items-center mx-2 min-w-40"
         >
-          Export MP3
-        </button>
-        <button
+          <div className="flex justify-center items-center">
+            <span className="material-symbols-outlined">download</span>
+            <span>Export as .mp3</span>
+          </div>
+        </Button>
+        <Button
           onClick={handleWavExport}
-          disabled={!audioBuffer || isExporting}
-          className="font-vidaloka px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          disabled={
+            !audioBuffer || isExporting || needsProcessing || isProcessing
+          }
+          className="flex justify-center items-center mx-2 min-w-40"
         >
-          Export WAV
-        </button>
+          <div className="flex justify-center items-center">
+            <span className="material-symbols-outlined">download</span>
+            <span>Export as .wav</span>
+          </div>
+        </Button>
       </div>
     </div>
   );

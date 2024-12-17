@@ -15,8 +15,8 @@ const PitchControls: React.FC<PitchControlsProps> = ({
   setPitchShift,
 }) => {
   return (
-    <div className="border-zinc-800 border-2 p-4 rounded-md shadow-xl bg-slate-200">
-      <h1 className="text-2xl font-bold mb-4 text-left text-zinc-800 font-vidaloka">
+    <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
+      <h1 className="text-xl font-bold mb-4 text-left text-zinc-700 font-arimo">
         Pitch & Tempo Shift
       </h1>
       <div>
@@ -27,7 +27,7 @@ const PitchControls: React.FC<PitchControlsProps> = ({
             data-tooltip-place="right"
             data-tooltip-delay-show={500}
             data-tooltip-delay-hide={300}
-            className="mr-2 text-zinc-800 cursor-help"
+            className="mr-2 text-zinc-700 cursor-help"
           >
             ⓘ
           </span>

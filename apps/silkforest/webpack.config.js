@@ -83,7 +83,7 @@ module.exports = {
       disableDotRule: true,
     },
     hot: true,
-    open: true,
+    open: false,
     port: 3000,
     watchFiles: [path.resolve(__dirname, "src/**/*")],
   },
