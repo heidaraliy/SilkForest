@@ -1,12 +1,17 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
+// only require React Refresh plugin in development.
+const ReactRefreshWebpackPlugin =
+  process.env.NODE_ENV !== "production"
+    ? require("@pmmmwh/react-refresh-webpack-plugin")
+    : null;
+
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-module.exports = {
+const config = {
   entry: "./src/index.tsx",
   output: {
     filename: "static/js/[name].[contenthash].js",
@@ -15,8 +20,8 @@ module.exports = {
     publicPath: "/",
     clean: true,
   },
-  mode: isDevelopment ? "development" : "production",
-  devtool: isDevelopment ? "cheap-module-source-map" : "source-map",
+  mode: "production", // always use production mode for Vercel.
+  devtool: "source-map",
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
@@ -42,9 +47,8 @@ module.exports = {
                 "@babel/preset-react",
                 "@babel/preset-typescript",
               ],
-              plugins: isDevelopment
-                ? [require.resolve("react-refresh/babel")]
-                : [],
+              // no React Refresh in production.
+              plugins: [],
               cacheDirectory: false,
             },
           },
@@ -75,9 +79,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "public/index.html",
     }),
-    isDevelopment && new ReactRefreshWebpackPlugin(),
-    !isDevelopment && new CompressionPlugin(),
-  ].filter(Boolean),
+    new CompressionPlugin(),
+  ],
   devServer: {
     static: {
       directory: path.join(__dirname, "public"),
@@ -112,3 +115,15 @@ module.exports = {
     minimizer: [new TerserPlugin()],
   },
 };
+
+// only add development specific configurations if not in production
+if (isDevelopment) {
+  config.mode = "development";
+  config.devtool = "cheap-module-source-map";
+  config.plugins.push(new ReactRefreshWebpackPlugin());
+  config.module.rules[0].use[0].options.plugins = [
+    require.resolve("react-refresh/babel"),
+  ];
+}
+
+module.exports = config;
