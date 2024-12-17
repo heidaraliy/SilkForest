@@ -72,7 +72,7 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
           />
         </div>
 
-        {/* Advanced Controls Button */}
+        {/* advanced controls button */}
         <div className="flex justify-center">
           <button
             onClick={() => setShowAdvanced(!showAdvanced)}
@@ -89,10 +89,10 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
           </button>
         </div>
 
-        {/* Advanced Controls Section */}
+        {/* advanced controls section */}
         {showAdvanced && (
           <div>
-            {/* Dry Gain Control */}
+            {/* dry gain control */}
             <div>
               <label className="block text-zinc-700 font-medium mb-1">
                 Dry Gain: {dryGainValue}
@@ -113,7 +113,7 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               />
             </div>
 
-            {/* Wet Gain Control */}
+            {/* wet gain control */}
             <div>
               <label className="block text-zinc-700 font-medium mb-1">
                 Wet Gain: {wetGainValue}
@@ -134,7 +134,7 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               />
             </div>
 
-            {/* High Pass Frequency Control */}
+            {/* high pass frequency control */}
             <div>
               <label className="block text-zinc-700 font-medium mb-1">
                 High Pass Frequency: {highPassFrequency} Hz
@@ -155,7 +155,7 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               />
             </div>
 
-            {/* Low Pass Frequency Control */}
+            {/* low pass frequency control */}
             <div>
               <label className="block text-zinc-700 font-medium mb-1">
                 Low Pass Frequency: {lowPassFrequency} Hz
@@ -176,7 +176,7 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               />
             </div>
 
-            {/* Frequency Response Chart */}
+            {/* frequency response chart */}
             <FrequencyResponseChart data={frequencyData} />
           </div>
         )}

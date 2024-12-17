@@ -15,7 +15,9 @@ const SilkVerb: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const audioElementRef = useRef<HTMLAudioElement>(null);
 
-  // State management
+  // most of the state management logic lives here, and is passed
+  // down to the components as props. easier and more modular, to
+  // handle that way.
   const [decayTime, setDecayTime] = useState(2);
   const [pitchShift, setPitchShift] = useState(0);
   const [dryGainValue, setDryGainValue] = useState(0.7);
@@ -61,7 +63,7 @@ const SilkVerb: React.FC = () => {
     setNeedsProcessing(false);
   };
 
-  // Audio playback effects
+  // audio playback effects
   useEffect(() => {
     const audioElement = audioElementRef.current;
     if (!audioElement) return;
@@ -86,7 +88,7 @@ const SilkVerb: React.FC = () => {
     };
   }, [audioSrc]);
 
-  // Frequency response calculation effect
+  // frequency response calculation effect
   useEffect(() => {
     const data = calculateFrequencyResponse(
       highPassFrequency,

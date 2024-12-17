@@ -1,3 +1,8 @@
+// this function creates an impulse response for the reverb, which is
+// used to create the reverb effect. it's a simple impulse response,
+// and achieves a pretty powerful reverb effect, but expanding it
+// to a more complex impulse response is a good idea for future work,
+// and gives the user more malleability over the reverb effect.
 export const createReverbImpulseResponse = (
   audioContext: BaseAudioContext,
   duration: number
