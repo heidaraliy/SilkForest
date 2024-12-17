@@ -1,15 +1,23 @@
 import React from "react";
 import IntroVideo from "../../assets/intro.mp4";
+import Button from "@silkverb/components/SilkVerb/components/Button";
 
 const Intro: React.FC = () => {
   return (
     <div className="flex justify-center p-8 mt-12">
-      <div className="font-arimo tracking-tight text-xl max-w-5xl text-gray-700">
+      <div className="font-arimo tracking-tighter text-xl max-w-5xl text-gray-700">
         <div className="my-8 text-3xl text-center shadow-2xl">
-          <video src={IntroVideo} className="rounded-md" autoPlay muted />
+          <video
+            src={IntroVideo}
+            className="rounded-md"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
         </div>
 
-        <div className="text-2xl font-bold">
+        <div className="text-2xl font-bold mt-8 md:mt-0">
           Shape your sound, effortlessly.
         </div>
         <br />
@@ -24,6 +32,9 @@ const Intro: React.FC = () => {
           embodies a sense of <b>otherworldly depth and artistry</b>.
         </div>
         <br />
+        <Button className="md:hidden flex m-auto mb-8">
+          <a href="/products">View Plugins and Web Apps</a>
+        </Button>
         <hr />
         <br />
 
@@ -34,9 +45,9 @@ const Intro: React.FC = () => {
         <div className="text-lg max-w-4xl">
           By removing unnecessary noise and focusing on the most impactful
           parameters, <span className="font-vidaloka">SilkForest</span> empowers
-          intuitive sound shaping. Elegant, focused interfaces combined with
-          advanced audio processing make it easy to edit, test, and refine
-          sounds with precision.
+          <b> intuitive sound shaping</b>. Streamlined, focused interfaces
+          combined with advanced audio processing make it{" "}
+          <b>easy to edit, test, and refine</b> sounds with precision.
         </div>
         <br />
         <hr />
@@ -46,12 +57,12 @@ const Intro: React.FC = () => {
         <br />
         <div className="text-lg max-w-4xl">
           <span className="font-vidaloka">SilkForest</span> is a passion project
-          born from years of music production and sound design experience. As
-          someone who's benefited from the incredible tools created by the audio
-          community, I want to give back by making these plugins completely
-          free. I think that powerful creative tools should be accessible to
-          everyone, enabling artists at any level to explore and expand their
-          sonic horizons without barriers.
+          born from years of music production and sound design experience. That
+          means that these plugins will always be <b>free</b>. Creation should
+          be accessible to everyone and hopefully,{" "}
+          <span className="font-vidaloka">SilkForest</span> can give you the
+          tools to <b>explore and expand your sonic horizons</b>,{" "}
+          <i>without cost</i>.
         </div>
       </div>
     </div>

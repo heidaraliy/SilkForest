@@ -12,9 +12,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const handleChange = () => {
-    if (fileInputRef.current?.files?.[0]) {
-      const file = fileInputRef.current.files[0];
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target?.files?.[0];
+    if (file) {
       setFileName(file.name);
       handleFileUpload(file.name);
     }
@@ -26,9 +26,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
         Upload Audio
       </h1>
       <Button
-        accept="audio/*"
+        accept="audio/*,.mp3,.wav,.m4a,.aac"
         ref={fileInputRef}
-        onClick={handleChange}
+        onChange={handleChange}
         isFileInput={true}
       >
         Choose File

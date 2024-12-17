@@ -62,7 +62,7 @@ const DocsContent: React.FC = () => {
   };
 
   return (
-    <div className="docs-content flex-1 overflow-y-auto h-full bg-zinc-50 font-arimo tracking-tight">
+    <div className="docs-content overflow-y-auto h-full bg-zinc-50 font-arimo tracking-tight">
       <div className="max-w-4xl mx-auto p-8 md:p-12">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

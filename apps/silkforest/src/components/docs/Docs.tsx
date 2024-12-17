@@ -4,9 +4,11 @@ import DocsContent from "./DocsContent";
 
 const Docs: React.FC = () => {
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden mt-20">
+    <div className="flex min-h-screen mt-[5.5rem]">
       <DocsSidebar />
-      <DocsContent />
+      <div className="flex-1 md:ml-72 h-[calc(100vh)]">
+        <DocsContent />
+      </div>
     </div>
   );
 };

@@ -6,27 +6,23 @@ import SilkForestSidebarBackground from "../../assets/SilkForestSidebarBG.png";
 
 const DocsSidebar: React.FC = () => {
   const [activeId, setActiveId] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    // Create an Intersection Observer to detect which section is in view
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveId(entry.target.id);
-            // Update URL hash without triggering full navigation
             const newUrl = `${window.location.pathname}#${entry.target.id}`;
             window.history.replaceState(null, "", newUrl);
           }
         });
       },
-      {
-        rootMargin: "-20% 0px -80% 0px",
-      }
+      { rootMargin: "-20% 0px -80% 0px" }
     );
 
-    // Observe all section headings
     document.querySelectorAll("h1[id], h2[id], h3[id]").forEach((section) => {
       observer.observe(section);
     });
@@ -34,7 +30,6 @@ const DocsSidebar: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Update activeId when hash changes (e.g., on direct navigation)
   useEffect(() => {
     const hash = location.hash.slice(1);
     if (hash) {
@@ -42,16 +37,16 @@ const DocsSidebar: React.FC = () => {
     }
   }, [location]);
 
-  return (
+  const sidebarContent = (
     <div
-      className="w-72 border-r-2 border-zinc-400 overflow-y-auto h-full"
+      className="h-[calc(100vh-5.5rem)] border-r-2 border-zinc-400 overflow-y-auto"
       style={{
         backgroundImage: `url(${SilkForestSidebarBackground})`,
         backgroundSize: "cover",
         backgroundPosition: "center bottom",
       }}
     >
-      <div className="sticky top-0 p-6">
+      <div className="sticky top-0 p-6 w-72">
         <div className="text-center m-4">
           <img src={SilkDocs} alt="SilkDocs" className="mx-auto w-48" />
         </div>
@@ -65,7 +60,8 @@ const DocsSidebar: React.FC = () => {
                 {section.children?.map((entry) => (
                   <li key={entry.id}>
                     <Link
-                      to={`/docs#${entry.id}`} // IMPORTANT: full route + hash
+                      to={`/docs#${entry.id}`}
+                      onClick={() => setIsOpen(false)}
                       className={`block text-base transition-all duration-300 rounded-md p-1.5 font-arimo tracking-tight ${
                         activeId === entry.id
                           ? "text-zinc-50 font-semibold bg-zinc-300/20 scale-110 border-zinc-300/70 border-2"
@@ -82,6 +78,38 @@ const DocsSidebar: React.FC = () => {
         </nav>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Sidebar */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`fixed top-24 z-50 bg-zinc-200 border-zinc-600 border-2 text-zinc-50 p-2 rounded-r-md transition-all duration-300 shadow-lg ${
+            isOpen ? "left-72" : "left-0"
+          }`}
+          aria-label="Toggle documentation sidebar"
+        >
+          <span className="material-symbols-outlined text-zinc-700 text-2xl">
+            {isOpen ? "chevron_left" : "chevron_right"}
+          </span>
+        </button>
+
+        <div
+          className={`fixed top-[5.5rem] bottom-0 transition-all duration-300 ease-in-out ${
+            isOpen ? "left-0" : "-left-72"
+          }`}
+        >
+          {sidebarContent}
+        </div>
+      </div>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block h-[calc(100vh-5.5rem)] fixed">
+        {sidebarContent}
+      </div>
+    </>
   );
 };
 
