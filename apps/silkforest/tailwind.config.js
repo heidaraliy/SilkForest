@@ -4,7 +4,7 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
     "../silkverb/src/**/*.{js,jsx,ts,tsx}",
   ],
-  darkMode: false,
+  media: false,
   theme: {
     extend: {},
     fontFamily: {

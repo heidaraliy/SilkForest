@@ -1,6 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -73,6 +75,7 @@ module.exports = {
       template: "public/index.html",
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
+    new CompressionPlugin(),
   ].filter(Boolean),
   devServer: {
     static: {
@@ -86,5 +89,25 @@ module.exports = {
     open: false,
     port: 3000,
     watchFiles: [path.resolve(__dirname, "src/**/*")],
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            )[1];
+            return `vendor.${packageName.replace("@", "")}`;
+          },
+        },
+      },
+    },
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
 };

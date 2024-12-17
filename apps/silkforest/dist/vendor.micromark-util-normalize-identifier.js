@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[8381],{6243:(e,s,r)=>{function t(e){return e.replace(/[\t\n\r ]+/g," ").replace(/^ | $/g,"").toLowerCase().toUpperCase()}r.d(s,{B:()=>t})}}]);

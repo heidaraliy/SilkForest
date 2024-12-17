@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[2193],{3967:(e,n,i)=>{i.d(n,{Y:()=>u});var r=i(7508),t=i(7949);function u(e,n){let i;return function u(f){if((0,t.HP)(f))return e.enter("lineEnding"),e.consume(f),e.exit("lineEnding"),i=!0,u;if((0,t.On)(f))return(0,r.N)(e,u,i?"linePrefix":"lineSuffix")(f);return n(f)}}}}]);

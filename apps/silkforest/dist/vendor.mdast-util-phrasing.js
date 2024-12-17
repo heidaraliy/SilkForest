@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[1606],{1202:(e,t,n)=>{n.d(t,{f:()=>s});const s=(0,n(5186).C)(["break","delete","emphasis","footnote","footnoteReference","image","imageReference","inlineCode","inlineMath","link","linkReference","mdxJsxTextElement","mdxTextExpression","strong","text","textDirective"])}}]);

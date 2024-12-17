@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[439],{31:(e,s,l)=>{l.d(s,{$:()=>t,V:()=>b});var k=l(9066);let t=k.l,b=k.l},9066:(e,s,l)=>{l.d(s,{l:()=>k});const k=e=>e}}]);
