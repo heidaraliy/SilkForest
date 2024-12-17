@@ -3,7 +3,6 @@
   "buildCommand": "yarn vercel-build",
   "outputDirectory": "apps/silkforest/dist",
   "installCommand": "yarn install",
-  "framework": "webpack",
   "routes": [
     {
       "src": "/static/(.*)",
