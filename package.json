@@ -3,17 +3,18 @@
   "name": "silkforest",
   "version": "1.0.0",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "build:web": "yarn workspace silkforest-web build",
-    "build": "yarn build:web",
-    "start": "yarn workspace silkforest-web start",
+    "build:silkforest-web": "yarn workspace silkforest-web build",
+    "build:silkverb": "yarn workspace silkverb build",
+    "build": "yarn build:silkforest-web && yarn build:silkverb",
+    "start:silkforest-web": "yarn workspace silkforest-web start",
+    "start": "yarn start:silkforest-web",
     "ultra-clean": "cd /Users/heidaraliy/Documents/programs/SilkForest/ rm -rf node_modules rm -rf rimraf node_modules /*/node_modules rm -rf apps/*/node_modules rm -rf apps/*/dist yarn cache clean",
     "reinstall": "yarn ultra-clean && yarn install && yarn build && bash extraction_writer.sh",
     "extract_repo": "bash extraction_writer.sh"
