@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./components/home/Navbar";
 import Footer from "./components/home/Footer";
-import RouterDefinitions from "./components/home/RouterDefinitions";
+import RouterDefinitions from "./RouterDefinitions";
 
 const App: React.FC = () => {
   return (

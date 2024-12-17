@@ -17,11 +17,8 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
-      "@silkforest/core": path.resolve(__dirname, "../../packages/core/src"),
-      "@silkforest/audioengine": path.resolve(
-        __dirname,
-        "../../packages/audioengine/src"
-      ),
+      "@silkverb": path.resolve(__dirname, "../silkverb/src"),
+      "@silkforest": path.resolve(__dirname, "./src"),
     },
     symlinks: true,
   },
@@ -31,7 +28,7 @@ module.exports = {
         test: /\.(ts|tsx|js|jsx)$/,
         include: [
           path.resolve(__dirname, "src"),
-          path.resolve(__dirname, "../../packages"),
+          path.resolve(__dirname, "../silkverb/src"),
         ],
         use: [
           {

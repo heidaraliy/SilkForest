@@ -1,9 +1,10 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Intro from "./Intro";
-import Products from "../products/Products";
-import Docs from "../docs/Docs";
-import About from "../about/About";
+import Intro from "./components/home/Intro";
+import Products from "./components/products/Products";
+import Docs from "./components/docs/Docs";
+import About from "./components/about/About";
+import SilkVerb from "@silkverb";
 
 const ScrollToHashElement = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const RouterDefinitions: React.FC = () => (
       <Route path="/products" element={<Products />} />
       <Route path="/docs" element={<Docs />} />
       <Route path="/about" element={<About />} />
+      <Route path="/apps/silkverb" element={<SilkVerb />} />
     </Routes>
   </>
 );

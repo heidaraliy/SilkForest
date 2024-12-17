@@ -15,7 +15,11 @@
     "react-router-dom": "^6.11.1",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "react-tooltip": "^5.28.0",
+    "recharts": "^2.13.0",
+    "lamejs": "github:zhuker/lamejs",
+    "audiobuffer-to-wav": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",
