@@ -1,24 +1,30 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "apps/silkforest/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "apps/silkforest/dist",
+        "buildCommand": "cd apps/silkforest && yarn install && yarn build"
       }
     }
   ],
   "routes": [
     {
+      "src": "/static/(.*)",
+      "dest": "/apps/silkforest/dist/static/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/apps/silkforest/dist/assets/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/apps/silkforest/dist/favicon.ico"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/apps/silkforest/dist/$1",
-      "continue": true
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/.*",
       "dest": "/apps/silkforest/dist/index.html"
     }
   ]
