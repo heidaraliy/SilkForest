@@ -9,10 +9,10 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: 'static/js/[name].[contenthash].js',
-    chunkFilename: 'static/js/[name].[contenthash].chunk.js',
+    filename: "static/js/[name].[contenthash].js",
+    chunkFilename: "static/js/[name].[contenthash].chunk.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: '/',
+    publicPath: "/",
     clean: true,
   },
   mode: isDevelopment ? "development" : "production",
@@ -42,9 +42,9 @@ module.exports = {
                 "@babel/preset-react",
                 "@babel/preset-typescript",
               ],
-              plugins: [
-                isDevelopment && require.resolve("react-refresh/babel"),
-              ].filter(Boolean),
+              plugins: isDevelopment
+                ? [require.resolve("react-refresh/babel")]
+                : [],
               cacheDirectory: false,
             },
           },
@@ -76,7 +76,7 @@ module.exports = {
       template: "public/index.html",
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
-    new CompressionPlugin(),
+    !isDevelopment && new CompressionPlugin(),
   ].filter(Boolean),
   devServer: {
     static: {
