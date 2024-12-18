@@ -30,7 +30,7 @@ const Notification: React.FC<NotificationProps> = ({
       initial={{ x: 100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 100, opacity: 0 }}
-      className={`${bgColor} text-zinc-700 p-4 rounded-lg shadow-lg flex items-center justify-between font-arimo tracking-tighter font-bold border-zinc-700 border-2 mt-24 min-w-[300px]`}
+      className={`${bgColor} text-zinc-700 p-4 rounded-lg shadow-lg flex items-center justify-between font-arimo tracking-tight font-bold border-zinc-700 border-2 mt-24 min-w-[300px]`}
     >
       <span className="flex items-center flex-1">
         {type === "info" ? (

@@ -28,7 +28,7 @@ const Button = forwardRef<HTMLInputElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "px-4 py-2 font-arimo text-sm font-bold tracking-tighter rounded bg-zinc-50 text-zinc-700 border-zinc-600 border-2";
+      "px-4 py-2 font-arimo text-sm font-bold tracking-tight rounded bg-zinc-50 text-zinc-700 border-zinc-600 border-2";
     const enabledStyles = !disabled
       ? "hover:bg-zinc-200 transition-colors duration-200 cursor-pointer"
       : "opacity-50 cursor-not-allowed";

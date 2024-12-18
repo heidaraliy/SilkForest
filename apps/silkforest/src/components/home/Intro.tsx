@@ -21,7 +21,7 @@ const Intro: React.FC = () => {
   }, []);
   return (
     <div className="flex justify-center p-8 mt-12">
-      <div className="font-arimo tracking-tighter text-xl max-w-5xl text-gray-700">
+      <div className="font-arimo tracking-tight text-xl max-w-5xl text-gray-700">
         <div className="my-8 text-3xl text-center shadow-2xl">
           {isMobile ? (
             <img src={MobileIntroVideo} className="w-full h-auto rounded-md" />

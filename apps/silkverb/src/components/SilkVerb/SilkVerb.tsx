@@ -140,7 +140,7 @@ const SilkVerb: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#2a3475] h-screen-max p-4 mt-20 md:p-12 font-arimo tracking-tighter">
+    <div className="bg-[#2a3475] h-screen-max p-4 mt-20 md:p-12 font-arimo tracking-tight">
       <NotificationContainer />
       <Header />
       <div className="space-y-2 md:space-y-4 max-w-5xl mx-auto">

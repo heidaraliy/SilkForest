@@ -94,14 +94,14 @@ SilkGhost’s interface is designed to provide quick, intuitive access to all cr
 
 **Decay Time**
 
-- **Range**: 0.1s to 30s
+- **Range**: 0.1s to 10s
 - **Function**: Determines the duration of the reverb tail.
 - **Sound Design**:
-  - 0.1s-0.3s: Tight rooms, drum ambience.
-  - 0.3s-1.0s: Natural rooms, vocal intimacy.
-  - 1.0s-3.0s: Halls, churches, performance spaces.
-  - 3.0s-10s: Cathedrals, atmospheric design.
-  - 10s-30s: Supernatural spaces, drone design.
+  - 0.1s-0.2s: Tight rooms, drum ambience.
+  - 0.2s-0.5s: Natural rooms, vocal intimacy.
+  - 0.5s-3.0s: Halls, churches, performance spaces.
+  - 3.0s-5.0s: Cathedrals, atmospheric design.
+  - 5.0s-10s: Supernatural spaces, drone design.
 - **Methodologies**:
   - Long decays can mask subsequent sections.
   - Very short decays may introduce comb filtering.
@@ -137,13 +137,13 @@ SilkGhost’s interface is designed to provide quick, intuitive access to all cr
 
 **Proximity**
 
-- **Range**: -100 to +100
+- **Range**: 0% to 100%
 - **Function**: Balances early reflections vs. late reverb.
 - **Sound Design**:
-  - -100 to -50: Distant, atmospheric spaces.
-  - -50 to 0: Natural room placement.
-  - 0 to +50: Intimate, close spaces.
-  - +50 to +100: Technical, tight spaces.
+  - 0% to 25%: Distant, atmospheric spaces.
+  - 25% to 50%: Natural room placement.
+  - 50% to 75%: Intimate, close spaces.
+  - 75% to 100%: Technical, tight spaces.
 - **Methodologies**:
   - Extreme values can sound unnatural.
   - Early reflections can create unwanted coloration.

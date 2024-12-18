@@ -47,12 +47,12 @@ const DownloadModal: React.FC<DownloadModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 font-arimo tracking-tighter">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 font-arimo tracking-tight">
       <div
         className="rounded-lg p-8 max-w-md w-full mx-auto border-zinc-700 border-4"
         style={{ backgroundColor: product?.background }}
       >
-        <h2 className="text-2xl font-bold mb-4 font-arimo tracking-tighter">
+        <h2 className="text-2xl font-bold mb-4 font-arimo tracking-tight">
           <img src={product?.logo} alt={productName} className="" />
         </h2>
         <p className="text-zinc-50 mb-6 text-center">
