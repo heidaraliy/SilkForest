@@ -31,7 +31,6 @@ const Products: React.FC = () => {
       setSelectedProduct(product);
       setShowModal(true);
     } else {
-      // For web applications, navigate directly
       window.location.href = product.downloadUrl || "";
     }
   };

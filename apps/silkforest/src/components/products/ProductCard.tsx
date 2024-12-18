@@ -10,8 +10,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onDownloadClick,
 }) => {
-  const comingSoon = false;
-
   return (
     <div
       className="rounded-md shadow-[15px_35px_60px_-15px_rgba(0,0,0,0.6)] p-4 w-72 md:w-[48rem] m-4 border-4 border-zinc-700"
