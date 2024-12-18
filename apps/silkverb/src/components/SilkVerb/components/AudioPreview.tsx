@@ -7,6 +7,7 @@ interface AudioPreviewProps {
   isPlaying: boolean;
   needsProcessing: boolean;
   isProcessing: boolean;
+  audioBuffer: AudioBuffer | null;
   handlePlayPause: () => void;
   handleApplyChanges: () => void;
   audioSrc: string;
@@ -18,6 +19,7 @@ const AudioPreview: React.FC<AudioPreviewProps> = ({
   isPlaying,
   needsProcessing,
   isProcessing,
+  audioBuffer,
   handlePlayPause,
   handleApplyChanges,
   audioSrc,
@@ -32,15 +34,8 @@ const AudioPreview: React.FC<AudioPreviewProps> = ({
         Apply your changes and preview your modifications.
       </div>
 
-      {!needsProcessing && (
-        <WarningMessage
-          type="info"
-          message="Upload an audio file to preview and process."
-        />
-      )}
-
-      {parametersChanged && (
-        <WarningMessage message="Changes detected! Click 'Apply Changes' to hear your modifications." />
+      {!audioBuffer && (
+        <WarningMessage message="Upload an audio file to preview and process." />
       )}
 
       <div className="grid grid-cols-1 gap-2 my-2 md:grid-cols-2 grid-rows-1 justify-center">
@@ -50,7 +45,7 @@ const AudioPreview: React.FC<AudioPreviewProps> = ({
           disabled={
             !needsProcessing ||
             isProcessing ||
-            (!parametersChanged && !audioSrc)
+            (!parametersChanged && !audioBuffer)
           }
           className="flex justify-center items-center mx-2 min-w-40"
         >

@@ -177,6 +177,7 @@ const SilkVerb: React.FC = () => {
           isPlaying={isPlaying}
           needsProcessing={needsProcessing || audioSrc !== ""}
           isProcessing={isProcessing}
+          audioBuffer={audioBuffer}
           audioSrc={audioSrc}
           handlePlayPause={handlePlayPause}
           handleApplyChanges={handleApplyChanges}

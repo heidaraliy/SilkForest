@@ -4,9 +4,13 @@ import { Product, AppType } from "./ProductData";
 
 interface ProductListProps {
   products: Product[];
+  onDownloadClick: (product: Product) => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
+const ProductList: React.FC<ProductListProps> = ({
+  products,
+  onDownloadClick,
+}) => {
   const categorizedProducts: Record<AppType, Product[]> = {
     plugin: [],
     webApplication: [],
@@ -24,7 +28,11 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           <h2 className="font-bold mb-4">Plugins</h2>
           <div className="flex flex-wrap justify-center">
             {categorizedProducts.plugin.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onDownloadClick={onDownloadClick}
+              />
             ))}
           </div>
         </section>
@@ -36,7 +44,11 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           <h2 className="font-bold mb-4">Web Applications</h2>
           <div className="flex flex-wrap justify-center">
             {categorizedProducts.webApplication.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onDownloadClick={onDownloadClick}
+              />
             ))}
           </div>
         </section>

@@ -6,6 +6,5 @@ const BASE_URL = isDevelopment
 
 export const URLS = {
   docs: (section: string) => `${BASE_URL}/docs#${section}`,
-  downloads: (product: string) => `${BASE_URL}/downloads/${product}`,
   home: () => BASE_URL,
 };

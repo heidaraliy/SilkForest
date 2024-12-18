@@ -28,7 +28,8 @@ export const PRODUCTS: Product[] = [
     description:
       "is a reverberation engine that creates haunting, ethereal soundscapes that linger like spectral echoes in your mix, gently enveloping each note in a surreal shimmer.",
     documentationUrl: URLS.docs("silk-ghost-introduction"),
-    downloadUrl: URLS.downloads("silkghost"),
+    downloadUrl:
+      "https://github.com/heidaraliy/SilkForest/releases/download/silkghost_release_mac_v1.0.0/silkghost_release_v1.0.0_mac.zip",
     background: "#71769d",
     appType: "plugin",
     status: "available",
@@ -40,8 +41,8 @@ export const PRODUCTS: Product[] = [
     logoWidth: "18rem",
     description:
       "isn’t just a pitch shifter — it’s a way to generate complex sounds. Layer your sounds and apply pitch shift and modulation to each layer individually.",
-    documentationUrl: URLS.docs("silkghost-introduction"),
-    downloadUrl: URLS.downloads("silkghost"),
+    documentationUrl: "",
+    downloadUrl: "",
     background: "#c14444",
     appType: "plugin",
     status: "coming-soon",

@@ -1,6 +1,8 @@
-import React from "react";
-import { PRODUCTS, AppType } from "./ProductData";
+import React, { useState } from "react";
+import { PRODUCTS, AppType, Product } from "./ProductData";
 import ProductCard from "./ProductCard";
+import { handleDownload } from "./DownloadModal/downloadHandler";
+import DownloadModal from "./DownloadModal/DownloadModal";
 
 const Products: React.FC = () => {
   const categories: {
@@ -20,6 +22,25 @@ const Products: React.FC = () => {
         "Built directly on the web, these web applications are intuitive and easy to use.",
     },
   ];
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleDownloadClick = (product: Product) => {
+    if (product.appType === "plugin") {
+      setSelectedProduct(product);
+      setShowModal(true);
+    } else {
+      // For web applications, navigate directly
+      window.location.href = product.downloadUrl || "";
+    }
+  };
+
+  const handleEmailSubmit = async (email: string, product: Product) => {
+    if (product.downloadUrl) {
+      await handleDownload(email, product.downloadUrl);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center p-8 font-arimo tracking-tight mt-20">
@@ -44,12 +65,24 @@ const Products: React.FC = () => {
             </div>
             <div className="flex flex-wrap justify-center">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  onDownloadClick={handleDownloadClick}
+                />
               ))}
             </div>
           </section>
         );
       })}
+
+      <DownloadModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleEmailSubmit}
+        productName={selectedProduct?.name || ""}
+        product={selectedProduct}
+      />
     </div>
   );
 };

@@ -169,6 +169,15 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
                 className="w-full"
               />
             </div>
+            {dryGainValue + wetGainValue > 1 && (
+              <WarningMessage
+                message={`Your current total gain is ${(
+                  dryGainValue + wetGainValue
+                ).toFixed(
+                  2
+                )}, exceeding the usual threshold of 1. This may cause clipping, leading to distortion!`}
+              />
+            )}
             {/* high pass frequency control */}
             <h1 className="text-xl font-bold my-2 mb-2 text-left text-zinc-700">
               Frequency Filters
@@ -241,15 +250,6 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
             </div>
             {/* frequency response chart */}
             <FrequencyResponseChart data={frequencyData} />
-            {dryGainValue + wetGainValue > 1 && (
-              <WarningMessage
-                message={`Your current total gain is ${(
-                  dryGainValue + wetGainValue
-                ).toFixed(
-                  2
-                )}, exceeding the usual threshold of 1. This may cause clipping, leading to distortion!`}
-              />
-            )}
           </div>
         )}
       </div>

@@ -2,7 +2,6 @@ import React from "react";
 import { exportMP3Audio } from "../../../utils/exportAudio/exportMP3Audio";
 import { exportWAVAudio } from "../../../utils/exportAudio/exportWAVAudio";
 import { useNotification } from "../../Notifications/context/NotificationContext";
-import Spinner from "./Spinner";
 import Button from "./Button";
 import WarningMessage from "./WarningMessage";
 
@@ -110,19 +109,19 @@ const ExportControls: React.FC<ExportControlsProps> = ({
 
       {!audioBuffer && (
         <WarningMessage
-          type="info"
+          type="warning"
           message="Upload an audio file to enable exporting options."
         />
       )}
 
-      {needsProcessing && (
+      {needsProcessing && audioBuffer && (
         <WarningMessage message="Apply your changes before exporting to ensure all modifications are included." />
       )}
 
       {isProcessing && (
         <WarningMessage
           type="info"
-          message="Processing audio... Please wait."
+          message="Hang tight! We're processing your audio."
         />
       )}
 

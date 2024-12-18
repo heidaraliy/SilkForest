@@ -3,9 +3,13 @@ import { Product } from "./ProductData";
 
 interface ProductCardProps {
   product: Product;
+  onDownloadClick: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onDownloadClick,
+}) => {
   const comingSoon = false;
 
   return (
@@ -44,10 +48,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <></>
             )}
             <a
-              href={product.downloadUrl}
+              onClick={(e) => {
+                e.preventDefault();
+                onDownloadClick(product);
+              }}
+              href="#"
               className="hover:bg-zinc-200 border-zinc-600 border-2 rounded-md bg-zinc-50 px-2 py-2 font-arimo font-bold text-gray-700 flex items-center space-x-1"
-              target="_self"
-              rel="noopener noreferrer"
             >
               <span className="material-symbols-outlined text-gray-700">
                 {product.appType === "webApplication" ? "public" : "download"}
