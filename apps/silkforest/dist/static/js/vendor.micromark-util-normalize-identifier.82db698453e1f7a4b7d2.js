@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[8381],{6243:(e,s,r)=>{function t(e){return e.replace(/[\t\n\r ]+/g," ").replace(/^ | $/g,"").toLowerCase().toUpperCase()}r.d(s,{B:()=>t})}}]);
-//# sourceMappingURL=vendor.micromark-util-normalize-identifier.82db698453e1f7a4b7d2.js.map

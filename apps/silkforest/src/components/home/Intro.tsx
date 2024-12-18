@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import DesktopIntroVideo from "../../assets/SilkForestDesktopIntro.mp4";
-import MobileIntroVideo from "../../assets/SilkForestMobileIntro.mp4";
+import DesktopIntroVideo from "../../assets/videos/SilkForestDesktopIntro.gif";
+import MobileIntroVideo from "../../assets/videos/SilkForestMobileIntro.gif";
 import Button from "@silkverb/components/SilkVerb/components/Button";
 
 const Intro: React.FC = () => {
@@ -24,23 +24,9 @@ const Intro: React.FC = () => {
       <div className="font-arimo tracking-tighter text-xl max-w-5xl text-gray-700">
         <div className="my-8 text-3xl text-center shadow-2xl">
           {isMobile ? (
-            <video
-              src={MobileIntroVideo}
-              className="rounded-md"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
+            <img src={MobileIntroVideo} className="w-full h-auto rounded-md" />
           ) : (
-            <video
-              src={DesktopIntroVideo}
-              className="rounded-md"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
+            <img src={DesktopIntroVideo} className="rounded-md" />
           )}
         </div>
 

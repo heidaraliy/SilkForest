@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[7970],{10:(t,n,e)=>{function r(t){const n=String(t||"").trim();return n?n.split(/[ \t\n\r\f]+/g):[]}function s(t){return t.join(" ").trim()}e.d(n,{A:()=>s,q:()=>r})}}]);
-//# sourceMappingURL=vendor.space-separated-tokens.9aafdb9c29603c216f31.js.map

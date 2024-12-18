@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import SilkForest from "../../assets/SilkForest.png";
 import SilkGhost from "../../assets/SilkGhost.png";
-import SilkGhostPluginWindow from "../../assets/SilkGhostPluginWindow.png";
+import SilkGhostPluginWindow from "../../assets/docs/SilkGhostPluginWindow.jpg";
 import { DOCS_SECTIONS } from "./DocsData";
 import { PRODUCTS } from "../products/ProductData";
 

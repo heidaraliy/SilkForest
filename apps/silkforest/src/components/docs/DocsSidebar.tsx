@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { DOCS_SECTIONS } from "./DocsData";
 import SilkDocs from "../../assets/SilkDocs.png";
-import SilkForestSidebarBackground from "../../assets/SilkForestSidebarBG.png";
+import SilkForestSidebarBackground from "../../assets/backgrounds/SilkForestSidebarBG.jpg";
 
 const DocsSidebar: React.FC = () => {
   const [activeId, setActiveId] = useState<string>("");

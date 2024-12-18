@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import SilkForestBackground from "../../assets/SilkForestNavbarBG.png";
+import SilkForestBackground from "../../assets/backgrounds/SilkForestNavbarBG.jpg";
 import SilkForest from "../../assets/SilkForest.png";
 
 const Navbar: React.FC = () => {

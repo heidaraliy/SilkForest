@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[8412],{6296:(e,t,n)=>{n.d(t,{m:()=>r});const s=/[ \t\n\f\r]/g;function r(e){return"object"==typeof e?"text"===e.type&&u(e.value):u(e)}function u(e){return""===e.replace(s,"")}}}]);
-//# sourceMappingURL=vendor.hast-util-whitespace.71c4eef87eb93b6527e0.js.map

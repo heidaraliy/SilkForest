@@ -73,6 +73,36 @@ const config = {
         test: /\.md$/,
         type: "asset/source",
       },
+      {
+        test: /\.(png|jpg|jpeg|gif)$/i,
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8192,
+          },
+        },
+        use: [
+          {
+            loader: "image-webpack-loader",
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.9],
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -95,19 +125,55 @@ const config = {
     watchFiles: [path.resolve(__dirname, "src/**/*")],
   },
   optimization: {
+    usedExports: true,
+    moduleIds: "deterministic",
+    runtimeChunk: "single",
     splitChunks: {
       chunks: "all",
-      maxInitialRequests: Infinity,
-      minSize: 0,
+      maxInitialRequests: 20,
+      minSize: 20000,
       cacheGroups: {
-        vendor: {
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: "react",
+          chunks: "all",
+          priority: 40,
+        },
+        markdown: {
+          test: /[\\/]node_modules[\\/](react-markdown|remark-*|rehype-*|micromark-*)[\\/]/,
+          name: "markdown",
+          chunks: "async",
+          priority: 30,
+        },
+        charts: {
+          test: /[\\/]node_modules[\\/](recharts|d3-*)[\\/]/,
+          name: "charts",
+          chunks: "async",
+          priority: 20,
+        },
+        vendors: {
           test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(
-              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-            )[1];
-            return `vendor.${packageName.replace("@", "")}`;
-          },
+          name: "vendors",
+          chunks: "all",
+          priority: 10,
+        },
+        animations: {
+          test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+          name: "animations",
+          chunks: "async",
+          priority: 25,
+        },
+        audio: {
+          test: /[\\/]node_modules[\\/](lamejs|audiobuffer-to-wav)[\\/]/,
+          name: "audio",
+          chunks: "async",
+          priority: 35,
+        },
+        routing: {
+          test: /[\\/]node_modules[\\/]react-router-dom[\\/]/,
+          name: "routing",
+          chunks: "async",
+          priority: 15,
         },
       },
     },

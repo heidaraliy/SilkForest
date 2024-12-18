@@ -1,7 +1,10 @@
-import React from "react";
-import FrequencyResponseChart from "./FrequencyResponseChart";
+import React, { Suspense } from "react";
 import Button from "./Button";
 import WarningMessage from "./WarningMessage";
+
+const FrequencyResponseChart = React.lazy(
+  () => import("./FrequencyResponseChart")
+);
 
 interface ReverbControlsProps {
   decayTime: number;
@@ -249,7 +252,9 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               />
             </div>
             {/* frequency response chart */}
-            <FrequencyResponseChart data={frequencyData} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <FrequencyResponseChart data={frequencyData} />
+            </Suspense>
           </div>
         )}
       </div>

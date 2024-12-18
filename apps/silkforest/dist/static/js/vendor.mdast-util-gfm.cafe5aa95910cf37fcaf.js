@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[9656],{9004:(e,s,n)=>{n.d(s,{C:()=>f,H:()=>k});var r=n(370),t=n(2203),u=n(7218),i=n(4785),c=n(5379);function f(){return[(0,r.C)(),(0,t.i)(),(0,u.p)(),(0,i.c)(),(0,c.S)()]}function k(e){return{extensions:[(0,r.r)(),(0,t.h)(),(0,u.K)(),(0,i.d)(e),(0,c.P)()]}}}}]);
-//# sourceMappingURL=vendor.mdast-util-gfm.cafe5aa95910cf37fcaf.js.map
