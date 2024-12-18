@@ -86,7 +86,7 @@ const DocsSidebar: React.FC = () => {
       <div className="md:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`fixed top-24 z-50 bg-zinc-200 border-zinc-600 border-2 text-zinc-50 p-2 rounded-r-md transition-all duration-300 shadow-lg ${
+          className={`fixed top-24 z-40 bg-zinc-200 border-zinc-600 border-2 text-zinc-50 p-2 rounded-r-md transition-all duration-300 shadow-lg ${
             isOpen ? "left-72" : "left-0"
           }`}
           aria-label="Toggle documentation sidebar"

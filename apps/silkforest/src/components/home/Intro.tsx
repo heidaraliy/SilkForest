@@ -1,20 +1,47 @@
 import React from "react";
-import IntroVideo from "../../assets/intro.mp4";
+import { useEffect, useState } from "react";
+import DesktopIntroVideo from "../../assets/SilkForestDesktopIntro.mp4";
+import MobileIntroVideo from "../../assets/SilkForestMobileIntro.mp4";
 import Button from "@silkverb/components/SilkVerb/components/Button";
 
 const Intro: React.FC = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div className="flex justify-center p-8 mt-12">
       <div className="font-arimo tracking-tighter text-xl max-w-5xl text-gray-700">
         <div className="my-8 text-3xl text-center shadow-2xl">
-          <video
-            src={IntroVideo}
-            className="rounded-md"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
+          {isMobile ? (
+            <video
+              src={MobileIntroVideo}
+              className="rounded-md"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <video
+              src={DesktopIntroVideo}
+              className="rounded-md"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          )}
         </div>
 
         <div className="text-2xl font-bold mt-8 md:mt-0">

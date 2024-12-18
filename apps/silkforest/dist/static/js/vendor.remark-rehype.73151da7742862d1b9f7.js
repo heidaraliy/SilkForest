@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[653],{5979:(n,e,s)=>{s.d(e,{A:()=>u});var t=s(4349);function u(n,e){return n&&"run"in n?async function(s,u){const i=(0,t._)(s,{file:u,...e});await n.run(i,u)}:function(s,u){return(0,t._)(s,{file:u,...n||e})}}}}]);
+//# sourceMappingURL=vendor.remark-rehype.73151da7742862d1b9f7.js.map

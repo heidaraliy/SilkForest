@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[139],{3585:(s,t,n)=>{n.d(t,{A:()=>a});var e=n(766);function a(s){const t=this;t.parser=function(n){return(0,e.Y)(n,{...t.data("settings"),...s,extensions:t.data("micromarkExtensions")||[],mdastExtensions:t.data("fromMarkdownExtensions")||[]})}}}}]);
+//# sourceMappingURL=vendor.remark-parse.eef127c302b7194080c6.js.map

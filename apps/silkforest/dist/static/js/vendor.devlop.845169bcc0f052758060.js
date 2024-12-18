@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[4283],{9820:(e,s,k)=>{function f(){}function n(){}k.d(s,{HB:()=>n,ok:()=>f})}}]);
+//# sourceMappingURL=vendor.devlop.845169bcc0f052758060.js.map

@@ -143,7 +143,7 @@ const SilkVerb: React.FC = () => {
     <div className="bg-[#2a3475] h-screen-max p-4 mt-20 md:p-12 font-arimo tracking-tighter">
       <NotificationContainer />
       <Header />
-      <div className="space-y-4">
+      <div className="space-y-2 md:space-y-4 max-w-5xl mx-auto">
         <FileUpload
           fileInputRef={fileInputRef}
           handleFileUpload={handleFileUpload}
@@ -202,14 +202,35 @@ const SilkVerb: React.FC = () => {
         />
       </div>
 
-      <ReactTooltip id="reverb-tooltip" className="max-w-md" />
-      <ReactTooltip id="dry-gain-tooltip" className="max-w-md" />
-      <ReactTooltip id="wet-gain-tooltip" className="max-w-md" />
-      <ReactTooltip id="high-pass-tooltip" className="max-w-md" />
-      <ReactTooltip id="low-pass-tooltip" className="max-w-md" />
-      <ReactTooltip id="freq-response-tooltip" className="max-w-md" />
-      <ReactTooltip id="pitch-shift-tooltip" className="max-w-md" />
-      <ReactTooltip id="show-advanced-tooltip" className="max-w-md" />
+      <ReactTooltip id="reverb-tooltip" className="max-w-[280px] !opacity-90" />
+      <ReactTooltip
+        id="dry-gain-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
+      <ReactTooltip
+        id="wet-gain-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
+      <ReactTooltip
+        id="high-pass-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
+      <ReactTooltip
+        id="low-pass-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
+      <ReactTooltip
+        id="freq-response-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
+      <ReactTooltip
+        id="pitch-shift-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
+      <ReactTooltip
+        id="show-advanced-tooltip"
+        className="max-w-[280px] !opacity-90"
+      />
     </div>
   );
 };

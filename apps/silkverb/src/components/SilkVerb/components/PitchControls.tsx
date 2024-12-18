@@ -16,9 +16,12 @@ const PitchControls: React.FC<PitchControlsProps> = ({
 }) => {
   return (
     <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
-      <h1 className="text-xl font-bold mb-4 text-left text-zinc-700 font-arimo">
+      <h1 className="text-xl font-bold mb-2 text-left text-zinc-700 font-arimo">
         Pitch & Tempo Shift
       </h1>
+      <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+        Pitch shift controls both the tempo and key of the audio signal.
+      </div>
       <div>
         <div className="flex">
           <span

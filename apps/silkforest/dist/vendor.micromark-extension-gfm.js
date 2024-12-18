@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[1679],{9381:(e,s,r)=>{r.d(s,{T:()=>c});var k=r(660),t=r(1654),u=r(5969),f=r(1836),n=r(9967),b=r(4497);function c(e){return(0,k.y)([(0,t.$)(),(0,u.r)(),(0,f.K)(e),(0,n.x)(),(0,b.J)()])}}}]);

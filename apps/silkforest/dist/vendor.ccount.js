@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[4057],{8999:(e,t,r)=>{function n(e,t){const r=String(e);if("string"!=typeof t)throw new TypeError("Expected character");let n=0,s=r.indexOf(t);for(;-1!==s;)n++,s=r.indexOf(t,s+t.length);return n}r.d(t,{D:()=>n})}}]);

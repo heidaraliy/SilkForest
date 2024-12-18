@@ -1,7 +1,7 @@
 import React from "react";
 import FrequencyResponseChart from "./FrequencyResponseChart";
-import GainWarning from "./GainWarning";
 import Button from "./Button";
+import WarningMessage from "./WarningMessage";
 
 interface ReverbControlsProps {
   decayTime: number;
@@ -41,9 +41,14 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
 }) => {
   return (
     <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200 font-arimo">
-      <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
+      <h1 className="text-xl font-bold my-2 mb-2 text-left text-zinc-700">
         Reverberation
       </h1>
+      <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+        Set the reverberation parameters below to apply the reverb effect to
+        your uploaded audio file. You can choose to apply a simple decay time or
+        click the button below to set more advanced parameters.
+      </div>
       <div className="grid grid-cols-1 gap-4">
         <div>
           <div className="flex">
@@ -95,9 +100,12 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
           <div>
             <hr className="my-4 border-zinc-400 border-1" />
             {/* dry gain control */}
-            <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
+            <h1 className="text-xl font-bold my-2 mb-2 text-left text-zinc-700">
               Gain Staging
             </h1>
+            <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+              Control the volume of the reverberated signal.
+            </div>
             <div>
               <div className="flex">
                 <span
@@ -162,9 +170,12 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
               />
             </div>
             {/* high pass frequency control */}
-            <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
+            <h1 className="text-xl font-bold my-2 mb-2 text-left text-zinc-700">
               Frequency Filters
             </h1>
+            <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+              Control where the reverb effect is applied.
+            </div>
             <div>
               <div className="flex">
                 <span
@@ -231,9 +242,12 @@ const ReverbControls: React.FC<ReverbControlsProps> = ({
             {/* frequency response chart */}
             <FrequencyResponseChart data={frequencyData} />
             {dryGainValue + wetGainValue > 1 && (
-              <GainWarning
-                dryGainValue={dryGainValue}
-                wetGainValue={wetGainValue}
+              <WarningMessage
+                message={`Your current total gain is ${(
+                  dryGainValue + wetGainValue
+                ).toFixed(
+                  2
+                )}, exceeding the usual threshold of 1. This may cause clipping, leading to distortion!`}
               />
             )}
           </div>

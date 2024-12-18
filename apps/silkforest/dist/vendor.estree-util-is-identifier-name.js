@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[2095],{7173:(t,u,e)=>{e.d(u,{UU:()=>p});const s=/^[$_\p{ID_Start}][$_\u{200C}\u{200D}\p{ID_Continue}]*$/u,n=/^[$_\p{ID_Start}][-$_\u{200C}\u{200D}\p{ID_Continue}]*$/u,_={};function p(t,u){return((u||_).jsx?n:s).test(t)}}}]);

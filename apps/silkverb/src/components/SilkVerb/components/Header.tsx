@@ -12,7 +12,7 @@ const Header: React.FC = () => {
         changes.
       </h1>
       <h1 className="text-md mb-8 mt-4 text-center mx-auto text-zinc-50 tracking-tight max-w-xl">
-        To learn more about each setting and how to use it, hover over the ⓘ
+        To learn more about each setting and how to use it, hover or tap the ⓘ
         icon next to each setting.
       </h1>
     </>

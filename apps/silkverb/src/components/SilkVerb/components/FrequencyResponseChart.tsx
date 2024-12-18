@@ -26,17 +26,21 @@ const FrequencyResponseChart: React.FC<FrequencyResponseChartProps> = ({
       <div className="flex">
         <span
           data-tooltip-id="freq-response-tooltip"
-          data-tooltip-html={`The Frequency Response graph helps you visualize the changes you've made to the High Pass and Low Pass Frequency Filters. <br><br> As the high end of the graph curves down and to the left, the higher end frequencies, such as high hats and snares, are cut out. <br><br> When the lower end of the graph curves in, lower frequencies, like the bass and kick, are removed, giving the higher frequencies space within the mix.`}
+          data-tooltip-html={`The Frequency Spectrum helps you visualize the changes you've made to the High Pass and Low Pass Frequency Filters. <br><br> As the high end of the graph curves down and to the left, the higher end frequencies, such as high hats and snares, are cut out. <br><br> When the lower end of the graph curves in, lower frequencies, like the bass and kick, are removed, giving the higher frequencies space within the mix.`}
           data-tooltip-place="right"
           data-tooltip-delay-show={500}
           data-tooltip-delay-hide={300}
-          className="mr-2 mt-0.5 text-zinc-800 cursor-help"
+          className="mr-2 text-zinc-800 cursor-help"
         >
           ⓘ
         </span>
-        <h1 className="text-xl font-bold my-2 mb-4 text-left text-zinc-700">
+        <h1 className="text-xl font-bold text-left mb-4 text-zinc-700">
           Frequency Spectrum
         </h1>
+      </div>
+      <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+        The Frequency Spectrum helps you visualize the changes you've made to
+        the High Pass and Low Pass Frequency Filters.
       </div>
       <div className="w-full h-96">
         <ResponsiveContainer>

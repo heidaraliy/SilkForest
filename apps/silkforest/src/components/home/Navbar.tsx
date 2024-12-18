@@ -13,11 +13,12 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 text-xl tracking-tight font-bold font-arimo flex items-center h-[5.5rem] shadow-2xl border-b-2 border-zinc-400"
+        className="fixed top-0 left-0 right-0 z-[101] text-xl tracking-tight font-bold font-arimo flex items-center h-[5.5rem] shadow-2xl border-b-2 border-zinc-400"
         style={{
           backgroundImage: `url(${SilkForestBackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.85)",
         }}
       >
         <div className="flex w-full items-center px-4">
@@ -66,7 +67,7 @@ const Navbar: React.FC = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className={`fixed top-[5.5rem] left-0 right-0 transition-all duration-300 shadow-xl md:hidden font-bold font-arimo ${
+        className={`fixed top-[5.5rem] left-0 right-0 transition-all duration-300 shadow-xl md:hidden font-bold font-arimo z-[100] backdrop-blur-sm bg-opacity-95 ${
           isOpen
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-full pointer-events-none"

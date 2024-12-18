@@ -4,6 +4,7 @@ import { exportWAVAudio } from "../../../utils/exportAudio/exportWAVAudio";
 import { useNotification } from "../../Notifications/context/NotificationContext";
 import Spinner from "./Spinner";
 import Button from "./Button";
+import WarningMessage from "./WarningMessage";
 
 interface ExportControlsProps {
   processedBuffer: AudioBuffer | null;
@@ -100,9 +101,31 @@ const ExportControls: React.FC<ExportControlsProps> = ({
 
   return (
     <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
-      <h1 className="text-xl font-bold mb-4 text-left text-zinc-700 font-arimo">
+      <h1 className="text-xl font-bold mb-2 text-left text-zinc-700 font-arimo">
         Export Audio
       </h1>
+      <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+        Export your processed audio.
+      </div>
+
+      {!audioBuffer && (
+        <WarningMessage
+          type="info"
+          message="Upload an audio file to enable exporting options."
+        />
+      )}
+
+      {needsProcessing && (
+        <WarningMessage message="Apply your changes before exporting to ensure all modifications are included." />
+      )}
+
+      {isProcessing && (
+        <WarningMessage
+          type="info"
+          message="Processing audio... Please wait."
+        />
+      )}
+
       <div className="grid grid-cols-1 gap-2 my-2 md:grid-cols-2 grid-rows-1 justify-center">
         <Button
           onClick={handleMp3Export}

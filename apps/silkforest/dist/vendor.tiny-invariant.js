@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[8860],{7730:(r,e,n)=>{n.d(e,{A:()=>f});var t=!0,o="Invariant failed";function f(r,e){if(!r){if(t)throw new Error(o);var n="function"==typeof e?e():e,f=n?"".concat(o,": ").concat(n):o;throw new Error(f)}}}}]);

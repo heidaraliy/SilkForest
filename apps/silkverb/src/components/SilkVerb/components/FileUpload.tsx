@@ -22,9 +22,13 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   return (
     <div className="border-zinc-600 border-2 p-4 rounded-md shadow-xl bg-zinc-200">
-      <h1 className="text-xl font-bold mb-4 text-left text-zinc-700 font-arimo">
+      <h1 className="text-xl font-bold mb-2 text-left text-zinc-700 font-arimo">
         Upload Audio
       </h1>
+      <div className="flex justify-start mb-4 italic text-sm tracking-wide">
+        Click the button below to upload an audio file. You can upload MP3, WAV,
+        M4A, and AAC files.
+      </div>
       <Button
         accept="audio/*,.mp3,.wav,.m4a,.aac"
         ref={fileInputRef}

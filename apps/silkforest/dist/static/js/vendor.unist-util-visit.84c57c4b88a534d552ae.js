@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[9063],{4269:(e,n,t)=>{t.d(n,{YR:()=>i});var f=t(3813);function i(e,n,t,i){let o,s,c;"function"==typeof n&&"function"!=typeof t?(s=void 0,c=n,o=t):(s=n,c=t,o=i),(0,f.VG)(e,s,(function(e,n){const t=n[n.length-1],f=t?t.children.indexOf(e):void 0;return c(e,f,t)}),o)}}}]);
+//# sourceMappingURL=vendor.unist-util-visit.84c57c4b88a534d552ae.js.map

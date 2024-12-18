@@ -116,7 +116,7 @@ const config = {
   },
 };
 
-// only add development specific configurations if not in production
+// only add development specific configurations if not in production.
 if (isDevelopment) {
   config.mode = "development";
   config.devtool = "cheap-module-source-map";

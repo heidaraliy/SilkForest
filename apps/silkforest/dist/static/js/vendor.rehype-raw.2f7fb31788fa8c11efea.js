@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksilkforest_web=self.webpackChunksilkforest_web||[]).push([[8955],{801:(e,s,n)=>{n.d(s,{A:()=>t});var r=n(933);function t(e){return function(s,n){return(0,r.l)(s,{...e,file:n})}}}}]);
+//# sourceMappingURL=vendor.rehype-raw.2f7fb31788fa8c11efea.js.map
