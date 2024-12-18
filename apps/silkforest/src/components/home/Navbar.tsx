@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
             <img
               src={SilkForest}
               onClick={() => setIsOpen(false)}
-              className="pointer-events-auto transition-all duration-300 w-[14rem] h-auto mr-4"
+              className="pointer-events-auto transition-all duration-300 w-[14rem] h-auto mr-4 select-none"
               alt="SilkForest Logo"
             />
           </NavLink>

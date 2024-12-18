@@ -18,16 +18,16 @@ Algorithmically, SilkGhost is slightly different. At its core, SilkGhost leverag
 
 At the heart of SilkGhost are the **essential reverb controls**:
 
-- **Decay Time** adjusts the reverb's length,
-- **Wet Mix** balances dry and processed signals,
-- **Pre-Delay** adds space before reverb onset, and
+- **Decay Time** adjusts the reverb's length.
+- **Wet Mix** balances dry and processed signals.
+- **Pre-Delay** adds space before reverb onset.
 - **Proximity** shapes the balance between early reflections and late reverb tails.
 
 To **shape the reverb tail**, you can use:
 
-- **High-Pass** and **Low-Pass** filters to fine-tune the tonal balance of your reverbs,
-- **Modulation Depth** and **Modulation Rate** to introduce movement to the reverb tail,
-- **Post Gain** to ensure optimal output levels,
+- **High-Pass** and **Low-Pass** filters to fine-tune the tonal balance of your reverbs.
+- **Modulation Depth** and **Modulation Rate** to introduce movement to the reverb tail.
+- **Post Gain** to ensure optimal output levels.
 - **Reverse** to create dramatic pre-swells, giving SilkGhost a unique character and allowing you to create ethereal evolving transitions.
 
 The **Quality Mode** selector allows you to balance fidelity and CPU usage, giving you balance while you're sketching out your ideas, and the ability to crank it up when you're ready to export.
@@ -83,77 +83,70 @@ SilkGhost’s interface is designed to provide quick, intuitive access to all cr
 **Signal Quality Selector**
 
 - **Range**: High, Medium, Low, Garbage
-- **Function**: Balances processing quality against CPU usage
+- **Function**: Balances processing quality against CPU usage.
 - **Technical Details**:
-  - High: Full-resolution convolution, 96kHz internal processing
-  - Medium: Optimized convolution, 48kHz internal processing
-  - Low: Reduced-quality convolution, 44.1kHz processing
-  - Garbage: Minimal quality, extreme CPU savings
-- **Sound Design**:
-  - Use Garbage mode while composing - its artifacts can inspire creative decisions
-  - Medium mode is often sufficient for most sources
-  - Reserve High mode for final renders or particularly detailed sources
-- **Pitfalls**:
-  - Higher qualities can mask mix issues - verify your choices in Low mode
-  - Switching modes can slightly alter the reverb character - plan accordingly
+  - High: Full-resolution convolution, 96kHz internal processing.
+  - Medium: Optimized convolution, 48kHz internal processing.
+  - Low: Reduced-quality convolution, 44.1kHz processing.
+  - Garbage: Minimal quality, extreme CPU savings.
 
 ### Left Panel: Convolution & Core Controls
 
 **Decay Time**
 
 - **Range**: 0.1s to 30s
-- **Function**: Determines the duration of the reverb tail
+- **Function**: Determines the duration of the reverb tail.
 - **Sound Design**:
-  - 0.1s-0.3s: Tight rooms, drum ambience
-  - 0.3s-1.0s: Natural rooms, vocal intimacy
-  - 1.0s-3.0s: Halls, churches, performance spaces
-  - 3.0s-10s: Cathedrals, atmospheric design
-  - 10s-30s: Supernatural spaces, drone design
-- **Pitfalls**:
-  - Long decays can mask subsequent sections
-  - Very short decays may introduce comb filtering
+  - 0.1s-0.3s: Tight rooms, drum ambience.
+  - 0.3s-1.0s: Natural rooms, vocal intimacy.
+  - 1.0s-3.0s: Halls, churches, performance spaces.
+  - 3.0s-10s: Cathedrals, atmospheric design.
+  - 10s-30s: Supernatural spaces, drone design.
+- **Methodologies**:
+  - Long decays can mask subsequent sections.
+  - Very short decays may introduce comb filtering.
   - CPU usage increases with decay time
 
 **Wet Mix**
 
 - **Range**: 0% to 100%
-- **Function**: Balances dry (input) and wet (reverb) signals
+- **Function**: Balances dry (input) and wet (reverb) signals.
 - **Sound Design**:
-  - 0-20%: Subtle depth, maintain presence
-  - 20-40%: Natural room placement
-  - 40-70%: Dramatic space, featured reverb
-  - 70-100%: Special effects, ambient design
-- **Pitfalls**:
-  - High wet mix can destroy transient clarity
-  - Values above 50% often need pre-delay compensation
-  - Monitor in mono to catch phase issues
+  - 0-20%: Subtle depth, maintain presence.
+  - 20-40%: Natural room placement.
+  - 40-70%: Dramatic space, featured reverb.
+  - 70-100%: Special effects, ambient design.
+- **Methodologies**:
+  - High wet mix can destroy transient clarity.
+  - Values above 50% often need pre-delay compensation.
+  - Monitor in mono to catch phase issues.
 
 **Pre-Delay**
 
 - **Range**: 0ms to 500ms
-- **Function**: Delays reverb onset relative to dry signal
+- **Function**: Delays reverb onset relative to dry signal.
 - **Sound Design**:
-  - 0-10ms: Immediate space, drum rooms
-  - 10-30ms: Natural separation, vocal clarity
-  - 30-100ms: Rhythmic space, tempo-matched ambience
-  - 100-500ms: Special effects, reverb rhythms
-- **Pitfalls**:
-  - Long pre-delays can create unwanted echoes
-  - Tempo-synced values may fight with groove
+  - 0-10ms: Immediate space, drum rooms.
+  - 10-30ms: Natural separation, vocal clarity.
+  - 30-100ms: Rhythmic space, tempo-matched ambience.
+  - 100-500ms: Special effects, reverb rhythms.
+- **Methodologies**:
+  - Long pre-delays can create unwanted echoes.
+  - Tempo-synced values may fight with groove.
   - Very short values can cause comb filtering
 
 **Proximity**
 
 - **Range**: -100 to +100
-- **Function**: Balances early reflections vs. late reverb
+- **Function**: Balances early reflections vs. late reverb.
 - **Sound Design**:
-  - -100 to -50: Distant, atmospheric spaces
-  - -50 to 0: Natural room placement
-  - 0 to +50: Intimate, close spaces
-  - +50 to +100: Technical, tight spaces
-- **Pitfalls**:
-  - Extreme values can sound unnatural
-  - Early reflections can create unwanted coloration
+  - -100 to -50: Distant, atmospheric spaces.
+  - -50 to 0: Natural room placement.
+  - 0 to +50: Intimate, close spaces.
+  - +50 to +100: Technical, tight spaces.
+- **Methodologies**:
+  - Extreme values can sound unnatural.
+  - Early reflections can create unwanted coloration.
   - CPU usage increases with more early reflections
 
 <!-- ### Enhancer Controls
@@ -203,45 +196,41 @@ SilkGhost’s interface is designed to provide quick, intuitive access to all cr
 - **Range**: 0% to 100%
 - **Function**: Introduce movement within the reverb tail.
 - **Sound Design**:
-  - 0-20%: Subtle character enhancement
-  - 20-40%: Natural room placement
-  - 40-60%: Dramatic space, featured reverb
-  - 60-80%: Special effects, ambient design
-  - 80-100%: Extreme character enhancement
-- **Pitfalls**:
-  - High values can create unnatural artifacts
-  - Values below 20% can be too subtle
-  - Monitor in mono to catch phase issues
+  - 0-20%: Subtle character enhancement.
+  - 20-40%: Natural room placement.
+  - 40-60%: Dramatic space, featured reverb.
+  - 60-80%: Special effects, ambient design.
+  - 80-100%: Extreme character enhancement.
+- **Methodologies**:
+  - High values can create unnatural artifacts.
+  - Values below 20% can be too subtle.
+  - Monitor in mono to catch phase issues.
 
 **Modulation Rate**
 
 - **Range**: 0.1Hz to 10Hz
 - **Function**: Speed of modulation cycles.
 - **Sound Design**:
-  - 0.1-0.3Hz: Subtle character enhancement
-  - 0.3-0.6Hz: Natural room placement
-  - 0.6-1Hz: Dramatic space, featured reverb
-  - 1-3Hz: Special effects, ambient design
-  - 3-10Hz: Extreme character enhancement
-- **Pitfalls**:
-  - High values can create unnatural artifacts
-  - Values below 0.3Hz can be too subtle
-  - Monitor in mono to catch phase issues
+  - 0.1-0.3Hz: Subtle character enhancement.
+  - 0.3-0.6Hz: Natural room placement.
+  - 0.6-1Hz: Dramatic space, featured reverb.
+  - 1-3Hz: Special effects, ambient design.
+  - 3-10Hz: Extreme character enhancement.
+- **Methodologies**:
+  - High values can create unnatural artifacts.
+  - Values below 0.3Hz can be too subtle.
+  - Monitor in mono to catch phase issues.
 
 **Reverse Reverb**
 
-- **Range**: 0% to 100%
+- **Range**: On/Off
 - **Function**: Flips the reverb tail, creating unique pre-swell effects.
 - **Sound Design**:
-  - 0-20%: Subtle character enhancement
-  - 20-40%: Natural room placement
-  - 40-60%: Dramatic space, featured reverb
-  - 60-80%: Special effects, ambient design
-  - 80-100%: Extreme character enhancement
-- **Pitfalls**:
-  - High values can create unnatural artifacts
-  - Values below 20% can be too subtle
-  - Monitor in mono to catch phase issues
+  - On: Computes all the way through the reverb tail, applying each effect added, then reverses the signal.
+  - Off: Computes the reverb tail normally.
+- **Methodologies**:
+  - Use Reverse Reverb at low decay times (0.1-0.3s) to create rapid swelling effects after a signal is passed through.
+  - Use Reverse Reverb at high decay times (1-3s) to create powerful droning effects. Place it on pads or other long-tail synths to create a unique character.
 
 ### Right Panel: Frequency Shaping Controls
 
@@ -301,40 +290,39 @@ SilkGhost excels at vocal enhancement, offering a range of possibilities from su
 
 **For natural, intimate vocals, try this foundational approach:**
 
-1. Set a short decay (0.3-0.8s) to establish the basic space
-2. Use positive proximity values (40-60) to emphasize early reflections
-3. Enable ducking (30-40%) to maintain vocal clarity
-4. Apply gentle high-pass filtering around 150Hz to prevent mud
-5. Keep modulation minimal (5-10%) for subtle movement
+1. Set a short decay (0.3-0.8s) to establish the basic space.
+2. Use positive proximity values (40-60) to emphasize early reflections.
+3. Apply gentle high-pass filtering around 150Hz to prevent mud.
+4. Keep modulation minimal (5-10%) for subtle movement.
 
 **To create more dramatic vocal effects through chaining:**
 
-1. First SilkGhost Instance (Foundation):
+1. **First SilkGhost Instance (Foundation):**
 
-   - Short decay (0.2-0.4s)
-   - High proximity (70-90)
-   - Minimal modulation
-   - Duck against vocal (40-50%)
+   - Short decay (0.2-0.4s).
+   - High proximity (70-90).
+   - Minimal modulation.
 
-2. Second SilkGhost Instance (Atmosphere):
-   - Longer decay (2-4s)
-   - Lower proximity (-20 to -40)
-   - Increased modulation depth (30-40%)
-   - Lower wet mix (20-30%)
+2. **Second SilkGhost Instance (Atmosphere):**
+
+   - Longer decay (2-4s).
+   - Lower proximity (-20 to -40).
+   - Increased modulation depth (30-40%).
+   - Lower wet mix (20-30%).
 
 **For backing vocals and vocal pads:**
 
-1. Primary Reverb Layer:
+1. **Primary Reverb Layer:**
 
-   - Medium decay (1-2s)
-   - Moderate proximity (0-20)
-   - Subtle modulation (15-20%)
+   - Medium decay (1-2s).
+   - Moderate proximity (0-20).
+   - Subtle modulation (15-20%).
 
-2. Reverse Effect Layer:
-   - Reverse setting at 40-60%
-   - Longer decay (3-4s)
-   - High modulation depth (40-50%)
-   - Pan wider than primary layer
+2. **Reverse Effect Layer:**
+
+   - Reverse setting at 40-60%.
+   - Longer decay (3-4s).
+   - High modulation depth (40-50%).
 
 This layered approach creates rich, three-dimensional vocal spaces that can be tuned to any style from intimate folk to expansive electronic music. Experiment with automating individual parameters across the different layers to create dynamic, breathing vocal treatments that evolve with your arrangement.
 
@@ -344,10 +332,10 @@ Creating convincing drum spaces requires careful attention to early reflections 
 
 **For natural drum rooms, try this approach:**
 
-1. Set a short decay (0.2-0.4s) with positive proximity
-2. Use high-pass filtering around 100Hz to prevent low-end buildup
-3. Apply subtle modulation (10-15%) to add organic movement
-4. Chain with a second instance set to longer decay times (1-2s) at very low mix levels (5-10%) for tail extension
+1. Set a short decay (0.2-0.4s) with positive proximity.
+2. Use high-pass filtering around 100Hz to prevent low-end buildup.
+3. Apply subtle modulation (10-15%) to add organic movement.
+4. Chain with a second instance set to longer decay times (1-2s) at very low mix levels (5-10%) for tail extension.
 
 This dual-reverb technique creates a more realistic space than a single instance could achieve. The first reverb handles the immediate room response, while the second adds depth and sustain.
 
@@ -357,21 +345,21 @@ SilkGhost truly shines in ambient music and film scoring applications. The key t
 
 **Layer 1: Basic Space**
 
-- Long decay with moderate modulation
-- High-pass around 200Hz for clarity
-- Subtle ducking to maintain definition
+- Long decay with moderate modulation.
+- High-pass around 200Hz for clarity.
+- Subtle ducking to maintain definition.
 
 **Layer 2: Movement & Texture**
 
-- Second SilkGhost instance with extreme modulation
-- Reverse reverb at 40-60%
-- Pan the wet signal wider than Layer 1
+- Second SilkGhost instance with extreme modulation.
+- Reverse reverb at 40-60%.
+- Pan the wet signal wider than Layer 1.
 
 **Layer 3: Micro-Detail**
 
-- Very short decay (0.1-0.2s)
-- High proximity values
-- High-pass at 1kHz to add "air"
+- Very short decay (0.1-0.2s).
+- High proximity values.
+- High-pass at 1kHz to add "air".
 
 This layered approach creates rich, three-dimensional spaces that evolve over time. Experiment with automating individual parameters across the different layers to create dynamic, breathing soundscapes.
 
@@ -381,23 +369,23 @@ SilkGhost's versatility really shows when combined with other processing tools. 
 
 **Stereo Enhancement Chain:**
 
-1. Start with SilkGhost for basic space
-2. Add a stereo widener to expand the reverb field
-3. Use a second SilkGhost instance with different modulation settings
-4. Finish with gentle compression to glue the space together
+1. Start with SilkGhost for basic space.
+2. Add a stereo widener to expand the reverb field.
+3. Use a second SilkGhost instance with different modulation settings.
+4. Finish with gentle compression to glue the space together.
 
 **Textural Processing:**
 
-1. Begin with heavy modulation in SilkGhost
-2. Follow with pitch shifting (+/- 12 semitones)
-3. Add another SilkGhost instance with reverse settings
-4. Use frequency-dependent processing to separate different parts of the spectrum
+1. Begin with heavy modulation in SilkGhost.
+2. Follow with pitch shifting (+/- 12 semitones).
+3. Add another SilkGhost instance with reverse settings.
+4. Use frequency-dependent processing to separate different parts of the spectrum.
 
 **Dynamic Space Design:**
 
-1. Set up SilkGhost with moderate decay
-2. Add volume-dependent compression
-3. Insert a second SilkGhost with longer decay
-4. Use multiband processing to control different frequency ranges independently
+1. Set up SilkGhost with moderate decay.
+2. Add volume-dependent compression.
+3. Insert a second SilkGhost with longer decay.
+4. Use multiband processing to control different frequency ranges independently.
 
 **SilkGhost** equips you to sculpt the perfect spatial ambience—from subtle, supportive reverb to colossal, modulated washes. Embrace its intuitive interface, explore its flexible parameters, and let your sonic imagination run free.

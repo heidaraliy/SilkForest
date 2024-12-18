@@ -43,7 +43,7 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-8 font-arimo tracking-tight mt-20">
+    <div className="flex flex-col items-center p-8 font-arimo tracking-tight mt-20 max-w-7xl mx-auto">
       {categories.map((category) => {
         // filter products based on the current category type.
         const filteredProducts = PRODUCTS.filter(
@@ -65,9 +65,9 @@ const Products: React.FC = () => {
             </div>
             <div className="flex flex-wrap justify-center">
               {filteredProducts.map((product) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
+                <ProductCard
+                  key={product.id}
+                  product={product}
                   onDownloadClick={handleDownloadClick}
                 />
               ))}
