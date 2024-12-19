@@ -28,8 +28,7 @@ export const PRODUCTS: Product[] = [
     description:
       "is a reverberation engine that creates haunting, ethereal soundscapes that linger like spectral echoes in your mix, gently enveloping each note in a surreal shimmer.",
     documentationUrl: URLS.docs("silk-ghost-introduction"),
-    downloadUrl:
-      "https://github.com/heidaraliy/SilkForest/releases/download/silkghost_release_mac_v1.0.0/silkghost_release_v1.0.0_mac.zip",
+    downloadUrl: process.env.SILKGHOST_DOWNLOAD_URL_MAC,
     background: "#71769d",
     appType: "plugin",
     status: "available",

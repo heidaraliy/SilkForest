@@ -1,2 +1,5 @@
 node_modules
 extractions
+.env
+.DS_Store
+
